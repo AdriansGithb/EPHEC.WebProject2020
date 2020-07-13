@@ -21,11 +21,10 @@ namespace Api
                 .AddJwtBearer("Bearer", options =>
                 {
                     options.Authority = "https://localhost:5001";
+                    options.RequireHttpsMetadata = false;
 
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateAudience = false
-                    };
+                    options.Audience = "MyAPI";
+
                 });
 
             services.AddAuthorization(options =>
