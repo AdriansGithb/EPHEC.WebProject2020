@@ -35,6 +35,13 @@ namespace IdentityServer
                     AllowedScopes = { "MyAPI" }
                 }
             };
+
+        public static IEnumerable<IdentityResource> IdentityResources =>
+            new List<IdentityResource>
+            {
+                new IdentityResources.OpenId(),
+                new IdentityResources.Profile(),
+            };
     }
 
 
