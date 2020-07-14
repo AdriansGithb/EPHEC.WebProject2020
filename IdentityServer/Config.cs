@@ -36,5 +36,13 @@ namespace IdentityServer
                     AllowedScopes = { MyAPIConstants.MyAPI_Name }
                 }
             };
+
+        //Add support for the standard openid(subject id) and profile(first name, last name etc..) scopes by ammending the IdentityResources property
+        public static IEnumerable<IdentityResource> IdentityResources =>
+            new List<IdentityResource>
+            {
+                new IdentityResources.OpenId(),
+                new IdentityResources.Profile(),
+            };
     }
 }
