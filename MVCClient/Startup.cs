@@ -43,7 +43,10 @@ namespace MVCClient
                     options.ClientSecret = "secret";
                     options.ResponseType = "code";
 
+                    //Since SaveTokens is enabled, ASP.NET Core will automatically store the resulting access and refresh token in the authentication session
                     options.SaveTokens = true;
+
+                    options.Scope.Add(MyAPIConstants.MyAPI_Name);
 
                     //
                     //options.TokenValidationParameters = new TokenValidationParameters
