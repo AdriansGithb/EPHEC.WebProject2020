@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using MyConstants;
 
 namespace Client
 {
@@ -16,7 +17,7 @@ namespace Client
             // discover endpoints from metadata
             var client = new HttpClient();
 
-            var disco = await client.GetDiscoveryDocumentAsync("https://localhost:5001");
+            var disco = await client.GetDiscoveryDocumentAsync(MyIdentityServerConstants.IS_url);
             if (disco.IsError)
             {
                 Console.WriteLine(disco.Error);
@@ -46,7 +47,7 @@ namespace Client
             var apiClient = new HttpClient();
             apiClient.SetBearerToken(tokenResponse.AccessToken);
 
-            var response = await apiClient.GetAsync("https://localhost:6001/identity");
+            var response = await apiClient.GetAsync(MyAPIConstants.MyAPIIdntt_url);
             if (!response.IsSuccessStatusCode)
             {
                 Console.WriteLine(response.StatusCode);
