@@ -39,11 +39,18 @@ namespace MVCClient
                 {
                     options.Authority = MyIdentityServerConstants.IS_Url;
 
-                    options.ClientId = "mvc";
+                    options.ClientId = MyMVCConstants.MyMVC_Name;
                     options.ClientSecret = "secret";
                     options.ResponseType = "code";
 
                     options.SaveTokens = true;
+
+                    //
+                    //options.TokenValidationParameters = new TokenValidationParameters
+                    //{
+                    //    NameClaimType = "name",
+                    //    RoleClaimType = "role"
+                    //};
                 });
         }
 

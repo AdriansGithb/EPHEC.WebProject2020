@@ -39,7 +39,7 @@ namespace IdentityServer
                 // interactive ASP.NET Core MVC client
                 new Client
                 {
-                    ClientId = "mvc",
+                    ClientId = MyMVCConstants.MyMVC_Name,
                     ClientSecrets = { new Secret("secret".Sha256()) },
 
                     AllowedGrantTypes = GrantTypes.Code,
