@@ -13,7 +13,7 @@ namespace MyConstants
         public const string MyAPI_ApiScope_Name = "MyApiScope";
 
         public const string MyAPI_Url = "https://localhost:44338/";
-        public const string MyAPIIdentityCtrlr_Url = "https://localhost:44338/identity";
+        public const string MyAPI_IdentityCtrlr_Url = "https://localhost:44338/identity";
 
     }
 }

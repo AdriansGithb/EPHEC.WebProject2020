@@ -5,6 +5,7 @@
 using IdentityServer4.Models;
 using MyConstants;
 using System.Collections.Generic;
+using IdentityServer4;
 
 namespace IdentityServer
 {
@@ -34,7 +35,28 @@ namespace IdentityServer
 
                     // scopes that client has access to
                     AllowedScopes = { MyAPIConstants.MyAPI_Name }
+                },
+                // interactive ASP.NET Core MVC client
+                new Client
+                {
+                    ClientId = "mvc",
+                    ClientSecrets = { new Secret("secret".Sha256()) },
+
+                    AllowedGrantTypes = GrantTypes.Code,
+
+                    // where to redirect to after login
+                    RedirectUris = { MyMVCConstants.MyMVC_OidcIn_Url },
+
+                    // where to redirect to after logout
+                    PostLogoutRedirectUris = { MyMVCConstants.MyMVC_OidcOut_Url },
+
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile
+                    }
                 }
+
             };
 
         //Add support for the standard openid(subject id) and profile(first name, last name etc..) scopes by ammending the IdentityResources property

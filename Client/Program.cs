@@ -47,7 +47,7 @@ namespace Client
             var apiClient = new HttpClient();
             apiClient.SetBearerToken(tokenResponse.AccessToken);
 
-            var response = await apiClient.GetAsync(MyAPIConstants.MyAPIIdentityCtrlr_Url);
+            var response = await apiClient.GetAsync(MyAPIConstants.MyAPI_IdentityCtrlr_Url);
             if (!response.IsSuccessStatusCode)
             {
                 Console.WriteLine(response.StatusCode);
