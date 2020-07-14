@@ -2,10 +2,15 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MVCClient.Models;
+using MyConstants;
+using Newtonsoft.Json.Linq;
 
 namespace MVCClient.Controllers
 {
@@ -37,6 +42,21 @@ namespace MVCClient.Controllers
         public IActionResult Logout()
         {
             return SignOut("Cookies", "oidc");
+        }
+
+        //You can access the tokens in the session using the standard ASP.NET Core extension methods
+        //var accessToken = await HttpContext.GetTokenAsync("access_token");
+        //For accessing the API using the access token, all you need to do is retrieve the token, and set it on your HttpClient:
+        public async Task<IActionResult> CallApi()
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            var content = await client.GetStringAsync(MyAPIConstants.MyAPI_IdentityCtrlr_Url);
+
+            ViewBag.Json = JArray.Parse(content).ToString();
+            return View("json");
         }
     }
 }
