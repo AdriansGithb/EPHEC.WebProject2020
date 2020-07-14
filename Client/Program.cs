@@ -17,7 +17,7 @@ namespace Client
             // discover endpoints from metadata
             var client = new HttpClient();
 
-            var disco = await client.GetDiscoveryDocumentAsync(MyIdentityServerConstants.IS_url);
+            var disco = await client.GetDiscoveryDocumentAsync(MyIdentityServerConstants.IS_Url);
             if (disco.IsError)
             {
                 Console.WriteLine(disco.Error);
@@ -31,7 +31,7 @@ namespace Client
                 ClientId = "client",
                 ClientSecret = "secret",
 
-                Scope = "api1"
+                Scope = MyAPIConstants.MyAPI_Name
             });
 
             if (tokenResponse.IsError)
@@ -47,7 +47,7 @@ namespace Client
             var apiClient = new HttpClient();
             apiClient.SetBearerToken(tokenResponse.AccessToken);
 
-            var response = await apiClient.GetAsync(MyAPIConstants.MyAPIIdntt_url);
+            var response = await apiClient.GetAsync(MyAPIConstants.MyAPIIdentityCtrlr_Url);
             if (!response.IsSuccessStatusCode)
             {
                 Console.WriteLine(response.StatusCode);

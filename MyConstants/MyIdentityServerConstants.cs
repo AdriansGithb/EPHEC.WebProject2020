@@ -8,7 +8,7 @@ namespace MyConstants
 {
     public static class MyIdentityServerConstants
     {
-        public const string IS_url = "https://localhost:44318/";
+        public const string IS_Url = "https://localhost:44318/";
 
 
     }

@@ -3,6 +3,7 @@
 
 
 using IdentityServer4.Models;
+using MyConstants;
 using System.Collections.Generic;
 
 namespace IdentityServer
@@ -12,7 +13,7 @@ namespace IdentityServer
         public static IEnumerable<ApiScope> ApiScopes =>
             new List<ApiScope>
             {
-                new ApiScope("api1")
+                new ApiScope(MyAPIConstants.MyAPI_Name)
             };
 
         public static IEnumerable<Client> Clients =>
@@ -32,7 +33,7 @@ namespace IdentityServer
                     },
 
                     // scopes that client has access to
-                    AllowedScopes = { "api1" }
+                    AllowedScopes = { MyAPIConstants.MyAPI_Name }
                 }
             };
     }

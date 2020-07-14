@@ -32,13 +32,22 @@ namespace MyAPI
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = MyIdentityServerConstants.IS_url;
+                    options.Authority = MyIdentityServerConstants.IS_Url;
 
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateAudience = false
                     };
                 });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(MyAPIConstants.MyAPI_ApiScope_Name, policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireClaim("scope", MyAPIConstants.MyAPI_Name);
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app)
@@ -50,7 +59,7 @@ namespace MyAPI
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllers().RequireAuthorization(MyAPIConstants.MyAPI_ApiScope_Name);
             });
         }
     }
