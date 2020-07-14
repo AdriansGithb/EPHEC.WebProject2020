@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyConstants", "MyConstants\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAPI", "MyAPI\MyAPI.csproj", "{FF825F96-64CC-49B5-82FA-7EF463A7528B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{965D1D1C-78FC-4B0F-97DA-FF0EB2AE20F7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{FF825F96-64CC-49B5-82FA-7EF463A7528B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF825F96-64CC-49B5-82FA-7EF463A7528B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF825F96-64CC-49B5-82FA-7EF463A7528B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{965D1D1C-78FC-4B0F-97DA-FF0EB2AE20F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{965D1D1C-78FC-4B0F-97DA-FF0EB2AE20F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{965D1D1C-78FC-4B0F-97DA-FF0EB2AE20F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{965D1D1C-78FC-4B0F-97DA-FF0EB2AE20F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
