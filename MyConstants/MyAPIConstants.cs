@@ -8,6 +8,8 @@ namespace MyConstants
 {
     public static class MyAPIConstants
     {
-        public const string MyAPI_url = "";
+        public const string MyAPI_name = "MyAPI";
+
+        public const string MyAPI_url = "https://localhost:44338/";
     }
 }
