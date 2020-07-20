@@ -2,10 +2,10 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using IdentityServer4;
 using IdentityServer4.Models;
 using MyConstants;
 using System.Collections.Generic;
-using IdentityServer4;
 
 namespace IdentityServer
 {
@@ -22,6 +22,7 @@ namespace IdentityServer
             {
                 new Client
                 {
+                    //machine to machine client
                     ClientId = "client",
 
                     // no interactive user, use the clientid/secret for authentication
