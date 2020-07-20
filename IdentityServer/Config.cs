@@ -44,6 +44,7 @@ namespace IdentityServer
                     ClientSecrets = { new Secret("secret".Sha256()) },
 
                     AllowedGrantTypes = GrantTypes.Code,
+                    RequireConsent = false,
 
                     // where to redirect to after login
                     RedirectUris = { MyMVCConstants.MyMVC_OidcIn_Url },
