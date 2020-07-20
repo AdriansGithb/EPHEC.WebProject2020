@@ -1,1 +1,8 @@
 ﻿
+**/ IS migration creation \**
+dotnet ef migrations add InitialPersistedGrantDbMigration -c PersistedGrantDbContext -o Data/Migrations/PersistedGrantDb
+dotnet ef migrations add InitialConfigurationDbMigration -c ConfigurationDbContext -o Data/Migrations/ConfigurationDb
+
+**/ IS + ASP Identity migration creation \**
+dotnet ef migrations add InitialApplicationDbMigration -c ApplicationDbContext -o Data/Migrations/ApplicationDb
+
