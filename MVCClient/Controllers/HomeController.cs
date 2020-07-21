@@ -63,5 +63,12 @@ namespace MVCClient.Controllers
             ViewBag.Json = JArray.Parse(content).ToString();
             return View("json");
         }
+
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
     }
 }
