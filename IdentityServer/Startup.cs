@@ -5,7 +5,6 @@
 using System.Reflection;
 using IdentityServer4;
 using IdentityServer.Data;
-using IdentityServer.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -21,6 +20,7 @@ using System;
 using System.Security.Claims;
 using IdentityModel;
 using MyLibrary.Constants;
+using MyLibrary.Models;
 using Serilog;
 
 namespace IdentityServer
