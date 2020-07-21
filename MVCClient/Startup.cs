@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using MyConstants;
 
 namespace MVCClient
@@ -47,13 +48,14 @@ namespace MVCClient
                     options.SaveTokens = true;
 
                     options.Scope.Add(MyAPIConstants.MyAPI_Name);
+                    options.Scope.Add("role");
 
-                    //
-                    //options.TokenValidationParameters = new TokenValidationParameters
-                    //{
-                    //    NameClaimType = "name",
-                    //    RoleClaimType = "role"
-                    //};
+
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        NameClaimType = "name",
+                        RoleClaimType = "role"
+                    };
                 });
         }
 
@@ -81,7 +83,7 @@ namespace MVCClient
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute()
-                    .RequireAuthorization();
+                    /*.RequireAuthorization()*/;
             });
         }
     }

@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MVCClient.Models;
@@ -23,11 +24,13 @@ namespace MVCClient.Controllers
             _logger = logger;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Authorize(Roles = MyIdentityServerConstants.Role_AdminOrManagerOrUser)]
         public IActionResult Privacy()
         {
             return View();
@@ -39,6 +42,7 @@ namespace MVCClient.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        [Authorize(Roles = MyIdentityServerConstants.Role_AdminOrManagerOrUser)]
         public IActionResult Logout()
         {
             return SignOut("Cookies", "oidc");
@@ -47,6 +51,7 @@ namespace MVCClient.Controllers
         //You can access the tokens in the session using the standard ASP.NET Core extension methods
         //var accessToken = await HttpContext.GetTokenAsync("access_token");
         //For accessing the API using the access token, all you need to do is retrieve the token, and set it on your HttpClient:
+        [Authorize(Roles = MyIdentityServerConstants.Role_AdminOrManager)]
         public async Task<IActionResult> CallApi()
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");

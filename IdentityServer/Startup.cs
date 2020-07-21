@@ -41,10 +41,10 @@ namespace IdentityServer
             services.AddControllersWithViews();
 
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-            //const string connectionString = @"Data Source=MSI\SQLEXPRESS;database=WebProject2020;trusted_connection=yes;";
+            //const string ConnectionString = @"Data Source=MSI\SQLEXPRESS;database=WebProject2020;trusted_connection=yes;";
 
             services.AddDbContext<ApplicationDbContext>(ctxBuilder =>
-                ctxBuilder.UseSqlServer(MyIdentityServerConstants.connectionString, sqlOptions => sqlOptions.MigrationsAssembly(migrationsAssembly)));
+                ctxBuilder.UseSqlServer(MyIdentityServerConstants.ConnectionString, sqlOptions => sqlOptions.MigrationsAssembly(migrationsAssembly)));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -67,12 +67,12 @@ namespace IdentityServer
 
             builder.AddConfigurationStore(options =>
                 {
-                    options.ConfigureDbContext = b => b.UseSqlServer(MyIdentityServerConstants.connectionString,
+                    options.ConfigureDbContext = b => b.UseSqlServer(MyIdentityServerConstants.ConnectionString,
                         sql => sql.MigrationsAssembly(migrationsAssembly));
                 })
                 .AddOperationalStore(options =>
                 {
-                    options.ConfigureDbContext = b => b.UseSqlServer(MyIdentityServerConstants.connectionString,
+                    options.ConfigureDbContext = b => b.UseSqlServer(MyIdentityServerConstants.ConnectionString,
                         sql => sql.MigrationsAssembly(migrationsAssembly));
                 });
 
@@ -164,6 +164,7 @@ namespace IdentityServer
         //                new Claim(JwtClaimTypes.GivenName, "Alice"),
         //                new Claim(JwtClaimTypes.FamilyName, "Smith"),
         //                new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
+        //                new Claim("role", MyIdentityServerConstants.Role_Manager), 
         //            }).Result;
         //            if (!result.Succeeded)
         //            {
@@ -190,7 +191,8 @@ namespace IdentityServer
         //                new Claim(JwtClaimTypes.GivenName, "Bob"),
         //                new Claim(JwtClaimTypes.FamilyName, "Smith"),
         //                new Claim(JwtClaimTypes.WebSite, "http://bob.com"),
-        //                new Claim("location", "somewhere")
+        //                new Claim("location", "somewhere"),
+        //                new Claim("role",MyIdentityServerConstants.Role_User), 
         //            }).Result;
         //            if (!result.Succeeded)
         //            {

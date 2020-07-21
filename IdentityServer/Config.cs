@@ -56,8 +56,11 @@ namespace IdentityServer
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        MyAPIConstants.MyAPI_Name
+                        MyAPIConstants.MyAPI_Name,
+                        "role"
                     },
+
+                    AlwaysIncludeUserClaimsInIdToken = true,
 
                     //enable support for refresh tokens
                     AllowOfflineAccess = true
@@ -71,6 +74,7 @@ namespace IdentityServer
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
+                new IdentityResource("role", new []{"role"})
             };
     }
 }
