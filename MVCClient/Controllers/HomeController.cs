@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MVCClient.Models;
-using MyConstants;
+using MyLibrary.Constants;
 using Newtonsoft.Json.Linq;
 
 namespace MVCClient.Controllers

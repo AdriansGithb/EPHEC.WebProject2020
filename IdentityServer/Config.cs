@@ -4,8 +4,8 @@
 
 using IdentityServer4;
 using IdentityServer4.Models;
-using MyConstants;
 using System.Collections.Generic;
+using MyLibrary.Constants;
 
 namespace IdentityServer
 {

@@ -13,7 +13,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MyConstants;
 using IdentityServerHost.Quickstart.UI;
 using IdentityServer4.EntityFramework.DbContexts;
 using System.Linq;
@@ -21,6 +20,7 @@ using IdentityServer4.EntityFramework.Mappers;
 using System;
 using System.Security.Claims;
 using IdentityModel;
+using MyLibrary.Constants;
 using Serilog;
 
 namespace IdentityServer

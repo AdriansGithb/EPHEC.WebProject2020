@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MyConstants
+﻿namespace MyLibrary.Constants
 {
     public static class MyAPIConstants
     {
