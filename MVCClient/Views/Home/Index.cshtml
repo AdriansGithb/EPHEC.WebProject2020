@@ -3,16 +3,6 @@
 <h2>Ma page d'accueil</h2>
 
 <dl>
-    blablabla
+    Bonjour @User.Identity.Name :) 
 
 </dl>
-
-@*<h2>Properties</h2>
-
-<dl>
-    @foreach (var prop in (await Context.AuthenticateAsync()).Properties.Items)
-    {
-        <dt>@prop.Key</dt>
-        <dd>@prop.Value</dd>
-    }
-</dl>*@

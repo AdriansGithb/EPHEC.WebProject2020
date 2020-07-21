@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using MyConstants;
 
 namespace IdentityServerHost.Quickstart.UI
 {
@@ -93,7 +94,7 @@ namespace IdentityServerHost.Quickstart.UI
                         return this.LoadingPage("Redirect", model.ReturnUrl);
                     }
 
-                    return Redirect(model.ReturnUrl);
+                    return Redirect(MyMVCConstants.MyMVC_Url);
                 }
                 else
                 {

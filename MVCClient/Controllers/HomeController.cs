@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -22,6 +24,15 @@ namespace MVCClient.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+        }
+        
+        public IActionResult Login()
+        {
+            return Challenge(new AuthenticationProperties
+                {
+                    RedirectUri = "/Home/Index"
+                },
+                "oidc");
         }
 
         [AllowAnonymous]
