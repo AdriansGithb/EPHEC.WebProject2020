@@ -1,8 +1,21 @@
-﻿
+﻿**/ path where commands have been executed \**
+~\WebProject2020\IdentityServer>
+
 **/ IS migration creation \**
 dotnet ef migrations add InitialPersistedGrantDbMigration -c PersistedGrantDbContext -o Data/Migrations/PersistedGrantDb
 dotnet ef migrations add InitialConfigurationDbMigration -c ConfigurationDbContext -o Data/Migrations/ConfigurationDb
 
 **/ IS + ASP Identity migration creation \**
 dotnet ef migrations add InitialApplicationDbMigration -c ApplicationDbContext -o Data/Migrations/ApplicationDb
+
+**/ ApplicationUser migration creation \**
+dotnet ef migrations add AppUserMigration -c ApplicationDbContext -o Data/Migrations/ApplicationDb
+
+**/ Update Database \**
+dotnet ef database update -c PersistedGrantDbContext
+dotnet ef database update -c ConfigurationDbContext
+dotnet ef database update -c ApplicationDbContext
+dotnet ef database update -c ApplicationDbContext
+
+
 
