@@ -12,8 +12,8 @@ namespace MyLibrary.Models
         public bool IsProfessional { get; set; }
         public bool IsAdmin { get; set; }
 
-        //public GenderTypesId GenderType_Id { get; set; }
-        //public GenderTypesModel GenderTypeModel { get; set; }
+        public GenderTypesId GenderType_Id { get; set; }
+        public GenderTypesModel GenderTypeModel { get; set; }
 
     }
 }

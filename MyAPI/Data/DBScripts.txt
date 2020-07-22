@@ -9,11 +9,6 @@ dotnet ef database update -c AppDbContext
 ...
 
 
-**/ Gender_Types migration creation \**
-dotnet ef migrations add GenderTypesMigration -c AppDbContext -o Data/Migrations
-**/ Update Database \**
-dotnet ef database update -c AppDbContext
-
 **/ migration creation \**
 
 **/ Update Database \**
