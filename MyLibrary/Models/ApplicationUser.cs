@@ -8,9 +8,12 @@ namespace MyLibrary.Models
     {
         public string LastName { get; set; }
         public string FirstName { get; set; }
-        public int GenderId { get; set; }
         public DateTime BirthDate { get; set; }
         public bool IsProfessional { get; set; }
         public bool IsAdmin { get; set; }
+
+        public GenderTypesId GenderType_Id { get; set; }
+        public GenderTypesModel GenderTypeModel { get; set; }
+
     }
 }
