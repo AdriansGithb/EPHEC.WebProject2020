@@ -1,0 +1,17 @@
+﻿**/ path where commands have been executed \**
+~\WebProject2020\MyAPI>
+
+**/ Initial migration creation \**
+dotnet ef migrations add InitialMigration -c AppDbContext -o Data/Migrations
+**/ Update Database \**
+dotnet ef database update -c AppDbContext
+
+**/  migration creation \**
+
+**/ migration creation \**
+
+**/ Update Database \**
+dotnet ef database update -c AppDbContext
+
+
+

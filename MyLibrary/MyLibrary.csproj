@@ -107,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\MyAPIConstants.cs" />
+    <Compile Include="Constants\MyDbConstants.cs" />
     <Compile Include="Constants\MyIdentityServerConstants.cs" />
     <Compile Include="Constants\MyMVCConstants.cs" />
     <Compile Include="Models\ApplicationUser.cs" />

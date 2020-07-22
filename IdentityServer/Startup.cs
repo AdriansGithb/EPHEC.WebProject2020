@@ -44,7 +44,7 @@ namespace IdentityServer
             //const string ConnectionString = @"Data Source=MSI\SQLEXPRESS;database=WebProject2020;trusted_connection=yes;";
 
             services.AddDbContext<ApplicationDbContext>(ctxBuilder =>
-                ctxBuilder.UseSqlServer(MyIdentityServerConstants.ConnectionString, sqlOptions => sqlOptions.MigrationsAssembly(migrationsAssembly)));
+                ctxBuilder.UseSqlServer(MyDbConstants.ConnectionString, sqlOptions => sqlOptions.MigrationsAssembly(migrationsAssembly)));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -67,12 +67,12 @@ namespace IdentityServer
 
             builder.AddConfigurationStore(options =>
                 {
-                    options.ConfigureDbContext = b => b.UseSqlServer(MyIdentityServerConstants.ConnectionString,
+                    options.ConfigureDbContext = b => b.UseSqlServer(MyDbConstants.ConnectionString,
                         sql => sql.MigrationsAssembly(migrationsAssembly));
                 })
                 .AddOperationalStore(options =>
                 {
-                    options.ConfigureDbContext = b => b.UseSqlServer(MyIdentityServerConstants.ConnectionString,
+                    options.ConfigureDbContext = b => b.UseSqlServer(MyDbConstants.ConnectionString,
                         sql => sql.MigrationsAssembly(migrationsAssembly));
                 });
 
