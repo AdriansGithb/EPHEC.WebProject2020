@@ -18,12 +18,6 @@ namespace IdentityServer.Data.Migrations.ApplicationDb
                 table: "AspNetUsers",
                 nullable: true);
 
-            migrationBuilder.AddColumn<int>(
-                name: "GenderId",
-                table: "AspNetUsers",
-                nullable: false,
-                defaultValue: 0);
-
             migrationBuilder.AddColumn<bool>(
                 name: "IsAdmin",
                 table: "AspNetUsers",
@@ -50,10 +44,6 @@ namespace IdentityServer.Data.Migrations.ApplicationDb
 
             migrationBuilder.DropColumn(
                 name: "FirstName",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "GenderId",
                 table: "AspNetUsers");
 
             migrationBuilder.DropColumn(

@@ -18,4 +18,8 @@ dotnet ef migrations add AppUserMigration -c ApplicationDbContext -o Data/Migrat
 **/ Update Database \**
 dotnet ef database update -c ApplicationDbContext
 
+**/ GenderTypes migration creation \**
+dotnet ef migrations add GenderTypesMigration -c ApplicationDbContext -o Data/Migrations/ApplicationDb
+**/ Update Database \**
+dotnet ef database update -c ApplicationDbContext
 

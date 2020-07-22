@@ -175,9 +175,6 @@ namespace IdentityServer.Data.Migrations.ApplicationDb
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("GenderId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("bit");
 

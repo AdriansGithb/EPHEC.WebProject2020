@@ -164,7 +164,7 @@ namespace IdentityServer
         //                new Claim(JwtClaimTypes.GivenName, "Alice"),
         //                new Claim(JwtClaimTypes.FamilyName, "Smith"),
         //                new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
-        //                new Claim("role", MyIdentityServerConstants.Role_Manager), 
+        //                new Claim("role", MyIdentityServerConstants.Role_Manager),
         //            }).Result;
         //            if (!result.Succeeded)
         //            {
@@ -192,7 +192,7 @@ namespace IdentityServer
         //                new Claim(JwtClaimTypes.FamilyName, "Smith"),
         //                new Claim(JwtClaimTypes.WebSite, "http://bob.com"),
         //                new Claim("location", "somewhere"),
-        //                new Claim("role",MyIdentityServerConstants.Role_User), 
+        //                new Claim("role",MyIdentityServerConstants.Role_User),
         //            }).Result;
         //            if (!result.Succeeded)
         //            {

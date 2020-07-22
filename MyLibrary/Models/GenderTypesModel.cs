@@ -11,7 +11,7 @@ namespace MyLibrary.Models
         public GenderTypesId Id { get; set; }
         public string Name { get; set; }
 
-        public List<ApplicationUser> ApplicationUsers { get; set; }
+        //public List<ApplicationUser> ApplicationUsers { get; set; }
     }
 
     public enum GenderTypesId : int
