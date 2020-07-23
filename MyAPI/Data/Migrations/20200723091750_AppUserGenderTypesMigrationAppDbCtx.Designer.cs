@@ -10,8 +10,8 @@ using MyAPI.Data;
 namespace MyAPI.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200723103113_EmptyAppUserMigrationAppDbCtx")]
-    partial class EmptyAppUserMigrationAppDbCtx
+    [Migration("20200723091750_AppUserGenderTypesMigrationAppDbCtx")]
+    partial class AppUserGenderTypesMigrationAppDbCtx
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,6 +29,9 @@ namespace MyAPI.Data.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("ConcurrencyStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -37,6 +40,24 @@ namespace MyAPI.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("GenderTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GenderType_Id")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsProfessional")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -70,7 +91,29 @@ namespace MyAPI.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GenderTypeId");
+
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("MyLibrary.Entities.GenderTypes", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Gender_Types");
+                });
+
+            modelBuilder.Entity("MyLibrary.Entities.ApplicationUser", b =>
+                {
+                    b.HasOne("MyLibrary.Entities.GenderTypes", "GenderType")
+                        .WithMany("ApplicationUsers")
+                        .HasForeignKey("GenderTypeId");
                 });
 #pragma warning restore 612, 618
         }

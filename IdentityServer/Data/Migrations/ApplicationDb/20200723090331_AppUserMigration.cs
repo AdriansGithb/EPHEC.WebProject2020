@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace MyAPI.Data.Migrations
+namespace IdentityServer.Data.Migrations.ApplicationDb
 {
-    public partial class FilledAppUserMigrationAppDbCtx : Migration
+    public partial class AppUserMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

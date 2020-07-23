@@ -42,6 +42,9 @@ namespace MyAPI.Data.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("GenderTypeId")
+                        .HasColumnType("int");
+
                     b.Property<int>("GenderType_Id")
                         .HasColumnType("int");
 
@@ -86,7 +89,7 @@ namespace MyAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GenderType_Id");
+                    b.HasIndex("GenderTypeId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -102,32 +105,13 @@ namespace MyAPI.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Gender_Types");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 0,
-                            Name = "Male"
-                        },
-                        new
-                        {
-                            Id = 1,
-                            Name = "Female"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Non_Binary"
-                        });
                 });
 
             modelBuilder.Entity("MyLibrary.Entities.ApplicationUser", b =>
                 {
                     b.HasOne("MyLibrary.Entities.GenderTypes", "GenderType")
                         .WithMany("ApplicationUsers")
-                        .HasForeignKey("GenderType_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GenderTypeId");
                 });
 #pragma warning restore 612, 618
         }

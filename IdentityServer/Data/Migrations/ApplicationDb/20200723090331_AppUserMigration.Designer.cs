@@ -4,14 +4,16 @@ using IdentityServer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IdentityServer.Data.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200723090331_AppUserMigration")]
+    partial class AppUserMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -175,9 +177,6 @@ namespace IdentityServer.Data.Migrations.ApplicationDb
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("GenderType_Id")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("bit");
 
@@ -222,8 +221,6 @@ namespace IdentityServer.Data.Migrations.ApplicationDb
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GenderType_Id");
-
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
 
@@ -233,36 +230,6 @@ namespace IdentityServer.Data.Migrations.ApplicationDb
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("MyLibrary.Entities.GenderTypes", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Gender_Types");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 0,
-                            Name = "Male"
-                        },
-                        new
-                        {
-                            Id = 1,
-                            Name = "Female"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Non_Binary"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -312,15 +279,6 @@ namespace IdentityServer.Data.Migrations.ApplicationDb
                     b.HasOne("MyLibrary.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("MyLibrary.Entities.ApplicationUser", b =>
-                {
-                    b.HasOne("MyLibrary.Entities.GenderTypes", "GenderType")
-                        .WithMany("ApplicationUsers")
-                        .HasForeignKey("GenderType_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

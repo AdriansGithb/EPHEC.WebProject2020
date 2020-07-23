@@ -9,7 +9,7 @@ using MyAPI.Data;
 namespace MyAPI.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200723102322_InitialMigrationAppDbCtx")]
+    [Migration("20200723091234_InitialMigrationAppDbCtx")]
     partial class InitialMigrationAppDbCtx
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
