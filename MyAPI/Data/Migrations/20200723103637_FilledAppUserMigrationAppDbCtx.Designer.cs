@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyAPI.Data;
 
 namespace MyAPI.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200723103637_FilledAppUserMigrationAppDbCtx")]
+    partial class FilledAppUserMigrationAppDbCtx
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,9 +43,6 @@ namespace MyAPI.Data.Migrations
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("GenderType_Id")
-                        .HasColumnType("int");
 
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("bit");
@@ -86,48 +85,7 @@ namespace MyAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GenderType_Id");
-
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("MyLibrary.Entities.GenderTypes", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Gender_Types");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 0,
-                            Name = "Male"
-                        },
-                        new
-                        {
-                            Id = 1,
-                            Name = "Female"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Non_Binary"
-                        });
-                });
-
-            modelBuilder.Entity("MyLibrary.Entities.ApplicationUser", b =>
-                {
-                    b.HasOne("MyLibrary.Entities.GenderTypes", "GenderType")
-                        .WithMany("ApplicationUsers")
-                        .HasForeignKey("GenderType_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

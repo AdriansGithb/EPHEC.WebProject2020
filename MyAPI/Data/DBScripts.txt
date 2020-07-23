@@ -6,12 +6,23 @@ dotnet ef migrations add InitialMigrationAppDbCtx -c AppDbContext -o Data/Migrat
 **/ Update Database \**
 dotnet ef database update -c AppDbContext
 
-**/ DbSet ApplicationUser & GenderTypes Added : migration creation \**
-	// Users are managed by IdentityServer, we add these DbSet in the API to have the possibility to access these entities
-	// code of this migration is commented only (to not modify the db)
-dotnet ef migrations add AppUserGenderTypesMigrationAppDbCtx -c AppDbContext -o Data/Migrations
+**/ EmptyApplicationUser migration creation \**
+	// to set table AspNetUsers as ApplicationUser entity
+dotnet ef migrations add EmptyAppUserMigrationAppDbCtx -c AppDbContext -o Data/Migrations
 **/ Update Database \**
-dotnet ef database update -c AppDbContext
+dotnet ef database update -c ApplicationDbContext
+
+**/ FilledApplicationUser migration creation \**
+	// to add columns and properties of the ApplicationUser
+dotnet ef migrations add FilledAppUserMigrationAppDbCtx -c AppDbContext -o Data/Migrations
+**/ Update Database \**
+dotnet ef database update -c ApplicationDbContext
+
+**/ GenderTypes migration creation \**
+dotnet ef migrations add GenderTypesMigrationAppDbCtx -c AppDbContext -o Data/Migrations
+**/ Update Database \**
+dotnet ef database update -c ApplicationDbContext
+
 
 ...
 

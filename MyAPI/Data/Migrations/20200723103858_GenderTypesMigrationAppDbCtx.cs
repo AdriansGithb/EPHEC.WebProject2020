@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace IdentityServer.Data.Migrations.ApplicationDb
+namespace MyAPI.Data.Migrations
 {
-    public partial class GenderTypesMigration : Migration
+    public partial class GenderTypesMigrationAppDbCtx : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
