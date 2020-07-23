@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using MyLibrary.Models;
 using System;
 using System.Linq;
+using MyLibrary.Entities;
 
 namespace IdentityServer.Data
 {
@@ -20,31 +20,31 @@ namespace IdentityServer.Data
             // Add your customizations after calling base.OnModelCreating(modelBuilder);
             modelBuilder
                 .Entity<ApplicationUser>()
-                .HasOne<GenderTypesModel>(s => s.GenderTypeModel)
+                .HasOne<GenderTypes>(s => s.GenderType)
                 .WithMany(g => g.ApplicationUsers)
                 .HasForeignKey(s => s.GenderType_Id);
-            
+
             modelBuilder
                 .Entity<ApplicationUser>()
                 .Property(e => e.GenderType_Id)
                 .HasConversion<int>();
 
             modelBuilder
-                .Entity<GenderTypesModel>()
+                .Entity<GenderTypes>()
                 .Property(e => e.Id)
                 .HasConversion<int>();
 
             modelBuilder
-                .Entity<GenderTypesModel>().HasData(
+                .Entity<GenderTypes>().HasData(
                     Enum.GetValues(typeof(GenderTypesId))
                         .Cast<GenderTypesId>()
-                        .Select(e => new GenderTypesModel()
+                        .Select(e => new GenderTypes()
                         {
                             Id = e,
                             Name = e.ToString()
                         })
                 );
         }
-        private DbSet<GenderTypesModel> Gender_Types { get; set; }
+        private DbSet<GenderTypes> Gender_Types { get; set; }
     }
 }

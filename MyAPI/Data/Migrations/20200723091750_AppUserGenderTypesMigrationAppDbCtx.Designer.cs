@@ -10,8 +10,8 @@ using MyAPI.Data;
 namespace MyAPI.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200722154659_AppUserMigrationAppDbCtx")]
-    partial class AppUserMigrationAppDbCtx
+    [Migration("20200723091750_AppUserGenderTypesMigrationAppDbCtx")]
+    partial class AppUserGenderTypesMigrationAppDbCtx
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace MyAPI.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("MyLibrary.Models.ApplicationUser", b =>
+            modelBuilder.Entity("MyLibrary.Entities.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -44,7 +44,7 @@ namespace MyAPI.Data.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("GenderTypeModelId")
+                    b.Property<int?>("GenderTypeId")
                         .HasColumnType("int");
 
                     b.Property<int>("GenderType_Id")
@@ -91,12 +91,12 @@ namespace MyAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GenderTypeModelId");
+                    b.HasIndex("GenderTypeId");
 
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("MyLibrary.Models.GenderTypesModel", b =>
+            modelBuilder.Entity("MyLibrary.Entities.GenderTypes", b =>
                 {
                     b.Property<int>("Id")
                         .HasColumnType("int");
@@ -106,14 +106,14 @@ namespace MyAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GenderTypesModel");
+                    b.ToTable("Gender_Types");
                 });
 
-            modelBuilder.Entity("MyLibrary.Models.ApplicationUser", b =>
+            modelBuilder.Entity("MyLibrary.Entities.ApplicationUser", b =>
                 {
-                    b.HasOne("MyLibrary.Models.GenderTypesModel", "GenderTypeModel")
+                    b.HasOne("MyLibrary.Entities.GenderTypes", "GenderType")
                         .WithMany("ApplicationUsers")
-                        .HasForeignKey("GenderTypeModelId");
+                        .HasForeignKey("GenderTypeId");
                 });
 #pragma warning restore 612, 618
         }

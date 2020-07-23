@@ -18,7 +18,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using IdentityServer.Models.Account;
 using MyLibrary.Constants;
-using MyLibrary.Models;
+using MyLibrary.Entities;
 
 namespace IdentityServerHost.Quickstart.UI
 {

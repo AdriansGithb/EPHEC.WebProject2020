@@ -110,8 +110,8 @@
     <Compile Include="Constants\MyDbConstants.cs" />
     <Compile Include="Constants\MyIdentityServerConstants.cs" />
     <Compile Include="Constants\MyMVCConstants.cs" />
-    <Compile Include="Models\ApplicationUser.cs" />
-    <Compile Include="Models\GenderTypesModel.cs" />
+    <Compile Include="Entities\ApplicationUser.cs" />
+    <Compile Include="Entities\GenderTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

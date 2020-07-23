@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using MyLibrary.Models;
+using MyLibrary.Entities;
 
 namespace MyAPI.Data
 {
@@ -22,6 +22,8 @@ namespace MyAPI.Data
         }
 
         public DbSet<ApplicationUser> AspNetUsers { get; set; }
+        public DbSet<GenderTypes> Gender_Types { get; set; }
+
 
     }
 }

@@ -20,7 +20,7 @@ using System;
 using System.Security.Claims;
 using IdentityModel;
 using MyLibrary.Constants;
-using MyLibrary.Models;
+using MyLibrary.Entities;
 using Serilog;
 
 namespace IdentityServer

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Identity;
 
-namespace MyLibrary.Models
+namespace MyLibrary.Entities
 {
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
@@ -13,7 +13,7 @@ namespace MyLibrary.Models
         public bool IsAdmin { get; set; }
 
         public GenderTypesId GenderType_Id { get; set; }
-        public GenderTypesModel GenderTypeModel { get; set; }
+        public GenderTypes GenderType { get; set; }
 
     }
 }

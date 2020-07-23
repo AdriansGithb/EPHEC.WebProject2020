@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace MyLibrary.Models
+namespace MyLibrary.Entities
 {
-    public class GenderTypesModel
+    public class GenderTypes
     {
         public GenderTypesId Id { get; set; }
         public string Name { get; set; }

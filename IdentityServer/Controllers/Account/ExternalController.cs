@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MyLibrary.Models;
+using MyLibrary.Entities;
 
 namespace IdentityServerHost.Quickstart.UI
 {
