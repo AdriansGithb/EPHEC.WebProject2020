@@ -2,7 +2,12 @@
 ~\WebProject2020\MyAPI>
 
 **/ Initial migration creation \**
-dotnet ef migrations add InitialMigration -c AppDbContext -o Data/Migrations
+dotnet ef migrations add InitialMigrationAppDbCtx -c AppDbContext -o Data/Migrations
+**/ Update Database \**
+dotnet ef database update -c AppDbContext
+
+**/ DbSet ApplicationUser Added : migration creation \**
+dotnet ef migrations add AppUserMigrationAppDbCtx -c AppDbContext -o Data/Migrations
 **/ Update Database \**
 dotnet ef database update -c AppDbContext
 
