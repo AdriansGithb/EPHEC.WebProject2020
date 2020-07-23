@@ -13,6 +13,8 @@ dotnet ef migrations add AppUserGenderTypesMigrationAppDbCtx -c AppDbContext -o 
 **/ Update Database \**
 dotnet ef database update -c AppDbContext
 
+
+
 ...
 
 
