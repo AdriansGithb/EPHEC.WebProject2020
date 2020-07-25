@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IdentityServer.Data.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200723090331_AppUserMigration")]
+    [Migration("20200725131424_AppUserMigration")]
     partial class AppUserMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

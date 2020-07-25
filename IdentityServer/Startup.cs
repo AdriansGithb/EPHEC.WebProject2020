@@ -156,6 +156,7 @@ namespace IdentityServer
         //                UserName = "alice",
         //                Email = "AliceSmith@email.com",
         //                EmailConfirmed = true,
+        //                GenderType_Id = GenderTypesId.Female
         //            };
         //            var result = userMgr.CreateAsync(alice, "Pass123$").Result;
         //            if (!result.Succeeded)
@@ -182,7 +183,8 @@ namespace IdentityServer
         //            {
         //                UserName = "bob",
         //                Email = "BobSmith@email.com",
-        //                EmailConfirmed = true
+        //                EmailConfirmed = true,
+        //                GenderType_Id = GenderTypesId.Male
         //            };
         //            result = userMgr.CreateAsync(bob, "Pass123$").Result;
         //            if (!result.Succeeded)

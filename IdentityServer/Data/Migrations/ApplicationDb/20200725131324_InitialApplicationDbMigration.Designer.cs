@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IdentityServer.Data.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200723090656_GenderTypesMigration")]
-    partial class GenderTypesMigration
+    [Migration("20200725131324_InitialApplicationDbMigration")]
+    partial class InitialApplicationDbMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -160,9 +160,6 @@ namespace IdentityServer.Data.Migrations.ApplicationDb
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -173,21 +170,6 @@ namespace IdentityServer.Data.Migrations.ApplicationDb
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("GenderType_Id")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsAdmin")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsProfessional")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -224,8 +206,6 @@ namespace IdentityServer.Data.Migrations.ApplicationDb
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GenderType_Id");
-
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
 
@@ -235,36 +215,6 @@ namespace IdentityServer.Data.Migrations.ApplicationDb
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("MyLibrary.Entities.GenderTypes", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Gender_Types");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 0,
-                            Name = "Male"
-                        },
-                        new
-                        {
-                            Id = 1,
-                            Name = "Female"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Non_Binary"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -314,15 +264,6 @@ namespace IdentityServer.Data.Migrations.ApplicationDb
                     b.HasOne("MyLibrary.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("MyLibrary.Entities.ApplicationUser", b =>
-                {
-                    b.HasOne("MyLibrary.Entities.GenderTypes", "GenderType")
-                        .WithMany("ApplicationUsers")
-                        .HasForeignKey("GenderType_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

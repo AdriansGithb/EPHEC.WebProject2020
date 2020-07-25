@@ -34,14 +34,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="user.BirthDate" class="control-label">Date of Birth</label>
-                <input asp-for="user.BirthDate" class="form-control"/>
+                <input asp-for="user.BirthDate" class="form-control" type ="date"/>
             </div>
             <div class="form-group">
                 <label asp-for="user.PhoneNumber" class="control-label">Phone Number</label>
-                <input asp-for="user.PhoneNumber" class="form-control"/>
+                <input asp-for="user.PhoneNumber" class="form-control" />
             </div>
             <div class="form-group">
-                @*@Html.GetEnumSelectList(GenderTypesId)*@
                 <label asp-for="user.GenderType.Name" class="control-label">Gender</label>
         <input asp-for="user.GenderType.Name" class="form-control"/>
             </div>
