@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using IdentityServer.Models.Account;
 using MyLibrary.Constants;
 using MyLibrary.Entities;
+using MyLibrary.ViewModels;
 
 namespace IdentityServerHost.Quickstart.UI
 {
@@ -48,6 +49,13 @@ namespace IdentityServerHost.Quickstart.UI
             _schemeProvider = schemeProvider;
             _events = events;
         }
+        [HttpGet]
+        public IActionResult Register()
+        {
+            RegisterVwMdl newUser = new RegisterVwMdl();
+            return View();
+        }
+
 
         /// <summary>
         /// Entry point into the login workflow

@@ -18,9 +18,13 @@ using System.Linq;
 using IdentityServer4.EntityFramework.Mappers;
 using System;
 using System.Security.Claims;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using IdentityModel;
 using MyLibrary.Constants;
 using MyLibrary.Entities;
+using MyLibrary.Validators;
+using MyLibrary.ViewModels;
 using Serilog;
 
 namespace IdentityServer
@@ -38,7 +42,7 @@ namespace IdentityServer
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddFluentValidation();
 
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
             //const string ConnectionString = @"Data Source=MSI\SQLEXPRESS;database=WebProject2020;trusted_connection=yes;";
@@ -79,6 +83,7 @@ namespace IdentityServer
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
 
+            services.AddTransient<IValidator<RegisterVwMdl>, RegisterValidator>();
         }
 
         public void Configure(IApplicationBuilder app)

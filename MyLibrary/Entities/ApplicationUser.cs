@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
 namespace MyLibrary.Entities
@@ -8,6 +9,8 @@ namespace MyLibrary.Entities
     {
         public string LastName { get; set; }
         public string FirstName { get; set; }
+
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MMM/YYY})")]
         public DateTime BirthDate { get; set; }
         public bool IsProfessional { get; set; }
         public bool IsAdmin { get; set; }
