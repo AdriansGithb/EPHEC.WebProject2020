@@ -20,21 +20,14 @@
             <div class="form-row">
                 <div class="col">
                     <label asp-for="Password" class="control-label"></label>
-                    <input asp-for="Password" class="form-control" placeholder="Your password" />
+                    <input asp-for="Password" class="form-control" placeholder="Ex : Pass123$" />
                 </div>
                 <div class="col">
                     <label asp-for="PassConfirmation" class="control-label">Confirm your password</label>
                     <input asp-for="PassConfirmation" class="form-control" placeholder="Confirm your password" />
                 </div>
             </div>
-            @*<div class="form-group">
-            <label asp-for="Password" class="control-label"></label>
-            <input asp-for="Password" class="form-control" placeholder ="Your password"/>
-        </div>
-        <div class="form-group">
-            <label asp-for="PassConfirmation" class="control-label">Confirm your password</label>
-            <input asp-for="PassConfirmation" class="form-control" placeholder="Confirm your password"/>
-        </div>*@
+            <p class="font-italic small">Password minimal requirements : 6 chars, 1 Upper + 1 LowerCase, 1 Digit, 1 NonAlphanumeric</p>
             <div class="form-row">
                 <div class="col">
                     <label asp-for="user.LastName" class="control-label">Last Name</label>
