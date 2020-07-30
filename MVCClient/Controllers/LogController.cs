@@ -37,7 +37,7 @@ namespace MVCClient.Controllers
                 "oidc");
         }
 
-        [Authorize(Roles = MyIdentityServerConstants.Role_AdminOrManagerOrUser)]
+        [Authorize(Roles = MyIdentityServerConstants.Role_User)]
         public IActionResult Logout()
         {
             return SignOut("Cookies", "oidc");

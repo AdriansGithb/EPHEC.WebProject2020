@@ -52,10 +52,73 @@ namespace IdentityServerHost.Quickstart.UI
         [HttpGet]
         public IActionResult Register()
         {
-            RegisterVwMdl newUser = new RegisterVwMdl();
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterVwMdl regFormData)
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser newUser = new ApplicationUser
+                {
+                    UserName = regFormData.UserDetails.Email,
+                    Email = regFormData.UserDetails.Email,
+                    EmailConfirmed = true,
+                    LastName = regFormData.UserDetails.LastName,
+                    FirstName = regFormData.UserDetails.FirstName,
+                    BirthDate = regFormData.UserDetails.BirthDate,
+                    GenderType_Id = regFormData.UserDetails.GenderType_Id,
+                    IsAdmin = false,
+                    IsProfessional = regFormData.UserDetails.IsProfessional,
+                };
+
+                if (regFormData.UserDetails.PhoneNumber != null)
+                {
+                    newUser.PhoneNumber = regFormData.UserDetails.PhoneNumber;
+                    newUser.PhoneNumberConfirmed = true;
+                }
+
+                var resultReg = await _userManager.CreateAsync(newUser, regFormData.Password);
+                if (!resultReg.Succeeded)
+                {
+                    foreach (IdentityError error in resultReg.Errors)
+                    { 
+                        ModelState.TryAddModelError(error.Code,error.Description);
+                    }
+                    return View(regFormData);
+                }
+
+                await _userManager.AddToRoleAsync(newUser, MyIdentityServerConstants.Role_User);
+
+                if (newUser.IsProfessional)
+                {
+                    await _userManager.AddToRoleAsync(newUser, MyIdentityServerConstants.Role_Manager);
+                }
+
+                var resultLog = await _signInManager.PasswordSignInAsync(newUser.UserName, regFormData.Password, false ,lockoutOnFailure: true);
+                if (resultLog.Succeeded)
+                {
+                    var user = await _userManager.FindByNameAsync(newUser.UserName);
+                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName));
+                    TempData["Registration"] = "Succeed";
+                    return Redirect(MyMVCConstants.MyMVC_Login_Url);
+                }
+
+                await _events.RaiseAsync(new UserLoginFailureEvent(newUser.UserName, "invalid credentials"));
+                ModelState.AddModelError(string.Empty, AccountOptions.InvalidCredentialsErrorMessage);
+
+                // something went wrong, show form with error
+                TempData["Registration"] = "Failure";
+                return Redirect(MyMVCConstants.MyMVC_HomeIndex_Url);
+            }
+            else
+            {
+                return View(regFormData);
+            }
+
+        }
 
         /// <summary>
         /// Entry point into the login workflow

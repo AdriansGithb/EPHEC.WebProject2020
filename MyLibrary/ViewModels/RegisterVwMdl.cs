@@ -12,7 +12,7 @@ namespace MyLibrary.ViewModels
     {
         public string Password { get; set; }
         public string PassConfirmation { get; set; }
-        public ApplicationUser user { get; set; }
+        public ApplicationUser UserDetails { get; set; }
 
 
     }

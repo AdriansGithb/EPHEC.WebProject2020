@@ -10,9 +10,6 @@ namespace MyLibrary.Constants
         public const string Role_User = "user";
         public const string Role_Manager = "manager";
         public const string Role_Admin = "admin";
-        public const string Role_ManagerOrUser = "manager, user";        
-        public const string Role_AdminOrManager = "admin, manager";
-        public const string Role_AdminOrManagerOrUser = "admin, manager, user";
 
     }
 }

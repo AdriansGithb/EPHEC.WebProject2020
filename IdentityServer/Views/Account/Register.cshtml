@@ -1,6 +1,7 @@
 ﻿@using MyLibrary.Entities
 @using Microsoft.CodeAnalysis.CSharp.Syntax
 @model MyLibrary.ViewModels.RegisterVwMdl
+@Html.AntiForgeryToken()
 
 @{
     ViewData["Title"] = "Register";
@@ -10,59 +11,66 @@
 
 <h4>Create your new account here</h4>
 <hr />
+
+<partial name="_ValidationSummary" />
+
 <div class="row">
     <div class="col-lg-6">
-        <form asp-action="Register">
-            <div class="form-group">
-                <label asp-for="user.Email" class="control-label">Email address (Login)</label>
-                <input asp-for="user.Email" class="form-control" placeholder="xxxx1234@example.com" />
+        <form asp-action="Register" >
+            <div class="form-group was-validated">
+                <label asp-for="UserDetails.Email" class="control-label">Email address (Login)</label>
+                <input asp-for="UserDetails.Email" class="form-control" placeholder="xxxx1234@example.com" required/>
             </div>
-            <div class="form-row">
+            <div class="form-row was-validated">
                 <div class="col">
                     <label asp-for="Password" class="control-label"></label>
-                    <input asp-for="Password" class="form-control" placeholder="Ex : Pass123$" />
+                    <input asp-for="Password" type ="password"class="form-control" placeholder="Ex : Pass123$" required/>
                 </div>
                 <div class="col">
                     <label asp-for="PassConfirmation" class="control-label">Confirm your password</label>
-                    <input asp-for="PassConfirmation" class="form-control" placeholder="Confirm your password" />
+                    <input asp-for="PassConfirmation" type="password" class="form-control" placeholder="Confirm your password" required/>
                 </div>
             </div>
-            <p class="font-italic small">Password minimal requirements : 6 chars, 1 Upper + 1 LowerCase, 1 Digit, 1 NonAlphanumeric</p>
-            <div class="form-row">
+            <span class="font-italic small">Password minimal requirements : 6 chars, 1 Upper + 1 LowerCase, 1 Digit, 1 NonAlphanumeric</span>
+            <div class="form-row was-validated">
                 <div class="col">
-                    <label asp-for="user.LastName" class="control-label">Last Name</label>
-                    <input asp-for="user.LastName" class="form-control" placeholder="Smith" />
+                    <label asp-for="UserDetails.LastName" class="control-label">Last Name</label>
+                    <input asp-for="UserDetails.LastName" class="form-control" placeholder="Smith" required/>
                 </div>
                 <div class="col">
-                    <label asp-for="user.FirstName" class="control-label">First Name</label>
-                    <input asp-for="user.FirstName" class="form-control" placeholder="Bob" />
+                    <label asp-for="UserDetails.FirstName" class="control-label">First Name</label>
+                    <input asp-for="UserDetails.FirstName" class="form-control" placeholder="Bob" required/>
                 </div>
             </div>
-            <div class="form-row">
+            <div class="form-row was-validated">
                 <div class="col">
-                    <label asp-for="user.BirthDate" class="control-label">Date of Birth</label>
-                    <input asp-for="user.BirthDate" class="form-control" type="date" />
+                    <label asp-for="UserDetails.BirthDate" class="control-label">Date of Birth</label>
+                    <input asp-for="UserDetails.BirthDate" class="form-control" type="date" required/>
                 </div>
                 <div class="col">
-                    <label asp-for="user.GenderType_Id" class="control-label">Gender</label>
-                    <select asp-for="user.GenderType_Id" asp-items="Html.GetEnumSelectList(typeof(GenderTypesId))" class="form-control"></select>
+                    <label asp-for="UserDetails.GenderType_Id" class="control-label">Gender</label>
+                    <select asp-for="UserDetails.GenderType_Id" asp-items="Html.GetEnumSelectList(typeof(GenderTypesId))" class="form-control" required>
+                        <option value="">Please select...</option>
+                    </select>
                 </div>
             </div>
             <div class="form-group">
-                <label asp-for="user.PhoneNumber" class="control-label">Phone Number</label>
-                <input asp-for="user.PhoneNumber" class="form-control" placeholder="02/555.55.55" />
+                <label asp-for="UserDetails.PhoneNumber" class="control-label">Mobile Phone Number</label>
+                <input asp-for="UserDetails.PhoneNumber" class="form-control" placeholder="0032477112233 / 0477112233" />
+                <span class="font-italic small">Use international format for non belgian mobile phone number</span>
             </div>
             <div class="form-group">
                 <div class="custom-control custom-switch">
-                    <input asp-for="user.IsProfessional" type="checkbox" class="custom-control-input" id="switchPro">
-                    <label asp-for="user.IsProfessional" class="custom-control-label" for="switchPro">Professional User Account</label>
+                    <input asp-for="UserDetails.IsProfessional" type="checkbox" class="custom-control-input" id="switchPro">
+                    <label asp-for="UserDetails.IsProfessional" class="custom-control-label" for="switchPro">Professional User Account</label>
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary btn-block btn-lg font-weight-bold" />
+                <input type="submit" value="Create" class="btn btn-primary btn-block btn-lg font-weight-bold"/>
             </div>
         </form>
     </div>
 </div>
+
 
 
