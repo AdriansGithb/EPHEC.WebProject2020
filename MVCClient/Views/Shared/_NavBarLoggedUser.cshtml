@@ -28,7 +28,7 @@
                 @User.Identity.Name
             </button>
             <div class="dropdown-menu">
-                <a class="dropdown-item" asp-area="">Account details</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Log" asp-action="EditUserDetails">Edit your account</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" asp-area="" asp-controller="Log" asp-action="Logout">Logout</a>
             </div>

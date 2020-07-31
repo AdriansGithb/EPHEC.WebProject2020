@@ -49,6 +49,10 @@ namespace MVCClient.Controllers
             return Redirect(MyIdentityServerConstants.ISRegister_Url);
         }
 
-
+        [Authorize]
+        public IActionResult EditUserDetails()
+        {
+            return Redirect(MyIdentityServerConstants.ISUserEditing_Url);
+        }
     }
 }

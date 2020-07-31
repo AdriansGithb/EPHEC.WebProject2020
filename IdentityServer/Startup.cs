@@ -93,6 +93,7 @@ namespace IdentityServer
             builder.AddDeveloperSigningCredential();
 
             services.AddTransient<IValidator<RegisterVwMdl>, RegisterValidator>();
+            services.AddTransient<IValidator<UserAccountEditionVwMdl>, UserAccountEditionValidator>();
         }
 
         public void Configure(IApplicationBuilder app)

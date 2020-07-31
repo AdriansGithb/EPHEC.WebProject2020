@@ -17,6 +17,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using IdentityServer.Models.Account;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using MyLibrary.Constants;
 using MyLibrary.Entities;
 using MyLibrary.ViewModels;
@@ -40,7 +42,8 @@ namespace IdentityServerHost.Quickstart.UI
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
-            IEventService events)
+            IEventService events
+        )
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -49,12 +52,20 @@ namespace IdentityServerHost.Quickstart.UI
             _schemeProvider = schemeProvider;
             _events = events;
         }
+        /// <summary>
+        /// Entry point into the registration workflow
+        /// </summary>
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
 
+        /// <summary>
+        /// Handle postback from new user registration
+        /// </summary>
+        /// <param name="regFormData">Registration model with user details</param>
+        /// <returns>Redirect to MVCClient HomePage, with the new user logged</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterVwMdl regFormData)
@@ -118,6 +129,119 @@ namespace IdentityServerHost.Quickstart.UI
                 return View(regFormData);
             }
 
+        }
+
+        /// <summary>
+        /// Entry point for User Account Details edition
+        /// </summary>
+        [HttpGet]
+        public async Task<IActionResult> EditUserDetails()
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            UserAccountEditionVwMdl userData = new UserAccountEditionVwMdl()
+            {
+                UserDetails = user
+            };
+            return View(userData);
+        }
+
+        /// <summary>
+        /// Handle User Account Details edition
+        /// </summary>
+        /// <param name="editedUserData"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditUserDetails(UserAccountEditionVwMdl editedUserData)
+        {
+            if (ModelState.IsValid)
+            {
+                var modifiedUser = await _userManager.FindByIdAsync(editedUserData.UserDetails.Id);
+                var resultPass =
+                    await _userManager.CheckPasswordAsync(modifiedUser, editedUserData.CurrentPassword);
+                if (resultPass)
+                {
+                    modifiedUser.UserName = editedUserData.UserDetails.Email;
+                    modifiedUser.Email = editedUserData.UserDetails.Email;
+                    modifiedUser.EmailConfirmed = true;
+                    modifiedUser.LastName = editedUserData.UserDetails.LastName;
+                    modifiedUser.FirstName = editedUserData.UserDetails.FirstName;
+                    modifiedUser.BirthDate = editedUserData.UserDetails.BirthDate;
+                    modifiedUser.GenderType_Id = editedUserData.UserDetails.GenderType_Id;
+
+                    if (editedUserData.UserDetails.PhoneNumber != null)
+                    {
+                        modifiedUser.PhoneNumber = editedUserData.UserDetails.PhoneNumber;
+                        modifiedUser.PhoneNumberConfirmed = true;
+                    }
+                    else
+                    {
+                        modifiedUser.PhoneNumber = null;
+                        modifiedUser.PhoneNumberConfirmed = false;
+                    }
+
+                    bool profActivated = false;
+                    if (editedUserData.UserDetails.IsProfessional != modifiedUser.IsProfessional)
+                    {
+                        if (editedUserData.UserDetails.IsProfessional)
+                        {
+                            modifiedUser.IsProfessional = true;
+                            profActivated = true;
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Disable a professional account is prohibited. " +
+                                                         "If you want to not manage any establishment anymore, please delete your account and create a new non professional one.");
+                            ModelState.SetModelValue("UserDetails.IsProfessional", new ValueProviderResult("true"));
+                            return View(editedUserData);
+                        }
+                    }
+                            
+                    var resultEdit = await _userManager.UpdateAsync(modifiedUser);
+                    if (!resultEdit.Succeeded)
+                    {
+                        foreach (IdentityError error in resultEdit.Errors)
+                        {
+                            ModelState.TryAddModelError(error.Code, error.Description);
+                        }
+
+                        return View(editedUserData);
+                    }
+
+                    if (profActivated)
+                    {
+                        await _userManager.AddToRoleAsync(modifiedUser,
+                            MyIdentityServerConstants.Role_Manager);
+                    }
+
+                    if (!editedUserData.NewPassword.IsNullOrEmpty())
+                    {
+                        var resultPassEdit = await _userManager.ChangePasswordAsync(modifiedUser,
+                            editedUserData.CurrentPassword, editedUserData.NewPassword);
+                        if (!resultPassEdit.Succeeded)
+                        {
+                            ModelState.AddModelError("",
+                                "There was a problem with your password modification, please fill in the current/new/confirmation password fields and try again.");
+                            return View(editedUserData);
+                        }
+                    }
+
+                    await _signInManager.RefreshSignInAsync(modifiedUser);
+
+                    TempData["UserEdition"] = "Succeed";
+                    return Redirect(MyMVCConstants.MyMVC_Login_Url);
+
+                }
+                else
+                {
+                    ModelState.AddModelError("","Invalid current password, please try again");
+                    return View(editedUserData);
+                }
+            }
+            else
+            {
+                return View(editedUserData);
+            }
         }
 
         /// <summary>

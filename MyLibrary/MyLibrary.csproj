@@ -126,7 +126,9 @@
     <Compile Include="Helpers\LibPhoneNumber.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validators\RegisterValidator.cs" />
+    <Compile Include="Validators\UserAccountEditionValidator.cs" />
     <Compile Include="ViewModels\RegisterVwMdl.cs" />
+    <Compile Include="ViewModels\UserAccountEditionVwMdl.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
