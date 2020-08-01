@@ -6,21 +6,21 @@
     <title>@ViewData["Title"] - MVCClient</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
 </head>
 <body>
-<header>
-    @{
-        if (!User.Identity.IsAuthenticated)
-        {
-            <partial name="_NavBar"/>
+    <header>
+        @{
+            if (!User.Identity.IsAuthenticated)
+            {
+                <partial name="_NavBar" />
+            }
+            else
+            {
+                <partial name="_NavBarLoggedUser" />
+            }
         }
-        else
-        {
-            <partial name="_NavBarLoggedUser"/>
-        }
-    }
-
-</header>
+    </header>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -35,6 +35,16 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="~/js/displayToastrMsg.js"></script>
+    <script>
+    $(document).ready(function() {
+        if ('@TempData["TstrMsg"]')
+            displayToastrMsg('@TempData["TstrMsg"]', '@TempData["TstrTitle"]', '@TempData["TstrType"]');
+    });
+    </script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

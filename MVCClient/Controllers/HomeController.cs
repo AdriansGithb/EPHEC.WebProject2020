@@ -17,7 +17,7 @@ using Newtonsoft.Json.Linq;
 
 namespace MVCClient.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
 
