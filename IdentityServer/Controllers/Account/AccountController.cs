@@ -395,7 +395,9 @@ namespace IdentityServerHost.Quickstart.UI
                 return SignOut(new AuthenticationProperties { RedirectUri = url }, vm.ExternalAuthenticationScheme);
             }
             AddInfoMessage("Logged out", "You have been logged out. See you soon.");
-            return View("LoggedOut", vm);
+            return Redirect(MyMVCConstants.MyMVC_Url);
+
+            //return View("LoggedOut", vm);
         }
 
         [HttpGet]
