@@ -10,18 +10,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
 </head>
 <body>
-    <header>
-        @{
-            if (!User.Identity.IsAuthenticated)
-            {
-                <partial name="_NavBar" />
-            }
-            else
-            {
-                <partial name="_NavBarLoggedUser" />
-            }
-        }
-    </header>
+<header>
+    <partial name="_NavBar"/>
+</header>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

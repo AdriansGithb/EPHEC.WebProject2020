@@ -1,0 +1,33 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <div class="dropdown">
+        <button type="button" class="btn btn-light dropdown-toggle border-right" data-toggle="dropdown">
+            Login/Register
+        </button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+        </div>
+    </div>
+}
+else
+{
+    <div class="dropdown">
+        <button type="button" class="btn btn-light dropdown-toggle border-right" data-toggle="dropdown">
+            @User.Identity.Name
+        </button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="EditUserDetails">Edit your account</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+        </div>
+    </div>
+
+}

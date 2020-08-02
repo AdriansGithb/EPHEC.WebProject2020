@@ -19,11 +19,11 @@ using Newtonsoft.Json.Linq;
 
 namespace MVCClient.Controllers
 {
-    public class LogController : Controller
+    public class AccountController : Controller
     {
-        private readonly ILogger<LogController> _logger;
+        private readonly ILogger<AccountController> _logger;
 
-        public LogController(ILogger<LogController> logger)
+        public AccountController(ILogger<AccountController> logger)
         {
             _logger = logger;
         }
