@@ -1,4 +1,5 @@
-﻿@*
+﻿@using MyLibrary.Constants
+@*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
@@ -15,17 +16,27 @@
                 <li class="nav-item">
                     <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="CallApi">CallApi</a>
-                </li>
-            </ul>
-            
-            @*@await Html.PartialAsync("_LoginPartial")*@
-            
+                @if (@User.IsInRole(MyIdentityServerConstants.Role_User))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">User only Link</a>
+                    </li>
+                }
+                @if (@User.IsInRole(MyIdentityServerConstants.Role_Manager))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="CallApi">CallApi (Manager Only)</a>
+                    </li>
+                }
+                @if (@User.IsInRole(MyIdentityServerConstants.Role_Admin))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="" asp-action="">Admin only</a>
+                    </li>
+                }
 
+
+            </ul>
         </div>
         <partial name="_LoginPartial"/>
     </div>

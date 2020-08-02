@@ -39,6 +39,14 @@ namespace MVCClient.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
+            if((!User.Identity.IsAuthenticated) &&(Request.Cookies.ContainsKey(".AspNetCore.Identity.Application")))
+            {
+                return Challenge(new AuthenticationProperties
+                    {
+                        RedirectUri = "/Home/Index"
+                    },
+                    "oidc");
+            }
             CheckIfToastrCookieAndShowIt();
             return View();
         }

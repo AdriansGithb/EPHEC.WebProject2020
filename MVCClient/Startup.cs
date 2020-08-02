@@ -86,7 +86,7 @@ namespace MVCClient
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute()
-                    /*.RequireAuthorization()*/;
+                    .RequireAuthorization();
             });
         }
     }
