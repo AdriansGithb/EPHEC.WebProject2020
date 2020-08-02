@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Logging;
 using MVCClient.Models;
 using MyLibrary.Constants;
@@ -36,6 +37,7 @@ namespace MVCClient.Controllers
                 },
                 "oidc");
         }
+
 
         [Authorize(Roles = MyIdentityServerConstants.Role_User)]
         public IActionResult Logout()

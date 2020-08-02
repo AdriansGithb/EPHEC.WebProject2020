@@ -121,6 +121,7 @@
     <Compile Include="Constants\MyIdentityServerConstants.cs" />
     <Compile Include="Constants\MyMVCConstants.cs" />
     <Compile Include="Constants\MyValidatorsConstants.cs" />
+    <Compile Include="Cookies\MyCookies.cs" />
     <Compile Include="Entities\ApplicationUser.cs" />
     <Compile Include="Entities\GenderTypes.cs" />
     <Compile Include="Helpers\LibPhoneNumber.cs" />

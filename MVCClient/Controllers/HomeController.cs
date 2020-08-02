@@ -38,6 +38,7 @@ namespace MVCClient.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
+            CheckIfToastrCookieAndShowIt();
             return View();
         }
 

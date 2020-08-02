@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityServer.Controllers.Base;
 using IdentityServer.Models.Account;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +28,7 @@ namespace IdentityServerHost.Quickstart.UI
 {
     [SecurityHeaders]
     [AllowAnonymous]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -113,16 +114,13 @@ namespace IdentityServerHost.Quickstart.UI
                 {
                     var user = await _userManager.FindByNameAsync(newUser.UserName);
                     await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName));
-                    TempData["Registration"] = "Succeed";
+                    AddSuccessMessage("Registration succeed",$"Congratulations {user.FirstName}, you have been successfully logged and registered. Welcome in our members !");
                     return Redirect(MyMVCConstants.MyMVC_Login_Url);
                 }
 
                 await _events.RaiseAsync(new UserLoginFailureEvent(newUser.UserName, "invalid credentials"));
-                ModelState.AddModelError(string.Empty, AccountOptions.InvalidCredentialsErrorMessage);
-
-                // something went wrong, show form with error
-                TempData["Registration"] = "Failure";
-                return Redirect(MyMVCConstants.MyMVC_HomeIndex_Url);
+                AddErrorMessage("Login failure", "Registration completed successfully but your login credentials failed. Please try again to log in.");
+                return Redirect(MyMVCConstants.MyMVC_Login_Url);
             }
             else
             {
@@ -228,7 +226,7 @@ namespace IdentityServerHost.Quickstart.UI
 
                     await _signInManager.RefreshSignInAsync(modifiedUser);
 
-                    TempData["UserEdition"] = "Succeed";
+                    AddSuccessMessage("Account modifications saved", "Your user account details have been successfully saved.");
                     return Redirect(MyMVCConstants.MyMVC_Login_Url);
 
                 }
@@ -315,7 +313,8 @@ namespace IdentityServerHost.Quickstart.UI
                             // return the response is for better UX for the end user.
                             return this.LoadingPage("Redirect", model.ReturnUrl);
                         }
-
+                        //notification cookie
+                        AddSuccessMessage("Login succeed",$"Welcome {user.FirstName} !");
                         // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
                         return Redirect(model.ReturnUrl);
                     }

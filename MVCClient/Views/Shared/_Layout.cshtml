@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using MyLibrary.Cookies
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -40,8 +41,8 @@
     <script src="~/js/displayToastrMsg.js"></script>
     <script>
     $(document).ready(function() {
-        if ('@TempData["TstrMsg"]')
-            displayToastrMsg('@TempData["TstrMsg"]', '@TempData["TstrTitle"]', '@TempData["TstrType"]');
+        if ('@TempData[MyCookies.ToastrMessage]')
+            displayToastrMsg('@TempData[MyCookies.ToastrMessage]', '@TempData[MyCookies.ToastrTitle]', '@TempData[MyCookies.ToastrType]');
     });
     </script>
 
