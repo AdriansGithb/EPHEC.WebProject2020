@@ -57,6 +57,8 @@ namespace MyAPI
                     policy.RequireClaim("scope", MyAPIConstants.MyAPI_Name);
                 });
             });
+
+            services.UseServices();
         }
 
         public void Configure(IApplicationBuilder app)
