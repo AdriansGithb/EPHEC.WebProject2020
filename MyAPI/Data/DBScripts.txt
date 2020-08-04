@@ -1,17 +1,16 @@
 ﻿**/ path where commands have been executed \**
 ~\WebProject2020\MyAPI>
 
-**/ Initial migration creation \**
+**/ Initial migration creation (same as IS ApplicationDbContext to make a good copy of ApplicationUser entity \**
+	// AppDbContext with DbSet of ApplicationUser and GenderTypes
+	// Users are managed by IdentityServer, we add these DbSet in the API to have the possibility to access these entities
+	// code of this migration is commented only (to not modify the db)
 dotnet ef migrations add InitialMigrationAppDbCtx -c AppDbContext -o Data/Migrations
 **/ Update Database \**
 dotnet ef database update -c AppDbContext
 
-**/ DbSet ApplicationUser & GenderTypes Added : migration creation \**
 	// Users are managed by IdentityServer, we add these DbSet in the API to have the possibility to access these entities
 	// code of this migration is commented only (to not modify the db)
-dotnet ef migrations add AppUserGenderTypesMigrationAppDbCtx -c AppDbContext -o Data/Migrations
-**/ Update Database \**
-dotnet ef database update -c AppDbContext
 
 
 ...

@@ -3,12 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MyAPI.Data.Migrations
 {
-    public partial class AppUserGenderTypesMigrationAppDbCtx : Migration
+    public partial class InitialMigrationAppDbCtx : Migration
     {
-        /* Leave all code as commented only
-            These entities are created via the IdentityServerDbContext because IS manages the users
-            We leave all lines here as comments because we do not want to create tables & columns again
-            but we want to have a good AppDbContextSnapshot for our business context    */
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             //migrationBuilder.CreateTable(
@@ -47,24 +43,38 @@ namespace MyAPI.Data.Migrations
             //        BirthDate = table.Column<DateTime>(nullable: false),
             //        IsProfessional = table.Column<bool>(nullable: false),
             //        IsAdmin = table.Column<bool>(nullable: false),
-            //        GenderType_Id = table.Column<int>(nullable: false),
-            //        GenderTypeId = table.Column<int>(nullable: true)
+            //        GenderType_Id = table.Column<int>(nullable: false)
             //    },
             //    constraints: table =>
             //    {
             //        table.PrimaryKey("PK_AspNetUsers", x => x.Id);
             //        table.ForeignKey(
-            //            name: "FK_AspNetUsers_Gender_Types_GenderTypeId",
-            //            column: x => x.GenderTypeId,
+            //            name: "FK_AspNetUsers_Gender_Types_GenderType_Id",
+            //            column: x => x.GenderType_Id,
             //            principalTable: "Gender_Types",
             //            principalColumn: "Id",
-            //            onDelete: ReferentialAction.Restrict);
+            //            onDelete: ReferentialAction.Cascade);
             //    });
 
+            //migrationBuilder.InsertData(
+            //    table: "Gender_Types",
+            //    columns: new[] { "Id", "Name" },
+            //    values: new object[] { 0, "Male" });
+
+            //migrationBuilder.InsertData(
+            //    table: "Gender_Types",
+            //    columns: new[] { "Id", "Name" },
+            //    values: new object[] { 1, "Female" });
+
+            //migrationBuilder.InsertData(
+            //    table: "Gender_Types",
+            //    columns: new[] { "Id", "Name" },
+            //    values: new object[] { 2, "Non_Binary" });
+
             //migrationBuilder.CreateIndex(
-            //    name: "IX_AspNetUsers_GenderTypeId",
+            //    name: "IX_AspNetUsers_GenderType_Id",
             //    table: "AspNetUsers",
-            //    column: "GenderTypeId");
+            //    column: "GenderType_Id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -21,9 +21,7 @@ namespace MyAPI.Services
 
         public List<UserAccountAdministrationVwMdl> GetAll()
         {
-            List<ApplicationUser> lstAppUser = _context.AspNetUsers
-                .Include(x=>x.GenderType)
-                .ToList();
+            List<ApplicationUser> lstAppUser = _context.AspNetUsers.ToList();
             List<UserAccountAdministrationVwMdl> rtrnList = new List<UserAccountAdministrationVwMdl>();
             foreach (ApplicationUser user in lstAppUser)
             {

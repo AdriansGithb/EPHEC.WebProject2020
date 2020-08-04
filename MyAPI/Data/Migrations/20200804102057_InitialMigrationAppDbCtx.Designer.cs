@@ -10,8 +10,8 @@ using MyAPI.Data;
 namespace MyAPI.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200725132214_AppUserGenderTypesMigrationAppDbCtx")]
-    partial class AppUserGenderTypesMigrationAppDbCtx
+    [Migration("20200804102057_InitialMigrationAppDbCtx")]
+    partial class InitialMigrationAppDbCtx
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,9 +43,6 @@ namespace MyAPI.Data.Migrations
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("GenderTypeId")
-                        .HasColumnType("int");
 
                     b.Property<int>("GenderType_Id")
                         .HasColumnType("int");
@@ -91,7 +88,7 @@ namespace MyAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GenderTypeId");
+                    b.HasIndex("GenderType_Id");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -107,13 +104,32 @@ namespace MyAPI.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Gender_Types");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 0,
+                            Name = "Male"
+                        },
+                        new
+                        {
+                            Id = 1,
+                            Name = "Female"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Non_Binary"
+                        });
                 });
 
             modelBuilder.Entity("MyLibrary.Entities.ApplicationUser", b =>
                 {
                     b.HasOne("MyLibrary.Entities.GenderTypes", "GenderType")
                         .WithMany("ApplicationUsers")
-                        .HasForeignKey("GenderTypeId");
+                        .HasForeignKey("GenderType_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
