@@ -30,9 +30,14 @@
                 }
                 @if (@User.IsInRole(MyIdentityServerConstants.Role_Admin))
                 {
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="" asp-action="">Admin only</a>
-                    </li>
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" class="btn btn-danger btn-sm dropdown-toggle" data-toggle="dropdown">
+                            Website administration
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="nav-link text-body " asp-area="" asp-controller="UserAccount" asp-action="Index">User Accounts</a>
+                        </div>
+                    </div>
                 }
 
 

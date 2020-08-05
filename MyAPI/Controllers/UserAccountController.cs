@@ -31,8 +31,8 @@ namespace MyAPI.Controllers
         [Route("~/UserAccounts/GetAll")]
         public IActionResult GetAllUserAccounts()
         {
-            var content = _service.GetAll();
-            return Ok(content);
+            var allUserAccounts = _service.GetAll();
+            return Ok(allUserAccounts);
         }
 
     }

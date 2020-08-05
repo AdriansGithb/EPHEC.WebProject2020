@@ -27,15 +27,6 @@ namespace MVCClient.Controllers
             _logger = logger;
         }
         
-        //public IActionResult Login()
-        //{
-        //    return Challenge(new AuthenticationProperties
-        //        {
-        //            RedirectUri = "/Home/Index"
-        //        },
-        //        "oidc");
-        //}
-
         [AllowAnonymous]
         public IActionResult Index()
         {
@@ -62,12 +53,6 @@ namespace MVCClient.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-        //[Authorize(Roles = MyIdentityServerConstants.Role_User)]
-        //public IActionResult Logout()
-        //{
-        //    return SignOut("Cookies", "oidc");
-        //}
 
         //You can access the tokens in the session using the standard ASP.NET Core extension methods
         //var accessToken = await HttpContext.GetTokenAsync("access_token");
