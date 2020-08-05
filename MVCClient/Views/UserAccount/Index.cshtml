@@ -6,9 +6,8 @@
     ViewData["Action"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <h1>User Accounts Administration</h1>
-<hr class="mb-0"/>
+<hr class="mb-0" />
 <form asp-action="Index" method="get" class="p-3 mb-0 bg-light">
     <div class="form-actions text-center">
         <p>
@@ -18,51 +17,68 @@
         </p>
     </div>
 </form>
-
 <table class="table">
     <thead class="bg-light">
-    <tr>
-        <th>
-            <a class="text-body" asp-action="Index" asp-route-sortOrder="@ViewData["UsernameSortParm"]">@*@Html.DisplayNameFor(model => model.Username)*@Username</a>
-        </th>
-        <th>
-            <a class="text-body" asp-action="Index" asp-route-sortOrder="@ViewData["EmailSortParm"]">@*@Html.DisplayNameFor(model => model.Email)*@Email</a>
-        </th>
-        <th class="text-center">
-            <a class="text-body" asp-action="Index" asp-route-sortOrder="@ViewData["IsProSortParm"]">@*@Html.DisplayNameFor(model => model.IsProfessional)*@Professional Account</a>
-        </th>
-        <th class="text-center">
-            <a class="text-body" asp-action="Index" asp-route-sortOrder="@ViewData["IsAdminSortParm"]">@*@Html.DisplayNameFor(model => model.IsAdmin)*@Admin Account</a>
-        </th>
-        <th class="text-center"></th>
-    </tr>
+        <tr>
+            <th>
+                <a class="text-body" asp-action="Index" asp-route-sortOrder="@ViewData["UsernameSortParm"]">@*@Html.DisplayNameFor(model => model.Username)*@Username</a>
+            </th>
+            <th>
+                <a class="text-body" asp-action="Index" asp-route-sortOrder="@ViewData["EmailSortParm"]">@*@Html.DisplayNameFor(model => model.Email)*@Email</a>
+            </th>
+            <th class="text-center">
+                <a class="text-body" asp-action="Index" asp-route-sortOrder="@ViewData["IsProSortParm"]">@*@Html.DisplayNameFor(model => model.IsProfessional)*@Professional Account</a>
+            </th>
+            <th class="text-center">
+                <a class="text-body" asp-action="Index" asp-route-sortOrder="@ViewData["IsAdminSortParm"]">@*@Html.DisplayNameFor(model => model.IsAdmin)*@Admin Account</a>
+            </th>
+            <th class="text-center"></th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model.Data)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Username)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td class="text-center">
-                @Html.DisplayFor(modelItem => item.IsProfessional)
-            </td>
-            <td class="text-center">
-                @Html.CheckBoxFor(modelItem => item.IsAdmin)
-            </td>
-            <td>
-                <div class="btn-group btn-group-sm">
-                    @*@Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
-        @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */})*@
-                    <a class="btn btn-info" asp-route="" id="item.">Details</a>
-                    <a class="btn btn-danger" asp-route="">Delete</a>
-                </div>
-            </td>
-        </tr>
-    }
+        @foreach (var item in Model.Data)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.IsProfessional)
+                </td>
+                <td class="text-center">
+                    @Html.CheckBoxFor(modelItem => item.IsAdmin, new { id = @item.Id })
+                </td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        @*@Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
+                            @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */})*@
+                        <a class="btn btn-info" asp-route="" id="item.">Details</a>
+                        <a class="btn btn-danger" asp-route="">Delete</a>
+                    </div>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 <partial name="_PaginationPartial" view-data="ViewData" model="Model" />
+
+@section Scripts
+{
+    <script>
+        $('input[type="checkbox"]').click(function () {
+            $.post("UserAccount/SetAdminStatusChange",
+                { userId: this.id, isAdmin: this.checked },
+                function (success) {
+                    if (success)
+                        displayToastrMsg("Admin rights have been successfully updated", "Admin rights saved", "Success");
+                    else {
+                        displayToastrMsg("Admin rights have ended with some issue. Please try again", "Admin rights unsaved", "Error");
+                        location.reload();
+                    }
+                });
+        });
+    </script>
+}

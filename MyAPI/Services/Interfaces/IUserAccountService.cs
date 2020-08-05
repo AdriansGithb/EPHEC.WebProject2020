@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using MyLibrary.Entities;
 using MyLibrary.ViewModels;
 
@@ -11,7 +12,7 @@ namespace MyAPI.Services.Interfaces
     {
         List<UserAccountAdministrationVwMdl> GetAll();
         ApplicationUser GetUserAccount(string id);
-        UserAccountAdministrationVwMdl UpdateAdminUserAccount(UserAccountAdministrationVwMdl userAccount);
+        bool UpdateAdminUserAccount(UserAccountAdministrationVwMdl userAccount);
         void DeleteUserAccount(string id);
     }
 }

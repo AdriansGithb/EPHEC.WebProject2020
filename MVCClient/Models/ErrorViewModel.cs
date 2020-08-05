@@ -6,6 +6,17 @@ namespace MVCClient.Models
     {
         public string RequestId { get; set; }
 
-        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+        public string _Message { get; set; }
+
+        public ErrorViewModel()
+        {
+        }
+
+        public ErrorViewModel(string message)
+        {
+            _Message = message;
+        }
+
+
     }
 }

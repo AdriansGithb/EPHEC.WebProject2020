@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyAPI.Data;
 using MyAPI.Services.Interfaces;
@@ -45,9 +47,12 @@ namespace MyAPI.Services
             throw new NotImplementedException();
         }
 
-        public UserAccountAdministrationVwMdl UpdateAdminUserAccount(UserAccountAdministrationVwMdl userAccount)
+        public bool UpdateAdminUserAccount(UserAccountAdministrationVwMdl newUserAdminState)
         {
-            throw new NotImplementedException();
+            {
+                throw new NotImplementedException();
+            }
+
         }
 
         public void DeleteUserAccount(string id)

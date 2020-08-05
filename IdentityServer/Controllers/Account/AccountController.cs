@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using IdentityServer.Controllers.Base;
 using IdentityServer.Models.Account;
@@ -23,6 +24,7 @@ using Microsoft.EntityFrameworkCore;
 using MyLibrary.Constants;
 using MyLibrary.Entities;
 using MyLibrary.ViewModels;
+using Newtonsoft.Json;
 
 namespace IdentityServerHost.Quickstart.UI
 {
@@ -53,9 +55,47 @@ namespace IdentityServerHost.Quickstart.UI
             _schemeProvider = schemeProvider;
             _events = events;
         }
+
         /// <summary>
-        /// Entry point into the registration workflow
+        /// Handle the edition of admin rights for an user account parameter
         /// </summary>
+        /// <param name="userid">user account id to edit</param>
+        /// <param name="isadmin">enable or disable the admin rights</param>
+        /// <returns>Ok if succeeded, bad request if not</returns>
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> EditAdminRights(string userid, bool isadmin)
+        {
+            try
+            {
+                var user = _userManager.Users.First(x => x.Id == userid);
+                if (user.IsAdmin != isadmin)
+                {
+                    user.IsAdmin = isadmin;
+                    var result = await _userManager.UpdateAsync(user);
+                    if (result.Succeeded)
+                    {
+                        if (user.IsAdmin)
+                            await _userManager.AddToRoleAsync(user, MyIdentityServerConstants.Role_Admin);
+                        else
+                            await _userManager.RemoveFromRoleAsync(user, MyIdentityServerConstants.Role_Admin);
+                        return Ok();
+                    }
+                    else throw new Exception("User account update has terminated with some issue. Update has not been performed.");
+                }
+                else throw new Exception("It seems that new rights and actual rights are equals. No update can be performed.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+
+        }
+
+        /// <summary>
+            /// Entry point into the registration workflow
+            /// </summary>
         [HttpGet]
         public IActionResult Register()
         {

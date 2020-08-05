@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +15,14 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using cloudscribe.Pagination.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using MVCClient.Models;
+using MyLibrary.Entities;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace MVCClient.Controllers
 {
-    public class UserAccountController : Controller
+    public class UserAccountController : BaseController
     {
         private readonly HttpClient _client;
         public UserAccountController()
@@ -94,6 +100,19 @@ namespace MVCClient.Controllers
             return View(pageResult);
         }
 
-
+        /// <summary>
+        /// Able or disable the admin role for a selected user account
+        /// </summary>
+        /// <param name="userId">user account id</param>
+        /// <param name="isAdmin">new value of admin rights</param>
+        /// <returns>true if succeeded, false if not</returns>
+        [HttpPost]
+        public async Task<bool> SetAdminStatusChange(string userId, bool isAdmin)
+        {
+            var content = await _client.PostAsync($"{MyIdentityServerConstants.IS_Url}Account/EditAdminRights?userid={userId}&isadmin={isAdmin}", null);
+            if (content.IsSuccessStatusCode)
+                return true;
+            else return false ;
+        }
     }
 }

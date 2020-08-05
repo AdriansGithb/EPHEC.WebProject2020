@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -9,6 +10,7 @@ using MyAPI.Data;
 using MyAPI.Services.Interfaces;
 using MyLibrary.Entities;
 using MyLibrary.ViewModels;
+using Newtonsoft.Json;
 
 namespace MyAPI.Controllers
 {
@@ -34,6 +36,7 @@ namespace MyAPI.Controllers
             var allUserAccounts = _service.GetAll();
             return Ok(allUserAccounts);
         }
+
 
     }
 }
