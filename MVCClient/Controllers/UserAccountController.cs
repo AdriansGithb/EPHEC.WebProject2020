@@ -145,7 +145,7 @@ namespace MVCClient.Controllers
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
                 var content = await _client.GetStringAsync($"{MyAPIConstants.MyAPI_Url}UserAccounts/{id}");
                 var userAccount = JsonConvert.DeserializeObject<UserAccountVwMdl>(content);
-
+                
                 return View(userAccount);
 
             }
@@ -159,18 +159,37 @@ namespace MVCClient.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(string userId, string username)
         {
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            try
+            {
+                string adminId = User.Claims.First(x => x.Type.Contains("sub")).Value;
+                if (!userId.Equals(adminId))
+                {
+                    var accessToken = await HttpContext.GetTokenAsync("access_token");
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-            var content = await _client.DeleteAsync($"{MyAPIConstants.MyAPI_Url}UserAccounts/Delete/{userId}");
-            if (content.IsSuccessStatusCode)
-            {
-                AddSuccessMessage("Account deleted",$"{username} Account has been successfully deleted.");         
-                return RedirectToAction("Index");
+                    var content = await _client.DeleteAsync($"{MyAPIConstants.MyAPI_Url}UserAccounts/Delete/{userId}");
+                    if (content.IsSuccessStatusCode)
+                    {
+                        AddSuccessMessage("Account deleted", $"{username} Account has been successfully deleted.");
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        AddErrorMessage("Account not deleted",
+                            $"{username}Account has not been deleted due to some issues.");
+                        return RedirectToAction("Index");
+                    }
+                }
+                else
+                {
+                    AddErrorMessage("Account not deleted",
+                        "You can't delete your own account here.");
+                    return RedirectToAction("Index");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                AddErrorMessage("Account not deleted",$"{username}Account has not been deleted due to some issues.");
+                AddErrorMessage("Account not deleted", $"{username}Account has not been deleted due to some issues : {ex.Message}");
                 return RedirectToAction("Index");
             }
         }

@@ -24,8 +24,11 @@ else
             @User.Identity.Name
         </button>
         <div class="dropdown-menu">
+            <text class="dropdown-header" >Account modifications</text>
             <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="EditUserDetails">Edit your account</a>
+            <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="DeleteSelfAccount">Delete your account</a>
             <div class="dropdown-divider"></div>
+            <text class="dropdown-header" >Sign out</text>
             <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
         </div>
     </div>

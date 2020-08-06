@@ -1,0 +1,20 @@
+﻿@Html.AntiForgeryToken()
+@{
+    ViewData["Title"] = "DeleteSelfAccount";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center">Delete your account</h1>
+<hr/>
+<h3><span class="text-primary">@User.Identity.Name</span>, are you sure you want to delete your account?</h3>
+<hr/>
+<h4 class="text-danger">Deleting your account will result in the removal of your registered user rights.
+    If you have a professional account, all your establishments will be deleted and will no longer appear on our website.</h4>
+<hr />
+
+    
+<form asp-action="DeleteSelfAccount" asp-route-userid="@User.Claims.First(x=>x.Type.Contains("sub")).Value" asp-route-username="@User.Identity.Name" class="text-center">
+    <input type="submit" value="Yes, please delete my account" class="btn btn-danger"/> |
+    <a class="btn btn-secondary" asp-controller="Home" asp-action="Index">No, I am not sure</a>
+</form>
+
