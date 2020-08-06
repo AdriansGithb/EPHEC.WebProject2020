@@ -353,8 +353,6 @@ namespace IdentityServerHost.Quickstart.UI
                             // return the response is for better UX for the end user.
                             return this.LoadingPage("Redirect", model.ReturnUrl);
                         }
-                        //notification cookie
-                        AddSuccessMessage("Login succeed",$"Welcome {user.FirstName} !");
                         // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
                         return Redirect(model.ReturnUrl);
                     }
@@ -434,7 +432,6 @@ namespace IdentityServerHost.Quickstart.UI
                 // this triggers a redirect to the external provider for sign-out
                 return SignOut(new AuthenticationProperties { RedirectUri = url }, vm.ExternalAuthenticationScheme);
             }
-            AddInfoMessage("Logged out", "You have been logged out. See you soon.");
             return Redirect(MyMVCConstants.MyMVC_Url);
 
             //return View("LoggedOut", vm);
