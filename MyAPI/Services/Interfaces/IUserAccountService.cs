@@ -12,7 +12,6 @@ namespace MyAPI.Services.Interfaces
     {
         List<UserAccountAdministrationVwMdl> GetAll();
         UserAccountVwMdl GetUserAccount(string id);
-        bool UpdateAdminUserAccount(UserAccountAdministrationVwMdl userAccount);
-        void DeleteUserAccount(string id);
+        string DeleteUserAccount(string id);
     }
 }

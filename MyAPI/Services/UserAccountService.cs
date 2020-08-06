@@ -68,17 +68,19 @@ namespace MyAPI.Services
             }
         }
 
-        public bool UpdateAdminUserAccount(UserAccountAdministrationVwMdl newUserAdminState)
+
+        public string DeleteUserAccount(string id)
         {
+            try
             {
-                throw new NotImplementedException();
+                _context.AspNetUsers.Remove(_context.AspNetUsers.Find(id));
+                _context.SaveChanges();
+                return "success";
             }
-
-        }
-
-        public void DeleteUserAccount(string id)
-        {
-            throw new NotImplementedException();
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
     }
 }

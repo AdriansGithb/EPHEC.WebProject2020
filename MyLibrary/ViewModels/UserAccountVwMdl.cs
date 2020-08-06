@@ -16,5 +16,6 @@ namespace MyLibrary.ViewModels
         public bool IsProfessional { get; set; }
         public bool IsAdmin { get; set; }
         public string Gender { get; set; }
+
     }
 }

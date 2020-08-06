@@ -39,6 +39,7 @@ namespace MyAPI.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Route("~/UserAccounts/{id}")]
@@ -48,6 +49,27 @@ namespace MyAPI.Controllers
             {
                 var userAccount = _service.GetUserAccount(id);
                 return Ok(userAccount);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Route("~/UserAccounts/Delete/{id}")]
+        public IActionResult Delete(string id)
+        {
+            try
+            {
+                var deletion = _service.DeleteUserAccount(id);
+                if (deletion.Equals("success"))
+                    return Ok();
+                else return BadRequest(deletion);
             }
             catch (Exception ex)
             {
