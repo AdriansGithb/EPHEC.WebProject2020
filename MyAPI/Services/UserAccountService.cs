@@ -42,9 +42,30 @@ namespace MyAPI.Services
 
         }
 
-        public ApplicationUser GetUserAccount(string id)
+        public UserAccountVwMdl GetUserAccount(string id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                ApplicationUser user = _context.AspNetUsers.First(x => x.Id == id);
+                GenderTypes gender = _context.Gender_Types.First(y => y.Id == user.GenderType_Id);
+                UserAccountVwMdl userAccount = new UserAccountVwMdl
+                {
+                    Id = user.Id,
+                    Username = user.UserName,
+                    LastName = user.LastName,
+                    FirstName = user.FirstName,
+                    BirthDate = user.BirthDate,
+                    IsProfessional = user.IsProfessional,
+                    IsAdmin = user.IsAdmin,
+                    Gender = gender.Name
+                };
+
+                return userAccount;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public bool UpdateAdminUserAccount(UserAccountAdministrationVwMdl newUserAdminState)

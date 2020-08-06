@@ -37,6 +37,23 @@ namespace MyAPI.Controllers
             return Ok(allUserAccounts);
         }
 
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Route("~/UserAccounts/{id}")]
+        public IActionResult GetUserAccount(string id)
+        {
+            try
+            {
+                var userAccount = _service.GetUserAccount(id);
+                return Ok(userAccount);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
 
     }
 }

@@ -131,6 +131,7 @@
     <Compile Include="ViewModels\RegisterVwMdl.cs" />
     <Compile Include="ViewModels\UserAccountAdministrationVwMdl.cs" />
     <Compile Include="ViewModels\UserAccountEditionVwMdl.cs" />
+    <Compile Include="ViewModels\UserAccountVwMdl.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DTOs\" />

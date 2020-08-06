@@ -100,6 +100,27 @@ namespace MVCClient.Controllers
             return View(pageResult);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetUserAccount(string id)
+        {
+            try
+            {
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                var content = await _client.GetStringAsync($"{MyAPIConstants.MyAPI_Url}UserAccounts/{id}"); 
+                var userAccount = JsonConvert.DeserializeObject<UserAccountVwMdl>(content);
+
+                return View("UserAccountDetails",userAccount);
+
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
+
+
+        }
+
         /// <summary>
         /// Able or disable the admin role for a selected user account
         /// </summary>

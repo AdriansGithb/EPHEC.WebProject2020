@@ -53,10 +53,8 @@
                 </td>
                 <td>
                     <div class="btn-group btn-group-sm">
-                        @*@Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
-                            @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */})*@
-                        <a class="btn btn-info" asp-route="" id="item.">Details</a>
-                        <a class="btn btn-danger" asp-route="">Delete</a>
+                        <a class="btn btn-info" asp-action="GetUserAccount" asp-route-id="@item.Id">Details</a>
+                        <a class="btn btn-danger" >Delete</a>
                     </div>
                 </td>
             </tr>
@@ -80,5 +78,7 @@
                     }
                 });
         });
+
+
     </script>
 }
