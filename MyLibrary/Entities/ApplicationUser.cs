@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
@@ -17,6 +18,8 @@ namespace MyLibrary.Entities
 
         public GenderTypesId GenderType_Id { get; set; }
         public GenderTypes GenderType { get; set; }
+
+        public List<Establishments> Establishments { get; set; }
 
     }
 }
