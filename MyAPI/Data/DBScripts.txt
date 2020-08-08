@@ -9,8 +9,11 @@ dotnet ef migrations add InitialMigrationAppDbCtx -c AppDbContext -o Data/Migrat
 **/ Update Database \**
 dotnet ef database update -c AppDbContext
 
-	// Users are managed by IdentityServer, we add these DbSet in the API to have the possibility to access these entities
-	// code of this migration is commented only (to not modify the db)
+**/Establishments and related entities migration creation \**
+	// creation of all entities for business context : Establishments, ETypes, EDetails, EAddresses, EOpeningTimes, EPictures, ENews, NewsPictures
+dotnet ef migrations add EstablishmentsDbMigrationAppDbCtx -c AppDbContext -o Data/Migrations
+**/ Update Database \**
+dotnet ef database update -c AppDbContext
 
 
 ...

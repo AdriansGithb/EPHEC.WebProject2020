@@ -19,6 +19,7 @@ namespace MyLibrary.Entities
 
         public DayOfWeek DayOfWeek { get; set; }
         public bool IsSpecialDay { get; set; }
+        [DataType(DataType.Date)]
         public DateTime? SpecialDayDate  { get; set; }
         public bool IsOpen { get; set; }
         public DateTime? OpeningHour { get; set; }
