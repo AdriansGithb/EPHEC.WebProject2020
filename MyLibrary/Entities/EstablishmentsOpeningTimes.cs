@@ -22,7 +22,9 @@ namespace MyLibrary.Entities
         [DataType(DataType.Date)]
         public DateTime? SpecialDayDate  { get; set; }
         public bool IsOpen { get; set; }
+        [DataType(DataType.Time)]
         public DateTime? OpeningHour { get; set; }
+        [DataType(DataType.Time)]
         public DateTime? ClosingHour { get; set; }
     }
 }

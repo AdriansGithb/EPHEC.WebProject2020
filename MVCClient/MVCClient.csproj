@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\Establishments\Create.cshtml~RF1f8ada1.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\js\displayToastrMsg.js" />
   </ItemGroup>
 

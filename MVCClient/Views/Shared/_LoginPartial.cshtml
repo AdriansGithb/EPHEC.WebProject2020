@@ -6,8 +6,8 @@
 
 @if (!User.Identity.IsAuthenticated)
 {
-    <div class="dropdown">
-        <button type="button" class="btn btn-light dropdown-toggle border-right" data-toggle="dropdown">
+    <div class="nav-item dropdown">
+        <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown">
             Login/Register
         </button>
         <div class="dropdown-menu">
@@ -19,8 +19,8 @@
 }
 else
 {
-    <div class="dropdown">
-        <button type="button" class="btn btn-light dropdown-toggle border-right" data-toggle="dropdown">
+    <div class="nav-item dropdown">
+        <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown">
             @User.Identity.Name
         </button>
         <div class="dropdown-menu">
