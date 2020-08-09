@@ -5,18 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MyLibrary.Entities;
+using System.Web;
 
 namespace MyLibrary.ViewModels
 {
     public class EstablishmentCreationVwMdl
     {
-        [MaxLength(50)]
         public string Name { get; set; }
-        [MaxLength(25)]
         public string VatNum { get; set; }
-        [MaxLength(255)]
         public string Email { get; set; }
-        [MaxLength(2000)]
         public string Description { get; set; }
         public bool IsValidated { get; set; }
 
@@ -28,9 +25,9 @@ namespace MyLibrary.ViewModels
         public EstablishmentsAddresses Address { get; set; }
 
         public List<EstablishmentsOpeningTimes> OpeningTimes { get; set; }
-        public EstablishmentsPictures Logo { get; set; }
+        public EstablishmentCreationPicturesVwMdl Logo { get; set; }
 
-        public List<EstablishmentsPictures> Pictures { get; set; }
+        public List<EstablishmentCreationPicturesVwMdl> Pictures { get; set; }
 
 
 

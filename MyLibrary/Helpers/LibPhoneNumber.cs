@@ -41,7 +41,16 @@ namespace MyLibrary.Helpers
                 //Vérification du type de numéro si on a requis la validation d'un mobile uniquement
                 if (mustBeMobileTypeOnly && isValid)
                 {
-                    if (util.GetNumberType(number) != PhoneNumberType.MOBILE && util.GetNumberType(number) != PhoneNumberType.FIXED_LINE_OR_MOBILE)
+                    if (util.GetNumberType(number) != PhoneNumberType.MOBILE 
+                        && util.GetNumberType(number) != PhoneNumberType.FIXED_LINE_OR_MOBILE)
+                        isValid = false;
+                }
+                //sinon, si le num est valide, vérifier qu'il s'agit d'un fixe ou mobile (requirements : etab phone number = fixe ou mobile)
+                else if (isValid)
+                {
+                    if (util.GetNumberType(number) != PhoneNumberType.MOBILE 
+                        && util.GetNumberType(number) != PhoneNumberType.FIXED_LINE_OR_MOBILE 
+                        && util.GetNumberType(number) != PhoneNumberType.FIXED_LINE)
                         isValid = false;
                 }
 

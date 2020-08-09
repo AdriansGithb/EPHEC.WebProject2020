@@ -92,8 +92,8 @@ namespace IdentityServer
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
 
-            services.AddTransient<IValidator<RegisterVwMdl>, RegisterValidator>();
-            services.AddTransient<IValidator<UserAccountEditionVwMdl>, UserAccountEditionValidator>();
+            services.UseServices();
+
         }
 
         public void Configure(IApplicationBuilder app)

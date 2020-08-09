@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,7 +28,7 @@ namespace MVCClient
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation().AddFluentValidation();
 
             JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
@@ -60,8 +61,12 @@ namespace MVCClient
                         NameClaimType = "name",
                         RoleClaimType = "role"
                     };
-                });
+                });            
+
             services.AddCloudscribePagination();
+
+
+            services.UseServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
