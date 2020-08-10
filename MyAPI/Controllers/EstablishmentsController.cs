@@ -36,5 +36,24 @@ namespace MyAPI.Controllers
             else return BadRequest(creation);
         }
 
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Route("~/Establishments/GetAllNotValidated")]
+        public IActionResult GetAllNotValidated()
+        {
+            try
+            {
+                List<EstablishmentShortVwMdl> rtrnList = _service.GetAllEstabNotValited();
+                return Ok(rtrnList);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
     }
 }

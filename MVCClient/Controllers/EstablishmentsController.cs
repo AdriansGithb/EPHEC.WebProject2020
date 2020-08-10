@@ -38,7 +38,28 @@ namespace MVCClient.Controllers
         //    return View();
         //}
 
+        [HttpGet]
+        [Authorize(Roles = MyIdentityServerConstants.Role_Admin)]
+        public async Task<ActionResult> Validate()
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var httpResponse = await _client.GetAsync($"{MyAPIConstants.MyAPI_EstablishmentsCtrl_Url}GetAllNotValidated");
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                AddErrorMessage("Data not downloaded",httpResponse.ReasonPhrase);
+                return View("../Home/Index");
+            }
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            List<EstablishmentShortVwMdl> displayList = JsonConvert.DeserializeObject<List<EstablishmentShortVwMdl>>(content);
+
+            return View(displayList);
+        }
+
         // GET: EstablishmentsController/Create
+        [HttpGet]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin_Manager)]
         public ActionResult Create()
         {

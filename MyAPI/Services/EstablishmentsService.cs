@@ -78,6 +78,42 @@ namespace MyAPI.Services
 
         }
 
+        public List<EstablishmentShortVwMdl> GetAllEstabNotValited()
+        {
+            try
+            {
+                var estabWithTypeAndPictures = _context.Establishments
+                    .Where(x => x.IsValidated == false)
+                    .Include(x => x.Pictures)
+                    .Include(x=>x.Type).ToList();
+
+                List<EstablishmentShortVwMdl> rtrnList = new List<EstablishmentShortVwMdl>();
+                if (estabWithTypeAndPictures.Count > 0)
+                {
+                    foreach (var estab in estabWithTypeAndPictures)
+                    {
+                        EstablishmentShortVwMdl shortVw = new EstablishmentShortVwMdl
+                        {
+                            Id = estab.Id,
+                            Name = estab.Name,
+                            EstabType = estab.Type.Name
+                        };
+                        if (estab.Pictures.Count>0 && estab.Pictures.Exists(x=>x.IsLogo==true))
+                            shortVw.LogoAsArray = estab.Pictures.First(x=>x.IsLogo==true).Picture;
+                        rtrnList.Add(shortVw);
+
+                    }
+                }
+
+                return rtrnList;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
 
     }
 }
