@@ -330,22 +330,22 @@
                 <div class="form-group">
                     <input asp-for="Pictures[1].IsLogo" type="hidden" value="false" />
                     <input type="file" asp-for="Pictures[1].PictureFile" />
-                    <span asp-validation-for="Pictures[1].PictureFile" class="text-danger"></span>
+                    <span asp-validation-for="Pictures[1]" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <input asp-for="Pictures[2].IsLogo" type="hidden" value="false" />
                     <input type="file" asp-for="Pictures[2].PictureFile" />
-                    <span asp-validation-for="Pictures[2].PictureFile" class="text-danger"></span>
+                    <span asp-validation-for="Pictures[2]" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <input asp-for="Pictures[3].IsLogo" type="hidden" value="false" />
                     <input type="file" asp-for="Pictures[3].PictureFile" />
-                    <span asp-validation-for="Pictures[3].PictureFile" class="text-danger"></span>
+                    <span asp-validation-for="Pictures[3]" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <input asp-for="Pictures[4].IsLogo" type="hidden" value="false" />
                     <input type="file" asp-for="Pictures[4].PictureFile" />
-                    <span asp-validation-for="Pictures[4].PictureFile" class="text-danger"></span>
+                    <span asp-validation-for="Pictures[4]" class="text-danger"></span>
                 </div>
             </div>
         </div>
@@ -363,12 +363,3 @@
 <div>
     <a asp-controller="Home" asp-action="Index">Back home</a>
 </div>
-
-@*@section Scripts{
-        <script>
-            $(".custom-file-input").on("change", function() {
-                var fileName = $(this).val().split("\\").pop();
-                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-            });
-        </script>
-    }*@
