@@ -82,6 +82,9 @@
     <Reference Include="Microsoft.Extensions.Primitives, Version=3.1.6.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Primitives.3.1.6\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PhoneNumbers, Version=8.12.7.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\libphonenumber-csharp.8.12.7\lib\net46\PhoneNumbers.dll</HintPath>
     </Reference>
@@ -125,6 +128,7 @@
   <ItemGroup>
     <Compile Include="Constants\MyAPIConstants.cs" />
     <Compile Include="Constants\MyDbConstants.cs" />
+    <Compile Include="Constants\MyExternalApisConstants.cs" />
     <Compile Include="Constants\MyIdentityServerConstants.cs" />
     <Compile Include="Constants\MyMVCConstants.cs" />
     <Compile Include="Constants\MyValidatorsConstants.cs" />
@@ -140,6 +144,8 @@
     <Compile Include="Entities\GenderTypes.cs" />
     <Compile Include="Entities\NewsPictures.cs" />
     <Compile Include="Helpers\LibPhoneNumber.cs" />
+    <Compile Include="Helpers\VatLayerHelper.cs" />
+    <Compile Include="Helpers\VatLayerResponseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validators\EstablishmentCreationValidator.cs" />
     <Compile Include="Validators\RegisterValidator.cs" />

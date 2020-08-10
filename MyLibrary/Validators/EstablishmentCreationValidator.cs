@@ -24,7 +24,13 @@ namespace MyLibrary.Validators
                 .MaximumLength(50).WithMessage("Name field" + MyValidatorsConstants.HasMaxChar + "50")
                 .Matches("^[- a-zA-Z0-9]+$").WithMessage("Name : " + MyValidatorsConstants.NoSpecialChar);
 
-            //VATNUM
+            RuleFor(x => x.VatNum)
+                .NotEmpty().WithMessage(MyValidatorsConstants.RequiredField + "Vat Number")
+                .MustAsync(async (vatNumber, cancellation) =>
+                {
+                    bool isValid = await VatLayerHelper.IsValidVatNumber(vatNumber);
+                    return isValid;
+                } ).WithMessage("VAT Number must be a valid vat number, with a valid vat format");
 
             RuleFor(x => x.Email)
                 .NotEmpty().WithMessage(MyValidatorsConstants.RequiredField + "Email")

@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "IdentityS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLibrary", "MyLibrary\MyLibrary.csproj", "{3F151E49-0506-4853-9B8B-6C0BFEF4C414}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalAPIs", "ExternalAPIs\ExternalAPIs.csproj", "{6B034963-9CA7-42E5-B915-BE61270E8F90}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{3F151E49-0506-4853-9B8B-6C0BFEF4C414}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F151E49-0506-4853-9B8B-6C0BFEF4C414}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F151E49-0506-4853-9B8B-6C0BFEF4C414}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B034963-9CA7-42E5-B915-BE61270E8F90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B034963-9CA7-42E5-B915-BE61270E8F90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B034963-9CA7-42E5-B915-BE61270E8F90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B034963-9CA7-42E5-B915-BE61270E8F90}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
