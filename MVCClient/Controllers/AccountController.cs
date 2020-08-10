@@ -80,7 +80,7 @@ namespace MVCClient.Controllers
                     var accessToken = await HttpContext.GetTokenAsync("access_token");
                     _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-                    var content = await _client.DeleteAsync($"{MyAPIConstants.MyAPI_Url}UserAccounts/Delete/{userid}");
+                    var content = await _client.DeleteAsync($"{MyAPIConstants.MyAPI_UserAccountCtrl_Url}Delete/{userid}");
                     if (content.IsSuccessStatusCode)
                     {
                         AddSuccessMessage("Account deleted", $"{username}, your account has been successfully deleted. Thanks for your participation, do not hesitate to come back whenever you want. Goodbye.");

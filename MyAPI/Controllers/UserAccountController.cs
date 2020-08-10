@@ -28,13 +28,21 @@ namespace MyAPI.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Route("~/UserAccounts/GetAll")]
         public IActionResult GetAllUserAccounts()
         {
-            var allUserAccounts = _service.GetAll();
-            return Ok(allUserAccounts);
+            try
+            {
+                var allUserAccounts = _service.GetAll();
+                return Ok(allUserAccounts);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [HttpGet]

@@ -15,7 +15,7 @@ dotnet ef migrations add EstablishmentsDbMigrationAppDbCtx -c AppDbContext -o Da
 **/ Update Database \**
 dotnet ef database update -c AppDbContext
 
-
+dotnet ef migrations add PrimaryKeysAutoGenDbMigrationAppDbCtx -c AppDbContext -o Data/Migrations
 ...
 
 

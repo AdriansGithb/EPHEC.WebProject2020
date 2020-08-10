@@ -51,7 +51,7 @@ namespace MVCClient.Controllers
             var accessToken = await HttpContext.GetTokenAsync("access_token");
 
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            var content = await _client.GetStringAsync(MyAPIConstants.MyAPI_Url + "UserAccounts/GetAll");
+            var content = await _client.GetStringAsync(MyAPIConstants.MyAPI_UserAccountCtrl_Url + "GetAll");
 
             var unsortedModelsList = JsonConvert.DeserializeObject<List<UserAccountAdministrationVwMdl>>(content);
             if (!String.IsNullOrEmpty(searchString))
@@ -107,7 +107,7 @@ namespace MVCClient.Controllers
             {
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-                var content = await _client.GetStringAsync($"{MyAPIConstants.MyAPI_Url}UserAccounts/{id}"); 
+                var content = await _client.GetStringAsync($"{MyAPIConstants.MyAPI_UserAccountCtrl_Url}{id}"); 
                 var userAccount = JsonConvert.DeserializeObject<UserAccountVwMdl>(content);
 
                 return View("UserAccountDetails",userAccount);
@@ -143,7 +143,7 @@ namespace MVCClient.Controllers
             {
                 var accessToken = await HttpContext.GetTokenAsync("access_token");
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-                var content = await _client.GetStringAsync($"{MyAPIConstants.MyAPI_Url}UserAccounts/{id}");
+                var content = await _client.GetStringAsync($"{MyAPIConstants.MyAPI_UserAccountCtrl_Url}{id}");
                 var userAccount = JsonConvert.DeserializeObject<UserAccountVwMdl>(content);
                 
                 return View(userAccount);
@@ -167,7 +167,7 @@ namespace MVCClient.Controllers
                     var accessToken = await HttpContext.GetTokenAsync("access_token");
                     _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-                    var content = await _client.DeleteAsync($"{MyAPIConstants.MyAPI_Url}UserAccounts/Delete/{userId}");
+                    var content = await _client.DeleteAsync($"{MyAPIConstants.MyAPI_UserAccountCtrl_Url}Delete/{userId}");
                     if (content.IsSuccessStatusCode)
                     {
                         AddSuccessMessage("Account deleted", $"{username} Account has been successfully deleted.");

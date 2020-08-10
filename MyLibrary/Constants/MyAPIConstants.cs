@@ -6,7 +6,8 @@
         public const string MyAPI_ApiScope_Name = "MyApiScope";
 
         public const string MyAPI_Url = "https://localhost:44338/";
-        public const string MyAPI_IdentityCtrlr_Url = "https://localhost:44338/identity";
+        public const string MyAPI_UserAccountCtrl_Url = "https://localhost:44338/UserAccounts/";
+        public const string MyAPI_EstablishmentsCtrl_Url = "https://localhost:44338/Establishments/";
 
     }
 }

@@ -10,6 +10,7 @@ namespace MyLibrary.Entities
 {
     public class Establishments
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required]
         [MaxLength(50)]

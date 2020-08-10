@@ -13,6 +13,7 @@ namespace MyAPI
         public static void UseServices(this IServiceCollection services)
         {
             services.AddScoped<IUserAccountService, UserAccountService>();
+            services.AddScoped<IEstablishmentsService, EstablishmentsService>();
         }
     }
 }
