@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyAPI.Data;
 
 namespace MyAPI.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200810163037_PrimaryKeysAutoGenDbMigrationAppDbCtx")]
+    partial class PrimaryKeysAutoGenDbMigrationAppDbCtx
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -303,28 +305,6 @@ namespace MyAPI.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EstablishmentsTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 0,
-                            Name = "Bar"
-                        },
-                        new
-                        {
-                            Id = 1,
-                            Name = "NightClub"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "ConcertHall"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "StudentsAssociation"
-                        });
                 });
 
             modelBuilder.Entity("MyLibrary.Entities.GenderTypes", b =>

@@ -15,7 +15,17 @@ dotnet ef migrations add EstablishmentsDbMigrationAppDbCtx -c AppDbContext -o Da
 **/ Update Database \**
 dotnet ef database update -c AppDbContext
 
+**/Auto incremented Ids correction migration creation \**
 dotnet ef migrations add PrimaryKeysAutoGenDbMigrationAppDbCtx -c AppDbContext -o Data/Migrations
+**/ Update Database \**
+dotnet ef database update -c AppDbContext
+
+**/Establishment enum data loading migration creation \**
+dotnet ef migrations add EstabTypeEnumDataDbMigrationAppDbCtx -c AppDbContext -o Data/Migrations
+**/ Update Database \**
+dotnet ef database update -c AppDbContext
+
+
 ...
 
 

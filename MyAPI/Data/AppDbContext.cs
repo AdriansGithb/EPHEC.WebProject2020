@@ -75,6 +75,18 @@ namespace MyAPI.Data
                 .Property(e => e.TypeId)
                 .HasConversion<int>();
 
+            //EstablishmentTypes Data loading
+            modelBuilder
+                .Entity<EstablishmentsTypes>().HasData(
+                    Enum.GetValues(typeof(EstablishmentsTypesId))
+                        .Cast<EstablishmentsTypesId>()
+                        .Select(e => new EstablishmentsTypes()
+                        {
+                            Id = e,
+                            Name = e.ToString()
+                        })
+                );
+
             //Establishments + EstablishmentsOpeningTimes : One (mandatory) to Many (optional) Relation
             modelBuilder
                 .Entity<Establishments>()
