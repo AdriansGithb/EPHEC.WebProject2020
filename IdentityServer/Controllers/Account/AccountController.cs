@@ -73,11 +73,16 @@ namespace IdentityServerHost.Quickstart.UI
                 if (user.IsAdmin != isadmin)
                 {
                     user.IsAdmin = isadmin;
+                    if (user.IsAdmin)
+                        user.IsProfessional = true;
                     var result = await _userManager.UpdateAsync(user);
                     if (result.Succeeded)
                     {
                         if (user.IsAdmin)
+                        {
                             await _userManager.AddToRoleAsync(user, MyIdentityServerConstants.Role_Admin);
+                            await _userManager.AddToRoleAsync(user, MyIdentityServerConstants.Role_Manager);
+                        }
                         else
                             await _userManager.RemoveFromRoleAsync(user, MyIdentityServerConstants.Role_Admin);
                         return Ok();
