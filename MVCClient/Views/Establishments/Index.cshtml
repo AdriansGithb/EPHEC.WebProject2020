@@ -1,12 +1,12 @@
 ﻿@model cloudscribe.Pagination.Models.PagedResult<MyLibrary.ViewModels.EstablishmentShortVwMdl>
 
 @{
-    ViewData["Title"] = "Validate";
+    //ViewData["Title"] = "Validate";
     ViewData["Controller"] = "Establishments";
-    ViewData["Action"] = "Validate";
+    //ViewData["Action"] = "Validate";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h1>Waiting validation establishments list</h1>
+<h1>@ViewData["HeadText"] @*Waiting validation establishments list*@</h1>
 <div class="d-flex justify-content-center">
     <partial name="_PaginationPartial" view-data="ViewData" model="Model" />
 </div>

@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Hosting.Internal;
 using MyLibrary.Constants;
 using MyLibrary.DTOs;
@@ -34,11 +35,42 @@ namespace MVCClient.Controllers
             _client = new HttpClient();
         }
 
+        [HttpGet]
+        [AllowAnonymous]
         //// GET: EstablishmentsController
-        //public ActionResult Index()
-        //{
-        //    return View();
-        //}
+        public async Task<ActionResult> Index(int pageNumber = 1, int pageSize = 2)
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var httpResponse = await _client.GetAsync($"{MyAPIConstants.MyAPI_EstablishmentsCtrl_Url}GetAllNotValidated");
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                AddErrorMessage("Data not downloaded", httpResponse.ReasonPhrase);
+                return View("../Home/Index");
+            }
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            List<EstablishmentShortVwMdl> displayList = JsonConvert.DeserializeObject<List<EstablishmentShortVwMdl>>(content);
+
+            int excludeRecords = (pageSize * pageNumber) - pageSize;
+            var paginatedList = displayList.Skip(excludeRecords).Take(pageSize);
+            var pageResult = new PagedResult<EstablishmentShortVwMdl>
+            {
+                Data = paginatedList.ToList(),
+                TotalItems = displayList.Count(),
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+
+            ViewData["Title"] = "Establishments validation";
+            ViewData["Action"] = "GetAllNotValidated";
+            ViewData["HeadText"] = "Waiting validation establishments list";
+
+            return View("Index", pageResult);
+        }
+
+
 
         [HttpGet]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin_Manager)]
@@ -130,7 +162,7 @@ namespace MVCClient.Controllers
 
         [HttpGet]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin)]
-        public async Task<ActionResult> Validate(int pageNumber = 1, int pageSize = 2)
+        public async Task<ActionResult> GetAllNotValidated(int pageNumber = 1, int pageSize = 2)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
@@ -144,7 +176,7 @@ namespace MVCClient.Controllers
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             List<EstablishmentShortVwMdl> displayList = JsonConvert.DeserializeObject<List<EstablishmentShortVwMdl>>(content);
-
+            
             int excludeRecords = (pageSize * pageNumber) - pageSize;
             var paginatedList = displayList.Skip(excludeRecords).Take(pageSize);
             var pageResult = new PagedResult<EstablishmentShortVwMdl>
@@ -155,9 +187,14 @@ namespace MVCClient.Controllers
                 PageSize = pageSize
             };
 
+            ViewData["Title"] = "Establishments validation";
+            ViewData["Action"] = "GetAllNotValidated";
+            ViewData["HeadText"] = "Waiting validation establishments list";
 
-            return View(pageResult);
+            return View("Index",pageResult);
         }
+
+
 
         //// GET: EstablishmentsController/Edit/5
         //public ActionResult Edit(int id)
