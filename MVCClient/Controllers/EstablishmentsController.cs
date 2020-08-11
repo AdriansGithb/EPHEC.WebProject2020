@@ -1,20 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
+using FluentValidation.TestHelper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting.Internal;
 using MyLibrary.Constants;
 using MyLibrary.Entities;
 using MyLibrary.ViewModels;
 using Newtonsoft.Json;
+
 
 namespace MVCClient.Controllers
 {
@@ -166,7 +172,48 @@ namespace MVCClient.Controllers
         //        return View();
         //    }
         //}
+        [HttpGet]
+        public async Task<ActionResult> RenderImage(int estabId)
+        {
+            try
+            {
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
+                var httpResponse =
+                    await _client.GetAsync($"{MyAPIConstants.MyAPI_EstablishmentsCtrl_Url}GetLogo/{estabId}");
+                if (httpResponse.IsSuccessStatusCode && httpResponse.Content.Headers.ContentLength > 0)
+                {
+                    var content = await httpResponse.Content.ReadAsStringAsync();
+                    EstablishmentsPictures logo = JsonConvert.DeserializeObject<EstablishmentsPictures>(content);
+
+                    string imgType = GetPictureFormatFromArrayFile(logo.Picture);
+
+                    return File(logo.Picture, $"image/{imgType}");
+                }
+
+                byte[] defaultLogo = GetDefaultPictureFromFile("~\\..\\Images\\defaultLogo.jpg");
+
+                return File(defaultLogo, "image/jpg");
+            }
+            catch (Exception)
+            {
+                byte[] defaultLogo = GetDefaultPictureFromFile("~\\..\\Images\\defaultLogo.jpg");
+                return File(defaultLogo, "image/jpg");
+            }
+        }
+
+        private byte[] GetDefaultPictureFromFile(string filePath)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                Image tempImg = Image.FromFile("~\\..\\Images\\defaultLogo.jpg");
+                //D:\\# Cours Informatique Ad\\Programmation côté client\\ProjetAout2eSess\\Code\\VS\\WebProject2020\\MVCClient
+                tempImg.Save(memoryStream, ImageFormat.Jpeg);
+                return memoryStream.ToArray();
+            }
+
+        }
 
         private async Task<List<EstablishmentsPictures>> SetUploadPicturesList(IFormFile logo, List<EstablishmentCreationPicturesVwMdl> picList)
         {
@@ -206,6 +253,16 @@ namespace MVCClient.Controllers
                 await pic.CopyToAsync(memoryStream);
 
                 return memoryStream.ToArray();
+            }
+
+        }
+
+        private string GetPictureFormatFromArrayFile(byte[] arrayPicture)
+        {
+            using (var memoryStream = new MemoryStream(arrayPicture))
+            {
+                Image test = Image.FromStream(memoryStream);
+                return test.RawFormat.ToString();
             }
 
         }

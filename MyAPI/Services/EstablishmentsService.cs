@@ -84,7 +84,7 @@ namespace MyAPI.Services
             {
                 var estabWithTypeAndPictures = _context.Establishments
                     .Where(x => x.IsValidated == false)
-                    .Include(x => x.Pictures)
+                    //.Include(x => x.Pictures)
                     .Include(x=>x.Type).ToList();
 
                 List<EstablishmentShortVwMdl> rtrnList = new List<EstablishmentShortVwMdl>();
@@ -98,8 +98,8 @@ namespace MyAPI.Services
                             Name = estab.Name,
                             EstabType = estab.Type.Name
                         };
-                        if (estab.Pictures.Count>0 && estab.Pictures.Exists(x=>x.IsLogo==true))
-                            shortVw.LogoAsArray = estab.Pictures.First(x=>x.IsLogo==true).Picture;
+                        //if (estab.Pictures.Count>0 && estab.Pictures.Exists(x=>x.IsLogo==true))
+                        //    shortVw.LogoAsArray = estab.Pictures.First(x=>x.IsLogo==true).Picture;
                         rtrnList.Add(shortVw);
 
                     }
@@ -114,6 +114,21 @@ namespace MyAPI.Services
 
         }
 
+        public EstablishmentsPictures GetLogo(int estabId)
+        {
+            try
+            {
+                EstablishmentsPictures logo = _context.EstablishmentsPictures
+                    .FirstOrDefault(x => x.EstablishmentId == estabId && x.IsLogo == true);
+
+                return logo;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
 
     }
 }

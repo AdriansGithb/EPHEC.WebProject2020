@@ -12,5 +12,8 @@ namespace MyAPI.Services.Interfaces
         string Create(Establishments newEstab);
 
         List<EstablishmentShortVwMdl> GetAllEstabNotValited();
+
+        EstablishmentsPictures GetLogo(int estabId);
+
     }
 }
