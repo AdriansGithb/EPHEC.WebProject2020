@@ -4,51 +4,25 @@
     ViewData["Title"] = "Validate";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+    <h1>Waiting validation establishments list</h1>
 
-<h1>Validate</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EstabType)
-            </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.LogoAsArray)
-            </th>*@
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EstabType)
-            </td>
-            <td>
-                <img src="@Url.Action("RenderImage", new { estabId = item.Id})" width="50" height="50"/>
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    @foreach (var item in Model)
+    {
+            <div class="card mb-3 w-50 border-dark bg-dark ml-5">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img class="card-img-top" src="@Url.Action("RenderImage", new {estabId = item.Id})" alt="Card image cap">
+                    </div>
+                    <div class="col-md-8 bg-dark d-flex flex-column">
+                        <div class="card-body">
+                            <h3 class="card-title text-white">@Html.DisplayFor(modelItem => item.Name)</h3>
+                            <h5 class="card-text font-italic text-secondary">@Html.DisplayFor(modelItem => item.EstabType)</h5>
+                        </div>
+                        <div class="align-self-end p-2">
+                            <a href="#" class="btn btn-lg btn-success mt-auto">Validate</a>
+                            <a href="#" class="btn btn-lg btn-primary mt-auto">Full view</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    }
