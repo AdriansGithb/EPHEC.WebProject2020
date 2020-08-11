@@ -5,7 +5,7 @@
 
 
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark border-bottom box-shadow mb-3 justify-content-between">
-    @*<div class="container">*@
+    <div class="container">
     <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">GoOut!</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
             aria-expanded="false" aria-label="Toggle navigation">
@@ -16,12 +16,9 @@
             <li class="nav-item">
                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
             </li>
-            @if (@User.IsInRole(MyIdentityServerConstants.Role_User))
-            {
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">User only Link</a>
-                </li>
-            }
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Establishments" asp-action="Index">Our establishments</a>
+            </li>
         </ul>
     </div>
     <div class="navbar-collapse collapse">
@@ -29,15 +26,11 @@
             @if (@User.IsInRole(MyIdentityServerConstants.Role_Manager) || @User.IsInRole(MyIdentityServerConstants.Role_Admin))
             {
                 <li class="nav-item dropdown text-right">
-                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
-                        Manage Establishments
-                    </a>
+                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Manage Establishments</a>
                     <div class="dropdown-menu">
-                        <text class="dropdown-header">Create</text>
-                        <a class="dropdown-item" asp-area="" asp-controller="Establishments" asp-action="Create">New establishment</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Establishments" asp-action="GetAllByManager">My establishments</a>
                         <div class="dropdown-divider"></div>
-                        <text class="dropdown-header">Edit</text>
-
+                        <a class="dropdown-item" asp-area="" asp-controller="Establishments" asp-action="Create">New establishment</a>
                     </div>
                 </li>
             }
@@ -65,5 +58,5 @@
     <div class="navbar-collapse collapse flex-row-reverse pr-3">
         <partial name="_LoginPartial"/>
     </div>
-    @*</div>*@
+    </div>
 </nav>

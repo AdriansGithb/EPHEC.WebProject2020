@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyAPI.Services.Interfaces;
@@ -48,7 +49,46 @@ namespace MyAPI.Controllers
         {
             try
             {
-                List<EstablishmentShortVwMdl> rtrnList = _service.GetAllEstabNotValited();
+                List<EstablishmentShortVwMdl> rtrnList = _service.GetAllNotValidated();
+                return Ok(rtrnList);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Route("~/Establishments/GetAllValidated")]
+        public IActionResult GetAllValidated()
+        {
+            try
+            {
+                List<EstablishmentShortVwMdl> rtrnList = _service.GetAllValidated();
+                return Ok(rtrnList);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Route("~/Establishments/GetAllByManager/{id}")]
+        public IActionResult GetAllByManager(string id)
+        {
+            try
+            {
+                List<EstablishmentShortVwMdl> rtrnList = _service.GetAllByManager(id);
                 return Ok(rtrnList);
             }
             catch (Exception ex)

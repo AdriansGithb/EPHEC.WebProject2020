@@ -79,7 +79,7 @@ namespace MyAPI.Services
 
         }
 
-        public List<EstablishmentShortVwMdl> GetAllEstabNotValited()
+        public List<EstablishmentShortVwMdl> GetAllNotValidated()
         {
             try
             {
@@ -117,6 +117,85 @@ namespace MyAPI.Services
             }
 
         }
+
+        public List<EstablishmentShortVwMdl> GetAllValidated()
+        {
+            try
+            {
+                var estabWithTypeAndPictures = _context.Establishments
+                    .Where(x => x.IsValidated == true)
+                    .Include(x => x.Type)
+                    .Include(x => x.Manager)
+                    .ToList();
+
+                List<EstablishmentShortVwMdl> rtrnList = new List<EstablishmentShortVwMdl>();
+                if (estabWithTypeAndPictures.Count > 0)
+                {
+                    foreach (var estab in estabWithTypeAndPictures)
+                    {
+                        EstablishmentShortVwMdl shortVw = new EstablishmentShortVwMdl
+                        {
+                            Id = estab.Id,
+                            Name = estab.Name,
+                            EstabType = estab.Type.Name,
+                            ManagerId = estab.ManagerId,
+                            ManagerUserName = estab.Manager.UserName,
+                            IsValidated = estab.IsValidated
+                        };
+
+                        rtrnList.Add(shortVw);
+
+                    }
+                }
+
+                return rtrnList;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+        public List<EstablishmentShortVwMdl> GetAllByManager(string managerId)
+        {
+            try
+            {
+                var estabWithTypeAndPictures = _context.Establishments
+                    .Where(x => x.ManagerId == managerId)
+                    .Include(x => x.Type)
+                    .Include(x => x.Manager)
+                    .ToList();
+
+                List<EstablishmentShortVwMdl> rtrnList = new List<EstablishmentShortVwMdl>();
+                if (estabWithTypeAndPictures.Count > 0)
+                {
+                    foreach (var estab in estabWithTypeAndPictures)
+                    {
+                        EstablishmentShortVwMdl shortVw = new EstablishmentShortVwMdl
+                        {
+                            Id = estab.Id,
+                            Name = estab.Name,
+                            EstabType = estab.Type.Name,
+                            ManagerId = estab.ManagerId,
+                            ManagerUserName = estab.Manager.UserName,
+                            IsValidated = estab.IsValidated
+                        };
+
+                        rtrnList.Add(shortVw);
+
+                    }
+                }
+
+                return rtrnList;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
 
         public PicturesDTO GetLogo(int estabId)
         {

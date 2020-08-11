@@ -1,12 +1,17 @@
-﻿@model cloudscribe.Pagination.Models.PagedResult<MyLibrary.ViewModels.EstablishmentShortVwMdl>
+﻿@using MyLibrary.Constants
+@model cloudscribe.Pagination.Models.PagedResult<MyLibrary.ViewModels.EstablishmentShortVwMdl>
 
 @{
-    //ViewData["Title"] = "Validate";
     ViewData["Controller"] = "Establishments";
-    //ViewData["Action"] = "Validate";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h1>@ViewData["HeadText"] @*Waiting validation establishments list*@</h1>
+<h1 class="ml-5">@ViewData["HeadText"]</h1>
+<hr/>
+@if (Model.Data.Count == 0)
+{
+
+    <h4 class="ml-5 font-italic text-info">There is no establishment to list actually</h4>
+}
 <div class="d-flex justify-content-center">
     <partial name="_PaginationPartial" view-data="ViewData" model="Model" />
 </div>
@@ -20,14 +25,36 @@
             </div>
             <div class="col-md-8 bg-dark d-flex flex-column">
                 <div class="card-body">
-                    <h3 class="card-title text-white">@Html.DisplayFor(modelItem => item.Name)</h3> 
+                    <h3 class="card-title text-white">@Html.DisplayFor(modelItem => item.Name)</h3>
                     <hr class="border-secondary" />
                     <h5 class="card-text font-italic text-warning">@Html.DisplayFor(modelItem => item.EstabType)</h5>
-                    <h6 class="card-text font-italic text-secondary">Manager : @Html.DisplayFor(modelItem => item.ManagerUserName)</h6>
-                </div>
+                    @if (User.IsInRole(MyIdentityServerConstants.Role_Admin))
+                    {
+                        <h6 class="card-text font-italic text-secondary">Manager : @Html.DisplayFor(modelItem => item.ManagerUserName)</h6>
+                    }
+                    @if (User.Claims.First(x => x.Type.Contains("sub")).Value.Equals(item.ManagerId)||User.IsInRole(MyIdentityServerConstants.Role_Admin))
+                    {
+                        @if (item.IsValidated)
+                        {
+                            <h6 class="card-text font-italic text-success">Validated</h6>
+                        }
+                        else
+                        {
+                            <h6 class="card-text font-italic text-danger">Waiting validation</h6>
+                        }
+                    }
+                </div>               
                 <div class="align-self-end p-2">
-                    <a href="#" class="btn btn-lg btn-success mt-auto">Validate</a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-lg btn-primary mt-auto">Full view</a>
+                    <a href="#" class="btn btn btn-danger mt-auto">Delete</a>
+                    <a href="#" class="btn btn btn-warning text-white mt-auto">Edit</a>
+                    @if (User.IsInRole(MyIdentityServerConstants.Role_Admin) && (!@item.IsValidated))
+                    {
+                        <a href="#" class="btn btn btn-success mt-auto">Validate</a>
+                    }
+                    @if (User.IsInRole(MyIdentityServerConstants.Role_User))
+                    {
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn btn-primary mt-auto">Full view</a>
+                    }
                 </div>
             </div>
         </div>

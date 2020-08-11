@@ -37,13 +37,12 @@ namespace MVCClient.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        //// GET: EstablishmentsController
         public async Task<ActionResult> Index(int pageNumber = 1, int pageSize = 2)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-            var httpResponse = await _client.GetAsync($"{MyAPIConstants.MyAPI_EstablishmentsCtrl_Url}GetAllNotValidated");
+            var httpResponse = await _client.GetAsync($"{MyAPIConstants.MyAPI_EstablishmentsCtrl_Url}GetAllValidated");
             if (!httpResponse.IsSuccessStatusCode)
             {
                 AddErrorMessage("Data not downloaded", httpResponse.ReasonPhrase);
@@ -63,18 +62,50 @@ namespace MVCClient.Controllers
                 PageSize = pageSize
             };
 
-            ViewData["Title"] = "Establishments validation";
-            ViewData["Action"] = "GetAllNotValidated";
-            ViewData["HeadText"] = "Waiting validation establishments list";
+            ViewData["Title"] = "Establishments index";
+            ViewData["Action"] = "Index";
+            ViewData["HeadText"] = "List of all our establishments";
+
+            return View("Index", pageResult);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = MyIdentityServerConstants.Role_Admin_Manager)]
+        public async Task<ActionResult> GetAllByManager(int pageNumber = 1, int pageSize = 2)
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var httpResponse = await _client.GetAsync($"{MyAPIConstants.MyAPI_EstablishmentsCtrl_Url}GetAllByManager/{User.Claims.First(x=>x.Type.Contains("sub")).Value}");
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                AddErrorMessage("Data not downloaded", httpResponse.ReasonPhrase);
+                return View("../Home/Index");
+            }
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            List<EstablishmentShortVwMdl> displayList = JsonConvert.DeserializeObject<List<EstablishmentShortVwMdl>>(content);
+
+            int excludeRecords = (pageSize * pageNumber) - pageSize;
+            var paginatedList = displayList.Skip(excludeRecords).Take(pageSize);
+            var pageResult = new PagedResult<EstablishmentShortVwMdl>
+            {
+                Data = paginatedList.ToList(),
+                TotalItems = displayList.Count(),
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+
+            ViewData["Title"] = "Establishments by manager";
+            ViewData["Action"] = "GetAllByManager";
+            ViewData["HeadText"] = "Your establishments";
 
             return View("Index", pageResult);
         }
 
 
-
         [HttpGet]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin_Manager)]
-        //GET: EstablishmentsController/Details/5
         public async Task<ActionResult> Details(int id)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
@@ -93,7 +124,6 @@ namespace MVCClient.Controllers
             return View(estabDetails);
         }
 
-        // GET: EstablishmentsController/Create
         [HttpGet]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin_Manager)]
         public ActionResult Create()
@@ -102,7 +132,6 @@ namespace MVCClient.Controllers
             return View();
         }
 
-        // POST: EstablishmentsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin_Manager)]
