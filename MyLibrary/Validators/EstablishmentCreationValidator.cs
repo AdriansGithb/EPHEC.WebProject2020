@@ -30,7 +30,7 @@ namespace MyLibrary.Validators
                 //{
                 //    bool isValid = await VatLayerHelper.IsValidVatNumber(vatNumber);
                 //    return isValid;
-                //} ).WithMessage("VAT Number must be a valid vat number, with a valid vat format");
+                //}).WithMessage("VAT Number must be a valid vat number, with a valid vat format");
 
             RuleFor(x => x.Email)
                 .NotEmpty().WithMessage(MyValidatorsConstants.RequiredField + "Email")

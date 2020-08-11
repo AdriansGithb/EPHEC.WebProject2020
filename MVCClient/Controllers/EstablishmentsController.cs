@@ -10,6 +10,7 @@ using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
+using cloudscribe.Pagination.Models;
 using FluentValidation.TestHelper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -47,7 +48,7 @@ namespace MVCClient.Controllers
 
         [HttpGet]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin)]
-        public async Task<ActionResult> Validate()
+        public async Task<ActionResult> Validate(int pageNumber = 1, int pageSize = 2)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
@@ -62,7 +63,18 @@ namespace MVCClient.Controllers
             var content = await httpResponse.Content.ReadAsStringAsync();
             List<EstablishmentShortVwMdl> displayList = JsonConvert.DeserializeObject<List<EstablishmentShortVwMdl>>(content);
 
-            return View(displayList);
+            int excludeRecords = (pageSize * pageNumber) - pageSize;
+            var paginatedList = displayList.Skip(excludeRecords).Take(pageSize);
+            var pageResult = new PagedResult<EstablishmentShortVwMdl>
+            {
+                Data = paginatedList.ToList(),
+                TotalItems = displayList.Count(),
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+
+
+            return View(pageResult);
         }
 
         // GET: EstablishmentsController/Create

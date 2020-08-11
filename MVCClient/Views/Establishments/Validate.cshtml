@@ -1,28 +1,34 @@
-﻿@model IEnumerable<MyLibrary.ViewModels.EstablishmentShortVwMdl>
+﻿@model cloudscribe.Pagination.Models.PagedResult<MyLibrary.ViewModels.EstablishmentShortVwMdl>
 
 @{
     ViewData["Title"] = "Validate";
+    ViewData["Controller"] = "Establishments";
+    ViewData["Action"] = "Validate";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-    <h1>Waiting validation establishments list</h1>
+<h1>Waiting validation establishments list</h1>
+<div class="d-flex justify-content-center">
+    <partial name="_PaginationPartial" view-data="ViewData" model="Model" />
+</div>
 
-    @foreach (var item in Model)
-    {
-            <div class="card mb-3 w-50 border-dark bg-dark ml-5">
-                <div class="row no-gutters">
-                    <div class="col-md-4">
-                        <img class="card-img-top" src="@Url.Action("RenderImage", new {estabId = item.Id})" alt="Card image cap">
-                    </div>
-                    <div class="col-md-8 bg-dark d-flex flex-column">
-                        <div class="card-body">
-                            <h3 class="card-title text-white">@Html.DisplayFor(modelItem => item.Name)</h3>
-                            <h5 class="card-text font-italic text-secondary">@Html.DisplayFor(modelItem => item.EstabType)</h5>
-                        </div>
-                        <div class="align-self-end p-2">
-                            <a href="#" class="btn btn-lg btn-success mt-auto">Validate</a>
-                            <a href="#" class="btn btn-lg btn-primary mt-auto">Full view</a>
-                        </div>
-                    </div>
+@foreach (var item in Model.Data)
+{
+    <div class="card mb-3 w-75 border-dark bg-dark ml-5">
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <img class="card-img-top" src="@Url.Action("RenderImage", new {estabId = item.Id})" alt="Card image cap">
+            </div>
+            <div class="col-md-8 bg-dark d-flex flex-column">
+                <div class="card-body">
+                    <h3 class="card-title text-white">@Html.DisplayFor(modelItem => item.Name)</h3>
+                    <h5 class="card-text font-italic text-secondary">@Html.DisplayFor(modelItem => item.EstabType)</h5>
+                </div>
+                <div class="align-self-end p-2">
+                    <a href="#" class="btn btn-lg btn-success mt-auto">Validate</a>
+                    <a href="#" class="btn btn-lg btn-primary mt-auto">Full view</a>
                 </div>
             </div>
-    }
+        </div>
+    </div>
+}
+
