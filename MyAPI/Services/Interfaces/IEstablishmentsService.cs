@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MyLibrary.DTOs;
 using MyLibrary.Entities;
 using MyLibrary.ViewModels;
 
@@ -13,7 +14,7 @@ namespace MyAPI.Services.Interfaces
 
         List<EstablishmentShortVwMdl> GetAllEstabNotValited();
 
-        EstablishmentsPictures GetLogo(int estabId);
+        PicturesDTO GetLogo(int estabId);
 
     }
 }

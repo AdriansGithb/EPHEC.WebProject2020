@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting.Internal;
 using MyLibrary.Constants;
+using MyLibrary.DTOs;
 using MyLibrary.Entities;
 using MyLibrary.ViewModels;
 using Newtonsoft.Json;
@@ -182,14 +183,16 @@ namespace MVCClient.Controllers
 
                 var httpResponse =
                     await _client.GetAsync($"{MyAPIConstants.MyAPI_EstablishmentsCtrl_Url}GetLogo/{estabId}");
-                if (httpResponse.IsSuccessStatusCode && httpResponse.Content.Headers.ContentLength > 0)
+                if (httpResponse.IsSuccessStatusCode)
                 {
                     var content = await httpResponse.Content.ReadAsStringAsync();
-                    EstablishmentsPictures logo = JsonConvert.DeserializeObject<EstablishmentsPictures>(content);
+                    PicturesDTO logo = JsonConvert.DeserializeObject<PicturesDTO>(content);
 
-                    string imgType = GetPictureFormatFromArrayFile(logo.Picture);
-
-                    return File(logo.Picture, $"image/{imgType}");
+                    if (logo.PictureAsArrayBytes != null)
+                    {
+                        string imgType = GetPictureFormatFromArrayFile(logo.PictureAsArrayBytes);
+                        return File(logo.PictureAsArrayBytes, $"image/{imgType}");
+                    }
                 }
 
                 byte[] defaultLogo = GetDefaultPictureFromFile("~\\..\\Images\\defaultLogo.jpg");

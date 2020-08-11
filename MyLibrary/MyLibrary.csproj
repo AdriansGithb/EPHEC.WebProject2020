@@ -133,6 +133,7 @@
     <Compile Include="Constants\MyMVCConstants.cs" />
     <Compile Include="Constants\MyValidatorsConstants.cs" />
     <Compile Include="Cookies\MyCookies.cs" />
+    <Compile Include="DTOs\PicturesDTO.cs" />
     <Compile Include="Entities\ApplicationUser.cs" />
     <Compile Include="Entities\Establishments.cs" />
     <Compile Include="Entities\EstablishmentsAddresses.cs" />
@@ -158,9 +159,7 @@
     <Compile Include="ViewModels\UserAccountEditionVwMdl.cs" />
     <Compile Include="ViewModels\UserAccountVwMdl.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DTOs\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>

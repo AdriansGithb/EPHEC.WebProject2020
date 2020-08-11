@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyAPI.Data;
 using MyAPI.Services.Interfaces;
+using MyLibrary.DTOs;
 using MyLibrary.Entities;
 using MyLibrary.ViewModels;
 
@@ -96,10 +97,10 @@ namespace MyAPI.Services
                         {
                             Id = estab.Id,
                             Name = estab.Name,
-                            EstabType = estab.Type.Name
+                            EstabType = estab.Type.Name,
+                            ManagerId = estab.ManagerId
                         };
-                        //if (estab.Pictures.Count>0 && estab.Pictures.Exists(x=>x.IsLogo==true))
-                        //    shortVw.LogoAsArray = estab.Pictures.First(x=>x.IsLogo==true).Picture;
+
                         rtrnList.Add(shortVw);
 
                     }
@@ -114,14 +115,23 @@ namespace MyAPI.Services
 
         }
 
-        public EstablishmentsPictures GetLogo(int estabId)
+        public PicturesDTO GetLogo(int estabId)
         {
             try
             {
                 EstablishmentsPictures logo = _context.EstablishmentsPictures
                     .FirstOrDefault(x => x.EstablishmentId == estabId && x.IsLogo == true);
 
-                return logo;
+                if (logo == null)
+                {
+                    return new PicturesDTO();
+                }
+
+                return new PicturesDTO
+                {
+                    PictureAsArrayBytes = logo.Picture
+                };
+
             }
             catch (Exception ex)
             {

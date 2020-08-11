@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyAPI.Services.Interfaces;
+using MyLibrary.DTOs;
 using MyLibrary.Entities;
 using MyLibrary.ViewModels;
 
@@ -65,7 +66,7 @@ namespace MyAPI.Controllers
         {
             try
             {
-                EstablishmentsPictures logo = _service.GetLogo(id);
+                PicturesDTO logo = _service.GetLogo(id);
                 return Ok(logo);
             }
             catch (Exception ex)
