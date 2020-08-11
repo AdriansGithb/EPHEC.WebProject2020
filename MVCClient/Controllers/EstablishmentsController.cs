@@ -40,41 +40,25 @@ namespace MVCClient.Controllers
         //    return View();
         //}
 
-        //// GET: EstablishmentsController/Details/5
-        //public ActionResult Details(int id)
-        //{
-        //    return View();
-        //}
-
         [HttpGet]
-        [Authorize(Roles = MyIdentityServerConstants.Role_Admin)]
-        public async Task<ActionResult> Validate(int pageNumber = 1, int pageSize = 2)
+        [Authorize(Roles = MyIdentityServerConstants.Role_Admin_Manager)]
+        //GET: EstablishmentsController/Details/5
+        public async Task<ActionResult> Details(int id)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-            var httpResponse = await _client.GetAsync($"{MyAPIConstants.MyAPI_EstablishmentsCtrl_Url}GetAllNotValidated");
+            var httpResponse = await _client.GetAsync($"{MyAPIConstants.MyAPI_EstablishmentsCtrl_Url}GetDetails/{id}");
             if (!httpResponse.IsSuccessStatusCode)
             {
-                AddErrorMessage("Data not downloaded",httpResponse.ReasonPhrase);
+                AddErrorMessage("Error", httpResponse.ReasonPhrase);
                 return View("../Home/Index");
             }
 
             var content = await httpResponse.Content.ReadAsStringAsync();
-            List<EstablishmentShortVwMdl> displayList = JsonConvert.DeserializeObject<List<EstablishmentShortVwMdl>>(content);
+            EstablishmentFullVwMdl estabDetails = JsonConvert.DeserializeObject<EstablishmentFullVwMdl>(content);
 
-            int excludeRecords = (pageSize * pageNumber) - pageSize;
-            var paginatedList = displayList.Skip(excludeRecords).Take(pageSize);
-            var pageResult = new PagedResult<EstablishmentShortVwMdl>
-            {
-                Data = paginatedList.ToList(),
-                TotalItems = displayList.Count(),
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            };
-
-
-            return View(pageResult);
+            return View(estabDetails);
         }
 
         // GET: EstablishmentsController/Create
@@ -144,6 +128,37 @@ namespace MVCClient.Controllers
             }
         }
 
+        [HttpGet]
+        [Authorize(Roles = MyIdentityServerConstants.Role_Admin)]
+        public async Task<ActionResult> Validate(int pageNumber = 1, int pageSize = 2)
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var httpResponse = await _client.GetAsync($"{MyAPIConstants.MyAPI_EstablishmentsCtrl_Url}GetAllNotValidated");
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                AddErrorMessage("Data not downloaded", httpResponse.ReasonPhrase);
+                return View("../Home/Index");
+            }
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            List<EstablishmentShortVwMdl> displayList = JsonConvert.DeserializeObject<List<EstablishmentShortVwMdl>>(content);
+
+            int excludeRecords = (pageSize * pageNumber) - pageSize;
+            var paginatedList = displayList.Skip(excludeRecords).Take(pageSize);
+            var pageResult = new PagedResult<EstablishmentShortVwMdl>
+            {
+                Data = paginatedList.ToList(),
+                TotalItems = displayList.Count(),
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+
+
+            return View(pageResult);
+        }
+
         //// GET: EstablishmentsController/Edit/5
         //public ActionResult Edit(int id)
         //{
@@ -186,7 +201,7 @@ namespace MVCClient.Controllers
         //    }
         //}
         [HttpGet]
-        public async Task<ActionResult> RenderImage(int estabId)
+        public async Task<ActionResult> RenderLogo(int estabId)
         {
             try
             {
@@ -206,7 +221,8 @@ namespace MVCClient.Controllers
                         return File(logo.PictureAsArrayBytes, $"image/{imgType}");
                     }
                 }
-
+                else AddErrorMessage("Download image problem","An unknown error has occured during downloading the logo for establishment id: "+estabId);
+                
                 byte[] defaultLogo = GetDefaultPictureFromFile("~\\..\\Images\\defaultLogo.jpg");
 
                 return File(defaultLogo, "image/jpg");

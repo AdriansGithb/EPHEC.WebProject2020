@@ -16,16 +16,18 @@
     <div class="card mb-3 w-75 border-dark bg-dark ml-5">
         <div class="row no-gutters">
             <div class="col-md-4">
-                <img class="card-img-top" src="@Url.Action("RenderImage", new {estabId = item.Id})" alt="Card image cap">
+                <img class="card-img-top" src="@Url.Action("RenderLogo", new {estabId = item.Id})" alt="Card image cap">
             </div>
             <div class="col-md-8 bg-dark d-flex flex-column">
                 <div class="card-body">
-                    <h3 class="card-title text-white">@Html.DisplayFor(modelItem => item.Name)</h3>
-                    <h5 class="card-text font-italic text-secondary">@Html.DisplayFor(modelItem => item.EstabType)</h5>
+                    <h3 class="card-title text-white">@Html.DisplayFor(modelItem => item.Name)</h3> 
+                    <hr class="border-secondary" />
+                    <h5 class="card-text font-italic text-warning">@Html.DisplayFor(modelItem => item.EstabType)</h5>
+                    <h6 class="card-text font-italic text-secondary">Manager : @Html.DisplayFor(modelItem => item.ManagerUserName)</h6>
                 </div>
                 <div class="align-self-end p-2">
                     <a href="#" class="btn btn-lg btn-success mt-auto">Validate</a>
-                    <a href="#" class="btn btn-lg btn-primary mt-auto">Full view</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-lg btn-primary mt-auto">Full view</a>
                 </div>
             </div>
         </div>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Transactions;
 using Microsoft.AspNetCore.Mvc;
@@ -65,10 +66,9 @@ namespace MyAPI.Services
                     {
                         pic.Establishment = createdEstab.Entity;
                     }
+                    _context.AddRange(newEstab.Pictures);
                 }
-
-                _context.AddRange(newEstab.Pictures);
-
+                
                 _context.SaveChanges();
                 return "success";
             }
@@ -85,8 +85,9 @@ namespace MyAPI.Services
             {
                 var estabWithTypeAndPictures = _context.Establishments
                     .Where(x => x.IsValidated == false)
-                    //.Include(x => x.Pictures)
-                    .Include(x=>x.Type).ToList();
+                    .Include(x=>x.Type)
+                    .Include(x=>x.Manager)
+                    .ToList();
 
                 List<EstablishmentShortVwMdl> rtrnList = new List<EstablishmentShortVwMdl>();
                 if (estabWithTypeAndPictures.Count > 0)
@@ -98,7 +99,9 @@ namespace MyAPI.Services
                             Id = estab.Id,
                             Name = estab.Name,
                             EstabType = estab.Type.Name,
-                            ManagerId = estab.ManagerId
+                            ManagerId = estab.ManagerId,
+                            ManagerUserName = estab.Manager.UserName,
+                            IsValidated = estab.IsValidated
                         };
 
                         rtrnList.Add(shortVw);
@@ -140,5 +143,92 @@ namespace MyAPI.Services
 
         }
 
+        public EstablishmentFullVwMdl GetDetails(int estabId)
+        {
+            try
+            {
+                var estabWithRelatedEntities = _context.Establishments
+                    .Where(x => x.Id == estabId)
+                    .Include(x => x.Manager)
+                    .Include(x=>x.Type)
+                    .Include(x => x.Details)
+                    .Include(x => x.Address)
+                    .Include(x => x.OpeningTimes)
+                    .Include(x => x.Pictures)
+                    .FirstOrDefault();
+
+                if (estabWithRelatedEntities == null)
+                {
+                    return new EstablishmentFullVwMdl();
+                }
+
+                EstablishmentFullVwMdl fullView = new EstablishmentFullVwMdl
+                {
+                    Id = estabWithRelatedEntities.Id,
+                    Name = estabWithRelatedEntities.Name,
+                    VatNum = estabWithRelatedEntities.VatNum,
+                    EmailPro = estabWithRelatedEntities.Email,
+                    Description = estabWithRelatedEntities.Description,
+                    IsValidated = estabWithRelatedEntities.IsValidated,
+                    Manager = $"{estabWithRelatedEntities.Manager.LastName} {estabWithRelatedEntities.Manager.FirstName}",
+                    EstabType = estabWithRelatedEntities.Type.Name,
+                    Country = estabWithRelatedEntities.Address.Country,
+                    City = estabWithRelatedEntities.Address.City,
+                    ZipCode = estabWithRelatedEntities.Address.ZipCode,
+                    Street = estabWithRelatedEntities.Address.Street,
+                    HouseNumber = estabWithRelatedEntities.Address.HouseNumber,
+                    BoxNumber = estabWithRelatedEntities.Address.BoxNumber,
+                    Phone = estabWithRelatedEntities.Details.Phone,
+                    PublicEmail = estabWithRelatedEntities.Details.Email,
+                    WebsiteUrl = estabWithRelatedEntities.Details.WebsiteUrl,
+                    ShortUrl = estabWithRelatedEntities.Details.ShortUrl,
+                    InstagramUrl = estabWithRelatedEntities.Details.InstagramUrl,
+                    FacebookUrl = estabWithRelatedEntities.Details.FacebookUrl,
+                    LinkedInUrl = estabWithRelatedEntities.Details.LinkedInUrl,
+                };
+                    
+                fullView.OpeningTimesIdList = new List<string>();
+                if (estabWithRelatedEntities.OpeningTimes != null)
+                {
+                    foreach (var openTime in estabWithRelatedEntities.OpeningTimes)
+                    {
+                        fullView.OpeningTimesIdList.Add(openTime.Id);
+                    }
+                }
+
+                fullView.PicturesIdList = new List<string>();
+                if (estabWithRelatedEntities.Pictures!=null)
+                {
+                    if (estabWithRelatedEntities.Pictures.Exists(x => x.IsLogo == true))
+                    {
+                        fullView.LogoId = estabWithRelatedEntities.Pictures.First(x => x.IsLogo == true).Id;
+                    }
+                        
+                    if (estabWithRelatedEntities.Pictures.Exists(x => x.IsLogo == false))
+                    {                            
+                        foreach (var picture in estabWithRelatedEntities.Pictures)
+                        {
+                            fullView.PicturesIdList.Add(picture.Id);
+                        }
+                    }
+
+                }
+
+                fullView.NewsIdList = new List<string>();
+                if (estabWithRelatedEntities.News!=null)
+                {
+                    foreach (var news in estabWithRelatedEntities.News)
+                    {
+                        fullView.NewsIdList.Add(news.Id);
+                    }
+                }
+
+                return fullView;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

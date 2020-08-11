@@ -13,5 +13,8 @@ namespace MyLibrary.ViewModels
         public string Name { get; set; }
         public string EstabType { get; set; }
         public string ManagerId { get; set; }
+        public string ManagerUserName { get; set; }
+        public bool IsValidated { get; set; }
+
     }
 }

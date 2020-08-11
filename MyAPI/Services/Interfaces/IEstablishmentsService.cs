@@ -11,10 +11,9 @@ namespace MyAPI.Services.Interfaces
     public interface IEstablishmentsService
     {
         string Create(Establishments newEstab);
-
         List<EstablishmentShortVwMdl> GetAllEstabNotValited();
-
         PicturesDTO GetLogo(int estabId);
+        EstablishmentFullVwMdl GetDetails(int estabId);
 
     }
 }

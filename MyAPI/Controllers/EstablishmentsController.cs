@@ -8,6 +8,7 @@ using MyAPI.Services.Interfaces;
 using MyLibrary.DTOs;
 using MyLibrary.Entities;
 using MyLibrary.ViewModels;
+using Newtonsoft.Json;
 
 namespace MyAPI.Controllers
 {
@@ -32,7 +33,7 @@ namespace MyAPI.Controllers
         public IActionResult Create(Establishments newEstab)
         {
             var creation = _service.Create(newEstab);
-            if (creation.Equals("success"))
+            if (!creation.Equals("success"))
                 return Ok();
             else return BadRequest(creation);
         }
@@ -68,6 +69,27 @@ namespace MyAPI.Controllers
             {
                 PicturesDTO logo = _service.GetLogo(id);
                 return Ok(logo);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Route("~/Establishments/GetDetails/{id}")]
+        public IActionResult GetDetails(int id)
+        {
+            try
+            {
+                EstablishmentFullVwMdl fullDetails = _service.GetDetails(id);
+                if (fullDetails.Id != id)
+                    return BadRequest("id not recognized");
+                return Ok(fullDetails);
             }
             catch (Exception ex)
             {
