@@ -16,5 +16,7 @@ namespace MyAPI.Services.Interfaces
         List<EstablishmentShortVwMdl> GetAllByManager(string managerId);
         EstablishmentFullVwMdl GetDetails(int estabId);
         void Delete(int estabId);
+        void Validate(int estabId);
+
     }
 }

@@ -105,7 +105,7 @@ namespace MVCClient.Controllers
 
 
         [HttpGet]
-        [Authorize(Roles = MyIdentityServerConstants.Role_Admin_Manager)]
+        [Authorize(Roles = MyIdentityServerConstants.Role_Admin_Manager_User)]
         public async Task<ActionResult> Details(int id)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
@@ -223,6 +223,24 @@ namespace MVCClient.Controllers
             return View("Index",pageResult);
         }
 
+        [HttpPost]
+        public async Task<bool> Validate(int estabId)
+        {
+            try
+            {
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                var httpResponse = await _client.PutAsync($"{MyAPIConstants.MyAPI_EstablishmentsCtrl_Url}Validate/{estabId}",null);
+                if (httpResponse.IsSuccessStatusCode)
+                    return true;
+                else return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
 
         //// GET: EstablishmentsController/Edit/5
@@ -265,6 +283,7 @@ namespace MVCClient.Controllers
                 return false;
             }
         }
+
         [HttpGet]
         public async Task<ActionResult> RenderLogo(int estabId)
         {

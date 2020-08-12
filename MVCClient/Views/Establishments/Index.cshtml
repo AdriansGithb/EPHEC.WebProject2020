@@ -32,7 +32,8 @@
                     {
                         <h6 class="card-text font-italic text-secondary">Manager : @Html.DisplayFor(modelItem => item.ManagerUserName)</h6>
                     }
-                    @if (User.Claims.First(x => x.Type.Contains("sub")).Value.Equals(item.ManagerId)||User.IsInRole(MyIdentityServerConstants.Role_Admin))
+                    @if (User.HasClaim("sub", "item.ManagerId") || User.IsInRole(MyIdentityServerConstants.Role_Admin))
+                    //User.Claims.First(x => x.Type.Contains("sub")).Value.Equals(item.ManagerId)
                     {
                         @if (item.IsValidated)
                         {
@@ -43,13 +44,19 @@
                             <h6 class="card-text font-italic text-danger">Waiting validation</h6>
                         }
                     }
-                </div>               
+                </div>                            
                 <div class="align-self-end p-2">
-                    <a href="#" class="btn btn btn-danger mt-auto" onclick="dltClick('@item.Name','@item.Id');">Delete</a>
-                    <a href="#" class="btn btn btn-warning text-white mt-auto">Edit</a>
-                    @if (User.IsInRole(MyIdentityServerConstants.Role_Admin) && (!@item.IsValidated))
+                    @if (User.IsInRole(MyIdentityServerConstants.Role_Admin))
                     {
-                        <a href="#" class="btn btn btn-success mt-auto">Validate</a>
+                        <a href="#" class="btn btn btn-danger mt-auto" onclick="dltClick('@item.Name', '@item.Id');">Delete</a>
+                        @if (!@item.IsValidated)
+                        {
+                            <a href="#" class="btn btn btn-success mt-auto" onclick="vldtClick('@item.Id');">Validate</a>
+                        }
+                    }
+                    @if (User.HasClaim("sub", "item.ManagerId") || User.IsInRole(MyIdentityServerConstants.Role_Admin))
+                    {
+                        <a href="#" class="btn btn btn-warning text-white mt-auto">Edit</a>
                     }
                     @if (User.IsInRole(MyIdentityServerConstants.Role_User))
                     {
@@ -73,6 +80,20 @@
             $("#myModalDelete").modal("show");
         };
 
+        function vldtClick(id) {
+            $.post("Validate",
+                { estabId : id },
+                function(success) {
+                    if (success) {
+                        sessionStorage.reloadAfterPageLoad = true;
+                        sessionStorage.setItem("success", "Establishment has been successfully validated");
+                        location.reload();
+                    } else {
+                        displayToastrMsg("Validation has ended with some issue. Please try again", "Error", "Error");
+                    }
+                });
+        };
+
         $(document).ready(function() {
             $('#confirmBtnDltModal').click(function() {
                 var id = $('#myModalDelete #estabIdToDlt').val().trim();
@@ -88,6 +109,21 @@
                         }
                     });
             });
+
+            //$(function vldtClick(id) {
+            //    $.post("Validate",
+            //        { estabId : id },
+            //        function(success) {
+            //            if (success) {
+            //                sessionStorage.reloadAfterPageLoad = true;
+            //                sessionStorage.setItem("success", "Establishment has been successfully validated");
+            //                location.reload();
+            //            } else {
+            //                displayToastrMsg("Validation has ended with some issue. Please try again", "Error", "Error");
+            //            }
+            //        });
+            //});
+
 
             $(function() {
                     if (sessionStorage.reloadAfterPageLoad) {

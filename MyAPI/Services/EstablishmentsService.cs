@@ -302,5 +302,25 @@ namespace MyAPI.Services
                 throw ex;
             }
         }
+
+        public void Validate(int estabId)
+        {
+            try
+            {
+                var estab = _context.Establishments.FirstOrDefault(x => x.Id == estabId);
+                if (estab != null)
+                {
+                    estab.IsValidated = true;
+                    _context.Establishments.Update(estab);
+                    _context.SaveChanges();
+                }
+                else throw new Exception("Establishment id not found");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
