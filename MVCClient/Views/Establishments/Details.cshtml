@@ -224,9 +224,9 @@
                         <dd class="col-sm-8">
                             @if (@oTime.IsOpen)
                             {
-                                DateTime opening = new DateTime(); 
+                                DateTime opening = new DateTime();
                                 DateTime closing = new DateTime();
-                                @if(@oTime.OpeningHour.HasValue)
+                                @if (@oTime.OpeningHour.HasValue)
                                 {
                                     opening = (DateTime)@oTime.OpeningHour;
                                 }
@@ -254,10 +254,56 @@
                 <a class="text-white" data-toggle="collapse" href="#Pictures">Pictures</a>
             </div>
             <div class="card-body collapse" id="Pictures">
-                <dl class="row">
-                </dl>
+                @if (Model.PicturesIdList.Count == 0)
+                {
+                    <p>No establishment pictures to show.</p>
+                }
+                else
+                {
+                    <div class="row">
+                        @foreach (var id in Model.PicturesIdList)
+                        {
+                            <div class="col-4">
+                                <div class="card">
+                                    <img class="w-100 border-0" id="@id" src="@Url.Action("RenderPicture", new {picId = id})" alt="Card image cap">
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
             </div>
         </div>
     </div>
 </div>
-
+<div class="row pt-1 pb-1">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header font-weight-bold text-white bg-dark">
+                <a class="text-white" data-toggle="collapse" href="#News">News</a>
+            </div>
+            <div class="card-body collapse" id="News">
+                @if (Model.PicturesIdList.Count == 0)
+                {
+                    <p>No establishment news.</p>
+                }
+                else
+                {
+                    <div class="row">
+                        @foreach (var id in Model.NewsIdList)
+                        {
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="card-text">
+                                            <p>@Url.Action("RenderNews", new { newsId = id })</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

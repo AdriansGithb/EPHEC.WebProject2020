@@ -9,6 +9,7 @@ namespace MyAPI.Services.Interfaces
     public interface IEstablishmentsPicturesService
     {
         PicturesDTO GetLogo(int estabId);
+        PicturesDTO GetPicture(string picId);
 
     }
 }

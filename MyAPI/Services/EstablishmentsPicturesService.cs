@@ -43,5 +43,30 @@ namespace MyAPI.Services
 
         }
 
+        public PicturesDTO GetPicture(string picId)
+        {
+            try
+            {
+                EstablishmentsPictures pic = _context.EstablishmentsPictures
+                    .FirstOrDefault(x => x.Id == picId);
+
+                if (picId == null)
+                {
+                    return new PicturesDTO();
+                }
+
+                return new PicturesDTO
+                {
+                    PictureAsArrayBytes = pic.Picture
+                };
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
     }
 }

@@ -284,7 +284,8 @@ namespace MVCClient.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> RenderPicture(int picId)
+        [Authorize(Roles = MyIdentityServerConstants.Role_Admin_Manager_User)]
+        public async Task<ActionResult> RenderPicture(string picId)
         {
             try
             {
@@ -315,8 +316,7 @@ namespace MVCClient.Controllers
                 return File(notfoundLogo, "image/jpg");
             }
         }
-
-
+        
         [HttpGet]
         public async Task<ActionResult> RenderLogo(int estabId)
         {
@@ -435,6 +435,13 @@ namespace MVCClient.Controllers
 
             CountryList.Sort();
             ViewBag.CountryList = CountryList;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<ActionResult> RenderNews(string newsId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -34,7 +34,6 @@
                         <h6 class="card-text font-italic text-secondary">Manager : @Html.DisplayFor(modelItem => item.ManagerUserName)</h6>
                     }
                     @if (User.HasClaim("sub", item.ManagerId) || User.IsInRole(MyIdentityServerConstants.Role_Admin))
-                    //User.Claims.First(x => x.Type.Contains("sub")).Value.Equals(item.ManagerId)
                     {
                         @if (item.IsValidated)
                         {

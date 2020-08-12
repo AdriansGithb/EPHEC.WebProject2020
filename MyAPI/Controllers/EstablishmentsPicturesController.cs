@@ -26,8 +26,6 @@ namespace MyAPI.Controllers
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Route("~/EstablishmentsPictures/GetLogo/{id}")]
         public IActionResult GetLogo(int id)
         {
@@ -41,6 +39,26 @@ namespace MyAPI.Controllers
                 return BadRequest(ex);
             }
         }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Route("~/EstablishmentsPictures/GetPicture/{id}")]
+        public IActionResult GetPicture(string id)
+        {
+            try
+            {
+                PicturesDTO pic = _service.GetPicture(id);
+                return Ok(pic);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
     }
 }
 
