@@ -34,7 +34,7 @@ namespace MyAPI.Controllers
         public IActionResult Create(Establishments newEstab)
         {
             var creation = _service.Create(newEstab);
-            if (!creation.Equals("success"))
+            if (creation.Equals("success"))
                 return Ok();
             else return BadRequest(creation);
         }

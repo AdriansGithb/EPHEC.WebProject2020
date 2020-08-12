@@ -37,7 +37,7 @@ namespace MVCClient.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult> Index(int pageNumber = 1, int pageSize = 2)
+        public async Task<ActionResult> Index(int pageNumber = 1, int pageSize = 3)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
@@ -286,17 +286,22 @@ namespace MVCClient.Controllers
                         string imgType = GetPictureFormatFromArrayFile(logo.PictureAsArrayBytes);
                         return File(logo.PictureAsArrayBytes, $"image/{imgType}");
                     }
+                    else
+                    {
+                        byte[] defaultLogo = GetDefaultPictureFromFile("~\\..\\Images\\defaultLogo.jpg");
+                        return File(defaultLogo, "image/jpg");
+                    }
                 }
-                else AddErrorMessage("Download image problem","An unknown error has occured during downloading the logo for establishment id: "+estabId);
+                else AddErrorMessage("Download image problem","An unknown error has occured during downloading the logo for establishment id: "+estabId+": "+httpResponse.ReasonPhrase);
                 
-                byte[] defaultLogo = GetDefaultPictureFromFile("~\\..\\Images\\defaultLogo.jpg");
+                byte[] notfoundLogo = GetDefaultPictureFromFile("~\\..\\Images\\notfound.jpg");
 
-                return File(defaultLogo, "image/jpg");
+                return File(notfoundLogo, "image/jpg");
             }
             catch (Exception)
             {
-                byte[] defaultLogo = GetDefaultPictureFromFile("~\\..\\Images\\defaultLogo.jpg");
-                return File(defaultLogo, "image/jpg");
+                byte[] notfoundLogo = GetDefaultPictureFromFile("~\\..\\Images\\defaultLogo.jpg");
+                return File(notfoundLogo, "image/jpg");
             }
         }
 
