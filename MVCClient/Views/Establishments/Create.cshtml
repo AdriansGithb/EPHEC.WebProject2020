@@ -19,29 +19,29 @@
         <div class="col-md-8">
             <div class="form-group collapse show" id="Establishment">
                 <div class="form-group">
-                    <label asp-for="Name" class="control-label">Name *</label>
+                    <label asp-for="Name" class="control-label font-weight-bold">Name *</label>
                     <input asp-for="Name" class="form-control" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="VatNum" class="control-label">VAT Number *</label>
+                    <label asp-for="VatNum" class="control-label font-weight-bold">VAT Number *</label>
                     <input asp-for="VatNum" class="form-control" />
                     <span asp-validation-for="VatNum" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Email" class="control-label">Professional email *</label>
+                    <label asp-for="Email" class="control-label font-weight-bold">Professional email *</label>
                     <input asp-for="Email" class="form-control" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Description" class="control-label">Description text (2000 char max)</label>
+                    <label asp-for="Description" class="control-label font-weight-bold">Description text (2000 char max)</label>
                     <textarea asp-for="Description" class="form-control" rows="5"></textarea>
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
                 <input asp-for="IsValidated" type="hidden" value="false" />
                 <input asp-for="ManagerId" type="hidden" value="@User.Claims.First(x=>x.Type.Contains("sub")).Value" />
                 <div class="form-group">
-                    <label asp-for="TypeId" class="control-label">Establishment Type *</label>
+                    <label asp-for="TypeId" class="control-label font-weight-bold">Establishment Type *</label>
                     <select asp-for="TypeId" asp-items="Html.GetEnumSelectList(typeof(EstablishmentsTypesId))" class="form-control">
                         <option value="">Please select...</option>
                     </select>
@@ -57,7 +57,7 @@
         <div class="col-md-8">
             <div class="form-group collapse" id="Address">
                 <div class="form-row">
-                    <label asp-for="Address.Country" class="control-label">Country *</label>
+                    <label asp-for="Address.Country" class="control-label font-weight-bold">Country *</label>
                     <select asp-for="Address.Country" asp-items="@new SelectList(ViewBag.CountryList)" class="form-control">
                         <option value="">Please select...</option>
                     </select>
@@ -65,29 +65,29 @@
                 </div>
                 <div class="form-row">
                     <div class="col">
-                        <label asp-for="Address.City" class="control-label">City *</label>
+                        <label asp-for="Address.City" class="control-label font-weight-bold">City *</label>
                         <input asp-for="Address.City" class="form-control" />
                         <span asp-validation-for="Address.City" class="text-danger"></span>
                     </div>
                     <div class="col">
-                        <label asp-for="Address.ZipCode" class="control-label">Zip Code *</label>
+                        <label asp-for="Address.ZipCode" class="control-label font-weight-bold">Zip Code *</label>
                         <input asp-for="Address.ZipCode" class="form-control" />
                         <span asp-validation-for="Address.ZipCode" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-row">
-                    <label asp-for="Address.Street" class="control-label">Street *</label>
+                    <label asp-for="Address.Street" class="control-label font-weight-bold">Street *</label>
                     <input asp-for="Address.Street" class="form-control" />
                     <span asp-validation-for="Address.Street" class="text-danger"></span>
                 </div>
                 <div class="form-row">
                     <div class="col">
-                        <label asp-for="Address.HouseNumber" class="control-label">House number *</label>
+                        <label asp-for="Address.HouseNumber" class="control-label font-weight-bold">House number *</label>
                         <input asp-for="Address.HouseNumber" class="form-control" />
                         <span asp-validation-for="Address.HouseNumber" class="text-danger"></span>
                     </div>
                     <div class="col">
-                        <label asp-for="Address.BoxNumber" class="control-label">Box</label>
+                        <label asp-for="Address.BoxNumber" class="control-label font-weight-bold">Box</label>
                         <input asp-for="Address.BoxNumber" class="form-control" />
                         <span asp-validation-for="Address.BoxNumber" class="text-danger"></span>
                     </div>
@@ -102,32 +102,32 @@
         <div class="col-md-8">
             <div class="form-group collapse" id="Details">
                 <div class="form-group">
-                    <label asp-for="Details.Phone" class="control-label">Phone number (fix/mobile line)</label>
+                    <label asp-for="Details.Phone" class="control-label font-weight-bold">Phone number (fix/mobile line)</label>
                     <input asp-for="Details.Phone" class="form-control" />
                     <span asp-validation-for="Details.Phone" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Details.Email" class="control-label">Public email</label>
+                    <label asp-for="Details.Email" class="control-label font-weight-bold">Public email</label>
                     <input asp-for="Details.Email" class="form-control" />
                     <span asp-validation-for="Details.Email" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Details.WebsiteUrl" class="control-label">Website</label>
+                    <label asp-for="Details.WebsiteUrl" class="control-label font-weight-bold">Website</label>
                     <input asp-for="Details.WebsiteUrl" class="form-control" />
                     <span asp-validation-for="Details.WebsiteUrl" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Details.InstagramUrl" class="control-label">Instagram</label>
+                    <label asp-for="Details.InstagramUrl" class="control-label font-weight-bold">Instagram</label>
                     <input asp-for="Details.InstagramUrl" class="form-control" />
                     <span asp-validation-for="Details.InstagramUrl" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Details.FacebookUrl" class="control-label">Facebook</label>
+                    <label asp-for="Details.FacebookUrl" class="control-label font-weight-bold">Facebook</label>
                     <input asp-for="Details.FacebookUrl" class="form-control" />
                     <span asp-validation-for="Details.FacebookUrl" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Details.LinkedInUrl" class="control-label">LinkedIn</label>
+                    <label asp-for="Details.LinkedInUrl" class="control-label font-weight-bold">LinkedIn</label>
                     <input asp-for="Details.LinkedInUrl" class="form-control" />
                     <span asp-validation-for="Details.LinkedInUrl" class="text-danger"></span>
                 </div>
@@ -143,7 +143,7 @@
                 <div class="row">
                     <div class="col-md-3 border-right border-bottom">
                         <div class="form-group">
-                            <label asp-for="OpeningTimes[0].DayOfWeek" class="control-label">Monday</label>
+                            <label asp-for="OpeningTimes[0].DayOfWeek" class="control-label font-weight-bold">Monday</label>
                             <input asp-for="OpeningTimes[0].DayOfWeek" type="hidden" value="@DayOfWeek.Monday" />
                         </div>
                         <div class="form-group form-check">
@@ -165,7 +165,7 @@
                     </div>
                     <div class="col-md-3 border-right border-bottom">
                         <div class="form-group">
-                            <label asp-for="OpeningTimes[1].DayOfWeek" class="control-label">Tuesday</label>
+                            <label asp-for="OpeningTimes[1].DayOfWeek" class="control-label font-weight-bold">Tuesday</label>
                             <input asp-for="OpeningTimes[1].DayOfWeek" type="hidden" value="@DayOfWeek.Tuesday" />
                         </div>
                         <div class="form-group form-check">
@@ -187,7 +187,7 @@
                     </div>
                     <div class="col-md-3 border-right border-bottom">
                         <div class="form-group">
-                            <label asp-for="OpeningTimes[2].DayOfWeek" class="control-label">Wednesday</label>
+                            <label asp-for="OpeningTimes[2].DayOfWeek" class="control-label font-weight-bold">Wednesday</label>
                             <input asp-for="OpeningTimes[2].DayOfWeek" type="hidden" value="@DayOfWeek.Wednesday" />
                         </div>
                         <div class="form-group form-check">
@@ -210,7 +210,7 @@
                     </div>
                     <div class="col-md-3 border-bottom">
                         <div class="form-group">
-                            <label asp-for="OpeningTimes[3].DayOfWeek" class="control-label">Thursday</label>
+                            <label asp-for="OpeningTimes[3].DayOfWeek" class="control-label font-weight-bold">Thursday</label>
                             <input asp-for="OpeningTimes[3].DayOfWeek" type="hidden" value="@DayOfWeek.Thursday" />
                         </div>
                         <div class="form-group form-check">
@@ -235,7 +235,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-3 border-right">
                         <div class="form-group">
-                            <label asp-for="OpeningTimes[4].DayOfWeek" class="control-label">Friday</label>
+                            <label asp-for="OpeningTimes[4].DayOfWeek" class="control-label font-weight-bold">Friday</label>
                             <input asp-for="OpeningTimes[4].DayOfWeek" type="hidden" value="@DayOfWeek.Friday" />
                         </div>
                         <div class="form-group form-check">
@@ -258,7 +258,7 @@
                     </div>
                     <div class="col-md-3 border-right">
                         <div class="form-group">
-                            <label asp-for="OpeningTimes[5].DayOfWeek" class="control-label">Saturday</label>
+                            <label asp-for="OpeningTimes[5].DayOfWeek" class="control-label font-weight-bold">Saturday</label>
                             <input asp-for="OpeningTimes[5].DayOfWeek" type="hidden" value="@DayOfWeek.Saturday" />
                         </div>
                         <div class="form-group form-check">
@@ -280,7 +280,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label asp-for="OpeningTimes[6].DayOfWeek" class="control-label">Sunday</label>
+                            <label asp-for="OpeningTimes[6].DayOfWeek" class="control-label font-weight-bold">Sunday</label>
                             <input asp-for="OpeningTimes[6].DayOfWeek" type="hidden" value="@DayOfWeek.Sunday" />
                         </div>
                         <div class="form-group form-check">

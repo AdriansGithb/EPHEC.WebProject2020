@@ -1,0 +1,188 @@
+﻿@using MyLibrary.Entities
+@using MyLibrary.DTOs
+@model MyLibrary.ViewModels.EstablishmentEditionVwMdl
+@Html.AntiForgeryToken()
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit @Model.Name</h1>
+
+<h4>Please modify each field you want to and click "Save changes" to save your modifications</h4>
+<hr />
+<form asp-action="Edit" enctype="multipart/form-data">
+<div asp-validation-summary="All" class="text-danger"></div>
+<input asp-for="Id" type="hidden" value="@Model.Id"/>
+
+    <div class="row">
+        <div class="col-md-3 bg-light border p-3 text-center">
+            <a class="text-body" data-toggle="collapse" href="#Establishment">Establishment Identification</a>
+        </div>
+        <div class="col-md-8">
+            <div class="form-group collapse show" id="Establishment">
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label font-weight-bold">Name *</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="VatNum" class="control-label font-weight-bold">VAT Number *</label>
+                    <input asp-for="VatNum" class="form-control" />
+                    <span asp-validation-for="VatNum" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EmailPro" class="control-label font-weight-bold">Professional email *</label>
+                    <input asp-for="EmailPro" class="form-control" />
+                    <span asp-validation-for="EmailPro" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label font-weight-bold">Description text (2000 char max)</label>
+                    <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <input asp-for="IsValidated" type="hidden" value="false" />
+                <div class="form-group">
+                    <label asp-for="TypeId" class="control-label font-weight-bold">Establishment Type *</label>
+                    <select asp-for="TypeId" asp-items="Html.GetEnumSelectList(typeof(EstablishmentsTypesId))" class="form-control">
+                        <option value="">Please select...</option>
+                    </select>
+                    <span asp-validation-for="TypeId" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 bg-light border p-3 text-center">
+            <a class="text-body" data-toggle="collapse" href="#Address">Establishment Address</a>
+        </div>
+        <div class="col-md-8">
+            <div class="form-group collapse" id="Address">
+                <div class="form-row">
+                    <label asp-for="Country" class="control-label font-weight-bold">Country *</label>
+                    <select asp-for="Country" asp-items="@new SelectList(ViewBag.CountryList)" class="form-control">
+                        <option value="">Please select...</option>
+                    </select>
+                    <span asp-validation-for="Country" class="text-danger"></span>
+                </div>
+                <div class="form-row">
+                    <div class="col">
+                        <label asp-for="City" class="control-label font-weight-bold">City *</label>
+                        <input asp-for="City" class="form-control" />
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
+                    <div class="col">
+                        <label asp-for="ZipCode" class="control-label font-weight-bold">Zip Code *</label>
+                        <input asp-for="ZipCode" class="form-control" />
+                        <span asp-validation-for="ZipCode" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label asp-for="Street" class="control-label font-weight-bold">Street *</label>
+                    <input asp-for="Street" class="form-control" />
+                    <span asp-validation-for="Street" class="text-danger"></span>
+                </div>
+                <div class="form-row">
+                    <div class="col">
+                        <label asp-for="HouseNumber" class="control-label font-weight-bold">House number *</label>
+                        <input asp-for="HouseNumber" class="form-control" />
+                        <span asp-validation-for="HouseNumber" class="text-danger"></span>
+                    </div>
+                    <div class="col">
+                        <label asp-for="BoxNumber" class="control-label font-weight-bold">Box</label>
+                        <input asp-for="BoxNumber" class="form-control" />
+                        <span asp-validation-for="BoxNumber" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 bg-light border p-3 text-center">
+            <a class="text-body" data-toggle="collapse" href="#Details">Establishment Details</a>
+        </div>
+        <div class="col-md-8">
+            <div class="form-group collapse" id="Details">
+                <div class="form-group">
+                    <label asp-for="Phone" class="control-label font-weight-bold">Phone number (fix/mobile line)</label>
+                    <input asp-for="Phone" class="form-control" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PublicEmail" class="control-label font-weight-bold">Public email</label>
+                    <input asp-for="PublicEmail" class="form-control" />
+                    <span asp-validation-for="PublicEmail" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="WebsiteUrl" class="control-label font-weight-bold">Website</label>
+                    <input asp-for="WebsiteUrl" class="form-control" />
+                    <span asp-validation-for="WebsiteUrl" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="InstagramUrl" class="control-label font-weight-bold">Instagram</label>
+                    <input asp-for="InstagramUrl" class="form-control" />
+                    <span asp-validation-for="InstagramUrl" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FacebookUrl" class="control-label font-weight-bold">Facebook</label>
+                    <input asp-for="FacebookUrl" class="form-control" />
+                    <span asp-validation-for="FacebookUrl" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LinkedInUrl" class="control-label font-weight-bold">LinkedIn</label>
+                    <input asp-for="LinkedInUrl" class="form-control" />
+                    <span asp-validation-for="LinkedInUrl" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 bg-light border p-3 text-center">
+            <a class="text-body" data-toggle="collapse" href="#OpenHours">Establishment Opening Hours</a>
+        </div>
+        <div class="col-md-8">
+            <div class="form-group collapse" id="OpenHours">
+                <div class="row">
+                    @for (var i = 0; i < Model.OpeningTimesList.Count(); i++)
+                    {
+                        <input asp-for="OpeningTimesList[i].Id" type="hidden" value="@Model.OpeningTimesList[i].Id"/>
+
+                        <div class="col-md-3 border-right border-bottom">
+                            <div class="form-group">
+                                <label asp-for="OpeningTimesList[i].DayOfWeek" class="control-label font-weight-bold">@Model.OpeningTimesList[i].DayOfWeek</label>
+                                <input asp-for="OpeningTimesList[i].DayOfWeek" type="hidden" value="@Model.OpeningTimesList[i].DayOfWeek"/>
+                            </div>
+                            <div class="form-group form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="OpeningTimesList[i].IsOpen"/> @Html.DisplayNameFor(model => model.OpeningTimesList[i].IsOpen)
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="OpeningTimesList[i].OpeningHour" class="control-label"></label>
+                                <input asp-for="OpeningTimesList[i].OpeningHour" class="form-control"/>
+                                <span asp-validation-for="OpeningTimesList[i].OpeningHour" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="OpeningTimesList[i].ClosingHour" class="control-label"></label>
+                                <input asp-for="OpeningTimesList[i].ClosingHour" class="form-control"/>
+                                <span asp-validation-for="OpeningTimesList[i].ClosingHour" class="text-danger"></span>
+                            </div>
+                            <span asp-validation-for="OpeningTimesList[i]" class="text-danger"></span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr />
+    <div class="row form-group">
+        <div class="col-md-12 text-center">
+            <input type="submit" value="Save changes" class="btn btn-primary w-50 btn-lg" />
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-controller="Home" asp-action="Index">Back home</a>
+</div>

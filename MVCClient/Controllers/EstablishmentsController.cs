@@ -241,27 +241,49 @@ namespace MVCClient.Controllers
             }
         }
 
+        [HttpGet]
+        [Authorize(Roles = MyIdentityServerConstants.Role_Admin_Manager)]
+        public async Task<ActionResult> Edit(int id)
+        {
+            try
+            {
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-        //// GET: EstablishmentsController/Edit/5
-        //public ActionResult Edit(int id)
-        //{
-        //    return View();
-        //}
+                var httpResponse = await _client.GetAsync($"{MyAPIConstants.MyAPI_EstablishmentsCtrl_Url}GetEstablishment/{id}");
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    AddErrorMessage("Error", httpResponse.ReasonPhrase);
+                    return View("../Home/Index");
+                }
 
-        //// POST: EstablishmentsController/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+                var content = await httpResponse.Content.ReadAsStringAsync();
+                EstablishmentEditionVwMdl estab = JsonConvert.DeserializeObject<EstablishmentEditionVwMdl>(content);
+
+                AddCountryListData();
+                return View(estab);
+            }
+            catch (Exception ex)
+            {
+                AddErrorMessage("Page not loaded", "An unknown error has blocked the page loading : "+ex.Message);
+                return View("../Home/Index");
+            }
+        }
+
+        // POST: EstablishmentsController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(EstablishmentEditionVwMdl model)
+        {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
 
         // POST: EstablishmentsController/Delete/5
         [HttpPost]

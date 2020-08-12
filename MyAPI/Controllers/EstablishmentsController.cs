@@ -44,6 +44,27 @@ namespace MyAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Route("~/Establishments/GetEstablishment/{id}")]
+        public IActionResult GetEstablishment(int id)
+        {
+            try
+            {
+                EstablishmentEditionVwMdl estab = _service.GetEstablishment(id);
+                if (estab.Id != id)
+                    return BadRequest("id not recognized");
+                return Ok(estab);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Route("~/Establishments/GetAllNotValidated")]
         public IActionResult GetAllNotValidated()
         {

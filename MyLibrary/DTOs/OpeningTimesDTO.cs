@@ -9,6 +9,7 @@ namespace MyLibrary.DTOs
 {
     public class OpeningTimesDTO
     {
+        public string Id { get; set; }
         public DayOfWeek DayOfWeek { get; set; }
         public bool IsOpen { get; set; }
         [DataType(DataType.Time), DisplayFormat(DataFormatString= "{0:t}") ]

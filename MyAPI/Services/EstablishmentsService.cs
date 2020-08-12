@@ -80,6 +80,70 @@ namespace MyAPI.Services
 
         }
 
+        public EstablishmentEditionVwMdl GetEstablishment(int estabId)
+        {
+            try
+            {
+                var estabWithRelatedEntities = _context.Establishments
+                    .Where(x => x.Id == estabId)
+                    .Include(x => x.Type)
+                    .Include(x => x.Details)
+                    .Include(x => x.Address)
+                    .Include(x => x.OpeningTimes)
+                    .FirstOrDefault();
+
+                if (estabWithRelatedEntities == null)
+                {
+                    return new EstablishmentEditionVwMdl();
+                }
+
+                EstablishmentEditionVwMdl estab = new EstablishmentEditionVwMdl
+                {
+                    Id = estabWithRelatedEntities.Id,
+                    Name = estabWithRelatedEntities.Name,
+                    VatNum = estabWithRelatedEntities.VatNum,
+                    EmailPro = estabWithRelatedEntities.Email,
+                    Description = estabWithRelatedEntities.Description,
+                    IsValidated = estabWithRelatedEntities.IsValidated,
+                    TypeId = estabWithRelatedEntities.Type.Id,
+                    Phone = estabWithRelatedEntities.Details.Phone,
+                    PublicEmail = estabWithRelatedEntities.Details.Email,
+                    WebsiteUrl = estabWithRelatedEntities.Details.WebsiteUrl,
+                    ShortUrl = estabWithRelatedEntities.Details.ShortUrl,
+                    InstagramUrl = estabWithRelatedEntities.Details.InstagramUrl,
+                    FacebookUrl = estabWithRelatedEntities.Details.FacebookUrl,
+                    LinkedInUrl = estabWithRelatedEntities.Details.LinkedInUrl,
+                    Country = estabWithRelatedEntities.Address.Country,
+                    City = estabWithRelatedEntities.Address.City,
+                    ZipCode = estabWithRelatedEntities.Address.ZipCode,
+                    Street = estabWithRelatedEntities.Address.Street,
+                    HouseNumber = estabWithRelatedEntities.Address.HouseNumber,
+                    BoxNumber = estabWithRelatedEntities.Address.BoxNumber
+                };
+
+                estab.OpeningTimesList = new List<OpeningTimesDTO>();
+
+                foreach (var openTime in estabWithRelatedEntities.OpeningTimes.OrderBy(x=>x.DayOfWeek))
+                {
+                    OpeningTimesDTO oTime = new OpeningTimesDTO
+                    {
+                        Id = openTime.Id,
+                        DayOfWeek = openTime.DayOfWeek,
+                        IsOpen = openTime.IsOpen,
+                        OpeningHour = openTime.OpeningHour,
+                        ClosingHour = openTime.ClosingHour
+                    };
+                    estab.OpeningTimesList.Add(oTime);
+                }
+
+                return estab;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public List<EstablishmentShortVwMdl> GetAllNotValidated()
         {
             try

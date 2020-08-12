@@ -11,6 +11,7 @@ namespace MyAPI.Services.Interfaces
     public interface IEstablishmentsService
     {
         string Create(Establishments newEstab);
+        EstablishmentEditionVwMdl GetEstablishment(int estabId);
         List<EstablishmentShortVwMdl> GetAllNotValidated(); 
         List<EstablishmentShortVwMdl> GetAllValidated();
         List<EstablishmentShortVwMdl> GetAllByManager(string managerId);

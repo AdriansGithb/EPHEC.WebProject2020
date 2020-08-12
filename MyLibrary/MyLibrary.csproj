@@ -154,6 +154,7 @@
     <Compile Include="Validators\UserAccountEditionValidator.cs" />
     <Compile Include="ViewModels\EstablishmentCreationPicturesVwMdl.cs" />
     <Compile Include="ViewModels\EstablishmentCreationVwMdl.cs" />
+    <Compile Include="ViewModels\EstablishmentEditionVwMdl.cs" />
     <Compile Include="ViewModels\EstablishmentFullVwMdl.cs" />
     <Compile Include="ViewModels\EstablishmentShortVwMdl.cs" />
     <Compile Include="ViewModels\RegisterVwMdl.cs" />
