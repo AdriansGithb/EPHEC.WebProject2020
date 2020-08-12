@@ -14,7 +14,6 @@ namespace MyAPI.Services.Interfaces
         List<EstablishmentShortVwMdl> GetAllNotValidated(); 
         List<EstablishmentShortVwMdl> GetAllValidated();
         List<EstablishmentShortVwMdl> GetAllByManager(string managerId);
-        PicturesDTO GetLogo(int estabId);
         EstablishmentFullVwMdl GetDetails(int estabId);
         
     }

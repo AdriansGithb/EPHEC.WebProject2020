@@ -196,32 +196,6 @@ namespace MyAPI.Services
 
         }
 
-
-        public PicturesDTO GetLogo(int estabId)
-        {
-            try
-            {
-                EstablishmentsPictures logo = _context.EstablishmentsPictures
-                    .FirstOrDefault(x => x.EstablishmentId == estabId && x.IsLogo == true);
-
-                if (logo == null)
-                {
-                    return new PicturesDTO();
-                }
-
-                return new PicturesDTO
-                {
-                    PictureAsArrayBytes = logo.Picture
-                };
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-        }
-
         public EstablishmentFullVwMdl GetDetails(int estabId)
         {
             try

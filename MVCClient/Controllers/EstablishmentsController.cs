@@ -275,7 +275,7 @@ namespace MVCClient.Controllers
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
                 var httpResponse =
-                    await _client.GetAsync($"{MyAPIConstants.MyAPI_EstablishmentsCtrl_Url}GetLogo/{estabId}");
+                    await _client.GetAsync($"{MyAPIConstants.MyAPI_EstabPicturesCtrl_Url}GetLogo/{estabId}");
                 if (httpResponse.IsSuccessStatusCode)
                 {
                     var content = await httpResponse.Content.ReadAsStringAsync();
