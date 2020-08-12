@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using MyAPI.Data;
 using MyAPI.Services.Interfaces;
 using MyLibrary.DTOs;
@@ -277,6 +278,24 @@ namespace MyAPI.Services
                 }
 
                 return fullView;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void Delete(int estabId)
+        {
+            try
+            {
+                var estab = _context.Establishments.FirstOrDefault(x=>x.Id==estabId);
+                if (estab != null)
+                {
+                    _context.Establishments.Remove(estab);
+                    _context.SaveChanges();
+                }
+                else throw new Exception("Establishment id not found");
             }
             catch (Exception ex)
             {

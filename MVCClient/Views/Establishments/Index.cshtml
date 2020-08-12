@@ -45,7 +45,7 @@
                     }
                 </div>               
                 <div class="align-self-end p-2">
-                    <a href="#" class="btn btn btn-danger mt-auto">Delete</a>
+                    <a href="#" class="btn btn btn-danger mt-auto" onclick="dltClick('@item.Name','@item.Id');">Delete</a>
                     <a href="#" class="btn btn btn-warning text-white mt-auto">Edit</a>
                     @if (User.IsInRole(MyIdentityServerConstants.Role_Admin) && (!@item.IsValidated))
                     {
@@ -61,3 +61,48 @@
     </div>
 }
 
+<partial name="_Delete"/>
+
+@section Scripts
+{
+    <script>
+
+        function dltClick(estabName, estabId) {
+            $('#estabNameToDlt').text(estabName);
+            $('#estabIdToDlt').val(estabId);
+            $("#myModalDelete").modal("show");
+        };
+
+        $(document).ready(function() {
+            $('#confirmBtnDltModal').click(function() {
+                var id = $('#myModalDelete #estabIdToDlt').val().trim();
+                $.post("Delete",
+                    { estabId: id },
+                    function(success) {
+                        if (success) {
+                            sessionStorage.reloadAfterPageLoad = true;
+                            sessionStorage.setItem("success", "Establishment has been successfully deleted");
+                            location.reload();
+                        } else {
+                            displayToastrMsg("Deletion has ended with some issue. Please try again", "Error", "Error");
+                        }
+                    });
+            });
+
+            $(function() {
+                    if (sessionStorage.reloadAfterPageLoad) {
+                        if (sessionStorage.getItem("success") != null)
+                        {
+                            var msg = sessionStorage.getItem("success");
+                            displayToastrMsg(msg, "Succeed", "Success");
+                            sessionStorage.clear();
+                            sessionStorage.reloadAfterPageLoad = false;
+                        }
+                    }
+                }
+            );
+        });
+
+    </script>
+
+}

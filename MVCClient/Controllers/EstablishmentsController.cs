@@ -246,26 +246,25 @@ namespace MVCClient.Controllers
         //    }
         //}
 
-        //// GET: EstablishmentsController/Delete/5
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
+        // POST: EstablishmentsController/Delete/5
+        [HttpPost]
+        public async Task<bool> Delete(int estabId)
+        {
+            try
+            {
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-        //// POST: EstablishmentsController/Delete/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+                var httpResponse = await _client.DeleteAsync($"{MyAPIConstants.MyAPI_EstablishmentsCtrl_Url}Delete/{estabId}");
+                if (httpResponse.IsSuccessStatusCode)
+                    return true;
+                else return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
         [HttpGet]
         public async Task<ActionResult> RenderLogo(int estabId)
         {
