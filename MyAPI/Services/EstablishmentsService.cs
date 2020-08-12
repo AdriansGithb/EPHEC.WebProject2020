@@ -241,32 +241,31 @@ namespace MyAPI.Services
                     LinkedInUrl = estabWithRelatedEntities.Details.LinkedInUrl,
                 };
                     
-                fullView.OpeningTimesIdList = new List<string>();
+                fullView.OpeningTimesList = new List<OpeningTimesDTO>();
                 if (estabWithRelatedEntities.OpeningTimes != null)
                 {
                     foreach (var openTime in estabWithRelatedEntities.OpeningTimes)
                     {
-                        fullView.OpeningTimesIdList.Add(openTime.Id);
+                        OpeningTimesDTO dto = new OpeningTimesDTO
+                        {
+                            DayOfWeek = openTime.DayOfWeek,
+                            IsOpen = openTime.IsOpen,
+                            OpeningHour = openTime.OpeningHour,
+                            ClosingHour = openTime.ClosingHour
+                        };
+                        fullView.OpeningTimesList.Add(dto);
                     }
                 }
 
                 fullView.PicturesIdList = new List<string>();
-                if (estabWithRelatedEntities.Pictures!=null)
-                {
-                    if (estabWithRelatedEntities.Pictures.Exists(x => x.IsLogo == true))
+                if (estabWithRelatedEntities.Pictures!=null &&
+                    estabWithRelatedEntities.Pictures.Exists(x => x.IsLogo == false))
                     {
-                        fullView.LogoId = estabWithRelatedEntities.Pictures.First(x => x.IsLogo == true).Id;
-                    }
-                        
-                    if (estabWithRelatedEntities.Pictures.Exists(x => x.IsLogo == false))
-                    {                            
                         foreach (var picture in estabWithRelatedEntities.Pictures)
                         {
                             fullView.PicturesIdList.Add(picture.Id);
                         }
                     }
-
-                }
 
                 fullView.NewsIdList = new List<string>();
                 if (estabWithRelatedEntities.News!=null)

@@ -1,4 +1,5 @@
 ﻿@using MyLibrary.Constants
+@using FluentValidation.Validators
 @model cloudscribe.Pagination.Models.PagedResult<MyLibrary.ViewModels.EstablishmentShortVwMdl>
 
 @{
@@ -32,7 +33,7 @@
                     {
                         <h6 class="card-text font-italic text-secondary">Manager : @Html.DisplayFor(modelItem => item.ManagerUserName)</h6>
                     }
-                    @if (User.HasClaim("sub", "item.ManagerId") || User.IsInRole(MyIdentityServerConstants.Role_Admin))
+                    @if (User.HasClaim("sub", item.ManagerId) || User.IsInRole(MyIdentityServerConstants.Role_Admin))
                     //User.Claims.First(x => x.Type.Contains("sub")).Value.Equals(item.ManagerId)
                     {
                         @if (item.IsValidated)
@@ -54,7 +55,7 @@
                             <a href="#" class="btn btn btn-success mt-auto" onclick="vldtClick('@item.Id');">Validate</a>
                         }
                     }
-                    @if (User.HasClaim("sub", "item.ManagerId") || User.IsInRole(MyIdentityServerConstants.Role_Admin))
+                    @if (User.HasClaim("sub", item.ManagerId) || User.IsInRole(MyIdentityServerConstants.Role_Admin))
                     {
                         <a href="#" class="btn btn btn-warning text-white mt-auto">Edit</a>
                     }
@@ -109,21 +110,6 @@
                         }
                     });
             });
-
-            //$(function vldtClick(id) {
-            //    $.post("Validate",
-            //        { estabId : id },
-            //        function(success) {
-            //            if (success) {
-            //                sessionStorage.reloadAfterPageLoad = true;
-            //                sessionStorage.setItem("success", "Establishment has been successfully validated");
-            //                location.reload();
-            //            } else {
-            //                displayToastrMsg("Validation has ended with some issue. Please try again", "Error", "Error");
-            //            }
-            //        });
-            //});
-
 
             $(function() {
                     if (sessionStorage.reloadAfterPageLoad) {

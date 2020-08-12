@@ -103,7 +103,6 @@ namespace MVCClient.Controllers
             return View("Index", pageResult);
         }
 
-
         [HttpGet]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin_Manager_User)]
         public async Task<ActionResult> Details(int id)
@@ -283,6 +282,40 @@ namespace MVCClient.Controllers
                 return false;
             }
         }
+
+        [HttpGet]
+        public async Task<ActionResult> RenderPicture(int picId)
+        {
+            try
+            {
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                var httpResponse =
+                    await _client.GetAsync($"{MyAPIConstants.MyAPI_EstabPicturesCtrl_Url}GetPicture/{picId}");
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    var content = await httpResponse.Content.ReadAsStringAsync();
+                    PicturesDTO pic = JsonConvert.DeserializeObject<PicturesDTO>(content);
+
+                    if (pic.PictureAsArrayBytes != null)
+                    {
+                        string imgType = GetPictureFormatFromArrayFile(pic.PictureAsArrayBytes);
+                        return File(pic.PictureAsArrayBytes, $"image/{imgType}");
+                    }
+                }
+                else AddErrorMessage("Download image problem", "An unknown error has occured during downloading the picture id: " + picId + ": " + httpResponse.ReasonPhrase);
+
+                byte[] notfoundLogo = GetDefaultPictureFromFile("~\\..\\Images\\notfound.jpg");
+                return File(notfoundLogo, "image/jpg");
+            }
+            catch (Exception)
+            {
+                byte[] notfoundLogo = GetDefaultPictureFromFile("~\\..\\Images\\defaultLogo.jpg");
+                return File(notfoundLogo, "image/jpg");
+            }
+        }
+
 
         [HttpGet]
         public async Task<ActionResult> RenderLogo(int estabId)

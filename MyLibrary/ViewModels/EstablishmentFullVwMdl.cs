@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MyLibrary.DTOs;
 using MyLibrary.Entities;
 
 namespace MyLibrary.ViewModels
@@ -37,10 +38,9 @@ namespace MyLibrary.ViewModels
         public string LinkedInUrl { get; set; }
 
 
-        public List<string> OpeningTimesIdList { get; set; }
+        public List<OpeningTimesDTO> OpeningTimesList { get; set; }
+        
 
-
-        public string LogoId { get; set; }
         public List<string> PicturesIdList { get; set; }
         public List<string> NewsIdList { get; set; }
 
