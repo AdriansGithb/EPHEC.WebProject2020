@@ -150,6 +150,7 @@
     <Compile Include="Helpers\VatLayerResponseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validators\EstablishmentCreationValidator.cs" />
+    <Compile Include="Validators\EstablishmentEditionValidator.cs" />
     <Compile Include="Validators\RegisterValidator.cs" />
     <Compile Include="Validators\UserAccountEditionValidator.cs" />
     <Compile Include="ViewModels\EstablishmentCreationPicturesVwMdl.cs" />

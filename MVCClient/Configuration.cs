@@ -14,6 +14,7 @@ namespace MVCClient
         public static void UseServices(this IServiceCollection services)
         {
             services.AddTransient<IValidator<EstablishmentCreationVwMdl>, EstablishmentCreationValidator>();
+            services.AddTransient<IValidator<EstablishmentEditionVwMdl>, EstablishmentEditionValidator>();
         }
 
     }
