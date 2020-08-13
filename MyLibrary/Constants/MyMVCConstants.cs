@@ -11,6 +11,7 @@
 
         public const string MyMVC_HomeIndex_Url = "https://localhost:44352/Home/Index";
 
+        public const string MyMVC_MapBox_Token = "pk.eyJ1IjoicHNyMTAxNzIiLCJhIjoiY2tkc2hscGl0MnZoajJzcm9jYjN4cHVrdyJ9.udO0aAUCijk0yekgGeqWnw";
 
     }
 }

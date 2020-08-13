@@ -1,9 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Authentication
 @using Microsoft.CodeAnalysis
+@using MyLibrary.Constants
+
 @section AddMapToHead{
-    @*mapbox*@
+    @*mapbox : base adding*@
     <script src='https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.js'></script>
-    <link href='https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css' rel='stylesheet' />
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css' rel='stylesheet'/>
 }
 
 <h2>Ma page d'accueil</h2>
@@ -13,11 +15,67 @@
 
 </dl>
 
-<div id='map' style='width: 400px; height: 300px;'></div>
+@* Map *@
+<div id='map' style='width: 100%; height: 400px;'></div>
 <script>
-    mapboxgl.accessToken = 'pk.eyJ1IjoicHNyMTAxNzIiLCJhIjoiY2tkc2hscGl0MnZoajJzcm9jYjN4cHVrdyJ9.udO0aAUCijk0yekgGeqWnw';
+
+    mapboxgl.accessToken = '@MyMVCConstants.MyMVC_MapBox_Token' ;
     var map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11'
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [4.35,50.84], // starting position
+        zoom: 10 // starting zoom
     });
+
+    var geojson = {
+        type: 'FeatureCollection',
+        features: [{
+                type: 'Feature',
+                geometry: {
+                    type: 'Point',
+                    coordinates: [-77.032, 38.913]
+                },
+                properties: {
+                    title: 'Mapbox',
+                    description: 'Washington, D.C.'
+                }
+            },
+            {
+                type: 'Feature',
+                geometry: {
+                    type: 'Point',
+                    coordinates: [-122.414, 37.776]
+                },
+                properties: {
+                    title: 'Mapbox',
+                    description: 'San Francisco, California'
+                }
+            }]
+    };
+
+    // add markers to map
+    geojson.features.forEach(function(marker) {
+
+        // make a marker for each feature and add to the map
+        new mapboxgl.Marker()
+            .setLngLat(marker.geometry.coordinates)
+            .addTo(map);
+    });
+
+    // Add zoom and rotation controls to the map.
+    map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
+
+    // Add geolocate control to the map.
+    map.addControl(
+        new mapboxgl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            trackUserLocation: true
+        }), 'bottom-right'
+    );
+    // Add full screen button
+    map.addControl(new mapboxgl.FullscreenControl(), 'top-right');
+
+
 </script>

@@ -133,6 +133,7 @@
     <Compile Include="Constants\MyMVCConstants.cs" />
     <Compile Include="Constants\MyValidatorsConstants.cs" />
     <Compile Include="Cookies\MyCookies.cs" />
+    <Compile Include="DTOs\AddressDTO.cs" />
     <Compile Include="DTOs\OpeningTimesDTO.cs" />
     <Compile Include="DTOs\PicturesDTO.cs" />
     <Compile Include="Entities\ApplicationUser.cs" />
