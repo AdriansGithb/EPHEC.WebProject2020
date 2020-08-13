@@ -1,9 +1,23 @@
 ﻿@using Microsoft.AspNetCore.Authentication
 @using Microsoft.CodeAnalysis
+@section AddMapToHead{
+    @*mapbox*@
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css' rel='stylesheet' />
+}
 
 <h2>Ma page d'accueil</h2>
 
 <dl>
-    Bonjour @User.Identity.Name :) 
+    Bonjour @User.Identity.Name :)
 
 </dl>
+
+<div id='map' style='width: 400px; height: 300px;'></div>
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoicHNyMTAxNzIiLCJhIjoiY2tkc2hscGl0MnZoajJzcm9jYjN4cHVrdyJ9.udO0aAUCijk0yekgGeqWnw';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11'
+    });
+</script>
