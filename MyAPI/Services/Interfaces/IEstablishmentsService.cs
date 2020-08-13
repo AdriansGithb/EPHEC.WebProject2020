@@ -18,6 +18,7 @@ namespace MyAPI.Services.Interfaces
         EstablishmentFullVwMdl GetDetails(int estabId);
         void Delete(int estabId);
         void Validate(int estabId);
+        void Edit(EstablishmentEditionVwMdl editedEstab);
 
     }
 }

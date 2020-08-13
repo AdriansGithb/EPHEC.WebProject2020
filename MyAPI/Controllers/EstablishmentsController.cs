@@ -177,5 +177,24 @@ namespace MyAPI.Controllers
             }
         }
 
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Route("~/Establishments/Edit")]
+        public IActionResult Edit(EstablishmentEditionVwMdl editedEstab)
+        {
+            try
+            {
+                _service.Edit(editedEstab);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }

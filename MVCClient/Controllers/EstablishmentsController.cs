@@ -182,8 +182,9 @@ namespace MVCClient.Controllers
                     return View(model);
                 }
             }
-            catch
+            catch(Exception ex)
             {
+                AddErrorMessage("Unknown error", ex.Message);
                 return View();
             }
         }
@@ -273,15 +274,44 @@ namespace MVCClient.Controllers
         // POST: EstablishmentsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(EstablishmentEditionVwMdl model)
+        public async Task<ActionResult> Edit(EstablishmentEditionVwMdl model)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    var accessToken = await HttpContext.GetTokenAsync("access_token");
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                    var postContent = JsonConvert.SerializeObject(model);
+                    var httpContent = new StringContent(postContent, Encoding.Default, "application/json");
+                    var httpResponse = await _client.PutAsync($"{MyAPIConstants.MyAPI_EstablishmentsCtrl_Url}Edit",
+                        httpContent);
+
+                    if (!httpResponse.IsSuccessStatusCode)
+                    {
+                        AddErrorMessage("Not modified",
+                            "Your modifications have not been saved due to some issues. Please try again or contact an admin");
+                        AddCountryListData();
+                        return View(model);
+                    }
+
+                    AddSuccessMessage("Establishment modified",
+                        "Your establishment has been modified successfully. Please wait for admin validation.");
+                    return RedirectToAction("Details", model.Id);
+
+                }
+                else
+                {
+                    AddCountryListData();
+                    return View(model);
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                AddErrorMessage("Unknown error",ex.Message);
+                AddCountryListData();
+                return View("../Home/Index");
             }
         }
 
@@ -461,7 +491,7 @@ namespace MVCClient.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult> RenderNews(string newsId)
+        public ActionResult RenderNews(string newsId)
         {
             throw new NotImplementedException();
         }

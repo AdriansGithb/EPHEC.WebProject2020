@@ -385,5 +385,68 @@ namespace MyAPI.Services
             }
         }
 
+        public void Edit(EstablishmentEditionVwMdl editedEstab)
+        {
+            try
+            {
+                var dbEstab = _context.Establishments
+                    .Where(x => x.Id == editedEstab.Id)
+                    .Include(x=>x.Details)
+                    .Include(x=>x.Address)
+                    .Include(x=>x.OpeningTimes)
+                    .FirstOrDefault();
+
+
+                dbEstab.Name = editedEstab.Name;
+                dbEstab.VatNum = editedEstab.VatNum;
+                dbEstab.Email = editedEstab.EmailPro;
+                dbEstab.Description = editedEstab.Description;
+                dbEstab.IsValidated = false;
+                dbEstab.TypeId = editedEstab.TypeId;
+
+                dbEstab.Address.Country = editedEstab.Country;
+                dbEstab.Address.City = editedEstab.City;
+                dbEstab.Address.ZipCode = editedEstab.ZipCode;
+                dbEstab.Address.Street = editedEstab.Street;
+                dbEstab.Address.HouseNumber = editedEstab.HouseNumber;
+                dbEstab.Address.BoxNumber = editedEstab.BoxNumber;
+
+                dbEstab.Details.Phone = editedEstab.Phone;
+                dbEstab.Details.Email = editedEstab.PublicEmail;
+                dbEstab.Details.WebsiteUrl = editedEstab.WebsiteUrl;
+                dbEstab.Details.ShortUrl = editedEstab.ShortUrl;
+                dbEstab.Details.InstagramUrl = editedEstab.InstagramUrl;
+                dbEstab.Details.FacebookUrl = editedEstab.FacebookUrl; 
+                dbEstab.Details.LinkedInUrl = editedEstab.LinkedInUrl;
+
+                for (int i = 0; i < editedEstab.OpeningTimesList.Count; i++)
+                {
+                    if (dbEstab.OpeningTimes.Exists(x => x.Id.Equals(editedEstab.OpeningTimesList[i].Id)))
+                    {
+                        int index = dbEstab.OpeningTimes.FindIndex(x =>
+                            x.Id.Equals(editedEstab.OpeningTimesList[i].Id));
+                        dbEstab.OpeningTimes[index].IsOpen = editedEstab.OpeningTimesList[i].IsOpen;
+                        if (dbEstab.OpeningTimes[index].IsOpen)
+                        {
+                            dbEstab.OpeningTimes[index].OpeningHour = editedEstab.OpeningTimesList[i].OpeningHour;
+                            dbEstab.OpeningTimes[index].ClosingHour = editedEstab.OpeningTimesList[i].ClosingHour;
+                        }
+                        else
+                        {
+                            dbEstab.OpeningTimes[index].OpeningHour = null;
+                            dbEstab.OpeningTimes[index].ClosingHour = null;
+                        }
+                    }
+                }
+
+                _context.Update(dbEstab);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
