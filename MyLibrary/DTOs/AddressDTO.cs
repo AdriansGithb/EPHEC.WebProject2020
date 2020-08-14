@@ -9,7 +9,8 @@ namespace MyLibrary.DTOs
     public class AddressDTO
     {
         public int EstablishmentId { get; set; }
-
+        public string EstablishmentName { get; set; }
+        
         public string Country { get; set; }
         public string City { get; set; }
         public string ZipCode { get; set; }

@@ -19,7 +19,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.WebEncoders.Testing;
 using MVCClient.Models;
 using MyLibrary.Constants;
+using MyLibrary.DTOs;
 using MyLibrary.Entities;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace MVCClient.Controllers
@@ -62,52 +64,27 @@ namespace MVCClient.Controllers
             return View();
         }
 
-        [HttpGet]
         [AllowAnonymous]
-        public async Task<string> GetGeocodedAddress(EstablishmentsAddresses Address)
+        public async Task<JsonResult> GetAddresses()
         {
             try
             {
-                string url = CreateMapApiQueryUrl(Address);
-                
-                var httpResponse = await _client.GetAsync(url);
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                var httpResponse = await _client.GetAsync($"{MyAPIConstants.MyAPI_EstabAddressesCtrl_Url}GetAll");
                 if (!httpResponse.IsSuccessStatusCode)
                 {
-                    return new string(httpResponse.ReasonPhrase);
+                    throw new Exception(httpResponse.ReasonPhrase);
                 }
-
-                var content = await httpResponse.Content.ReadAsStringAsync();
-
-                return content;
-
+                
+                return Json(await httpResponse.Content.ReadAsStringAsync());
             }
             catch (Exception ex)
             {
-                AddErrorMessage("error",ex.Message);
-                return "";
+                return Json(ex);
             }
         }
 
-        private string CreateMapApiQueryUrl(EstablishmentsAddresses address)
-        {
-            try
-            {
-                //query structure : base + {address : houseNumber (box) street zipcode city country } + end + token + {options : &autocomplete=false&types=address&limit=1}
-                string baseUrl = "https://api.mapbox.com/geocoding/v5/mapbox.places";
-                string endUrl = ".json?access_token=";
-                string options = "&autocomplete=false&types=address&limit=1";
-
-                string fullAddress = $"{address.HouseNumber} {address.BoxNumber} {address.Street} {address.ZipCode} {address.City} {address.Country}";
-
-                string fullUrlString = $"{baseUrl}/{address}{endUrl}{MyMVCConstants.MyMVC_MapBox_Token}{options}";
-                //string apiQueryUrl = HttpUtility.UrlEncode(fullUrlString);
-                return fullUrlString;
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
     }
 }
