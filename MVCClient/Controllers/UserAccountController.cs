@@ -40,7 +40,7 @@ namespace MVCClient.Controllers
         /// <param name="pageSize">max items per page</param>
         /// <returns>paginated view with all (filtered) user accounts</returns>
         [HttpGet]
-        public async Task<IActionResult> Index(string sortOrder, string searchString, int pageNumber = 1, int pageSize=10)
+        public async Task<IActionResult> Index(string sortOrder, string searchString, int pageNumber = 1, int pageSize=5)
         {
             ViewData["UsernameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "username_desc" : "";
             ViewData["EmailSortParm"] = sortOrder == "email" ? "email_desc" : "email";

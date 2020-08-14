@@ -15,6 +15,7 @@ namespace MVCClient
         {
             services.AddTransient<IValidator<EstablishmentCreationVwMdl>, EstablishmentCreationValidator>();
             services.AddTransient<IValidator<EstablishmentEditionVwMdl>, EstablishmentEditionValidator>();
+            services.AddTransient<IValidator<EstablishmentPicturesEditionVwMdl>, EstablishmentPicturesEditionValidator>();
         }
 
     }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyAPI.Services.Interfaces;
 using MyLibrary.DTOs;
+using MyLibrary.ViewModels;
 
 namespace MyAPI.Controllers
 {
@@ -52,6 +53,44 @@ namespace MyAPI.Controllers
             {
                 PicturesDTO pic = _service.GetPicture(id);
                 return Ok(pic);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Route("~/EstablishmentsPictures/GetCurrentPictures/{id}")]
+        public IActionResult GetCurrentPictures(int id)
+        {
+            try
+            {
+                EstablishmentPicturesEditionVwMdl estabPics = _service.GetCurrentPictures(id);
+                return Ok(estabPics);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Route("~/EstablishmentsPictures/EditPictures")]
+        public IActionResult EditPictures(EstablishmentPicturesEditionVwMdl estabPics)
+        {
+            try
+            {
+                _service.EditPictures(estabPics);
+                return Ok();
             }
             catch (Exception ex)
             {

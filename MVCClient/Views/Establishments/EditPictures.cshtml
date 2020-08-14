@@ -1,0 +1,120 @@
+﻿@using MyLibrary.Entities
+@using MyLibrary.DTOs
+@using MyLibrary.ViewModels
+@model MyLibrary.ViewModels.EstablishmentPicturesEditionVwMdl
+@Html.AntiForgeryToken()
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit pictures of <span class="text-info"> @Model.EstabName</span></h1>
+<h6>
+    You can modify your logo, add or delete your pictures  here.<br />
+    Please remember that maximum number of pictures is 5 + 1 as logo.<br />
+</h6>
+
+<hr />
+<form asp-action="EditPictures" enctype="multipart/form-data">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input asp-for="EstabId" type="hidden" value="@Model.EstabId" />
+    <input asp-for="EstabName" type="hidden" value="@Model.EstabName" />
+    <div class="row pt-1 pb-1">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header font-weight-bold text-white bg-dark">
+                    <a class="text-white" data-toggle="collapse" href="#CurrentPictures">Current registered pictures</a>
+                </div>
+                <div class="card-body collapse" id="CurrentPictures">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="card">
+                                <div class="card-header bg-dark text-white font-weight-bold">
+                                    Current Logo
+                                </div>
+                                <img class="w-100 border-0" src="@Url.Action("RenderLogo", new {estabId = Model.EstabId})" alt="Card image cap">
+                                <input asp-for="CurrentLogoId" type="hidden" value="@Model.CurrentLogoId" />
+                            </div>
+                        </div>
+                        @if (Model.CurrentPicturesId.Count == 0)
+                        {
+                            <p>No establishment pictures registered.</p>
+                        }
+                        else
+                        {
+                            @for(int i =0; i<Model.CurrentPicturesId.Count();i++)
+                            {
+                                <div class="col-4">
+                                    <div class="card">
+                                        <img class="w-100 border-0" src="@Url.Action("RenderPicture", new {picId = Model.CurrentPicturesId[i]})" alt="Card image cap">
+                                        @{
+                                            <input asp-for="CurrentPicturesId[i]" type="hidden" value="@Model.CurrentPicturesId[i]" />
+                                        }
+                                    </div>
+                                </div>
+                            }
+
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row pt-1 pb-1">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header font-weight-bold text-white bg-info">
+                    <a class="text-white" data-toggle="collapse" href="#NewPictures">Edit logo / Add pictures</a>
+                </div>
+                <div class="card-body collapse" id="NewPictures">
+
+                    @{ Model.NewPictures.Add(new PicturesEditionVwMdl()); }
+
+                    <div class="form-group">
+                        <input asp-for="NewPictures[0].IsLogo" type="hidden" value="true" />
+                        <label asp-for="NewPictures[0].PictureFile" class="control-label font-weight-bold">New Logo</label><br />
+                        <input type="file" asp-for="NewPictures[0].PictureFile" />
+                        <span asp-validation-for="NewPictures[0].PictureFile" class="text-danger"></span>
+                    </div>                    
+                    <hr class="border-dark" />
+                    @{
+                        int maxPic = 5 - Model.CurrentPicturesId.Count();
+                        for (int i = 1; i <= maxPic; i++)
+                        {
+                            Model.NewPictures.Add(new PicturesEditionVwMdl());
+                            <div class="form-group">
+                                <input asp-for="NewPictures[i].IsLogo" type="hidden" value="false" />
+                                <label asp-for="NewPictures[i].PictureFile" class="control-label font-weight-bold">Add picture</label><br />
+                                <input type="file" asp-for="NewPictures[i].PictureFile" />
+                                <span asp-validation-for="NewPictures[i]" class="text-danger"></span>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row pt-1 pb-1">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header font-weight-bold text-white bg-danger">
+                    <a class="text-white" data-toggle="collapse" href="#Delete">Delete pictures</a>
+                </div>
+                <div class="card-body collapse" id="Delete">
+                    <h6 class="text-danger">Are you sure you want to delete all pictures for this establishment?</h6>
+                    <button class="btn btn-danger btn-lg float-right">Delete all pictures</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row form-group">
+        <div class="col-md-12 text-center">
+            <input type="submit" value="Save changes" class="btn btn-primary w-50 btn-lg" />
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-controller="Home" asp-action="Index">Back home</a>
+</div>

@@ -271,7 +271,6 @@ namespace MVCClient.Controllers
             }
         }
 
-        // POST: EstablishmentsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(EstablishmentEditionVwMdl model)
@@ -298,7 +297,7 @@ namespace MVCClient.Controllers
 
                     AddSuccessMessage("Establishment modified",
                         "Your establishment has been modified successfully. Please wait for admin validation.");
-                    return RedirectToAction("Details", model.Id);
+                    return RedirectToAction("Details", new {id = model.Id});
 
                 }
                 else
@@ -310,7 +309,102 @@ namespace MVCClient.Controllers
             catch (Exception ex)
             {
                 AddErrorMessage("Unknown error",ex.Message);
-                AddCountryListData();
+                return View("../Home/Index");
+            }
+        }
+
+        [HttpGet]
+        [Authorize(Roles = MyIdentityServerConstants.Role_Admin_Manager)]
+        public async Task<ActionResult> EditPictures(int estabId, string estabName)
+        {
+            try
+            {
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                var httpResponse = await _client.GetAsync($"{MyAPIConstants.MyAPI_EstabPicturesCtrl_Url}GetCurrentPictures/{estabId}");
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    AddErrorMessage("Error", httpResponse.ReasonPhrase);
+                    return View("../Home/Index");
+                }
+
+                var content = await httpResponse.Content.ReadAsStringAsync();
+                EstablishmentPicturesEditionVwMdl estabPictures = JsonConvert.DeserializeObject<EstablishmentPicturesEditionVwMdl>(content);
+                estabPictures.EstabName = estabName;
+
+                return View(estabPictures);
+            }
+            catch (Exception ex)
+            {
+                AddErrorMessage("Page not loaded", "An unknown error has blocked the page loading : " + ex.Message);
+                return View("../Home/Index");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditPictures(EstablishmentPicturesEditionVwMdl model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var accessToken = await HttpContext.GetTokenAsync("access_token");
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                    bool hasNewPicture = false;
+                    foreach (PicturesEditionVwMdl oPic in model.NewPictures)
+                    {
+                        if (oPic.PictureFile != null)
+                            hasNewPicture = true;
+                    }
+
+                    if (hasNewPicture)
+                    {
+                        for (int i = 0; i < model.NewPictures.Count; i++)
+                        {
+                            if (model.NewPictures[i].PictureFile != null)
+                            {
+                                model.NewPictures[i].PictureAsArray = await FormatPictureToArray(model.NewPictures[i].PictureFile);
+                                model.NewPictures[i].PictureFile = null;
+                            }
+                            else
+                            {
+                                model.NewPictures.RemoveAt(i);
+                                i--;
+                            }
+                        }
+                        
+                        var postContent = JsonConvert.SerializeObject(model);
+                        var httpContent = new StringContent(postContent, Encoding.Default, "application/json");
+                        var httpResponse = await _client.PutAsync($"{MyAPIConstants.MyAPI_EstabPicturesCtrl_Url}EditPictures", httpContent);
+
+                        if (!httpResponse.IsSuccessStatusCode)
+                        {
+                            AddErrorMessage("Not modified",
+                                "Your modifications have not been saved due to some issues. Please try again or contact an admin");
+                            return View(model);
+                        }
+
+                        AddSuccessMessage("Establishment modified",
+                            "Your establishment has been modified successfully. Please wait for admin validation.");
+                        return RedirectToAction("Details", new{id = model.EstabId});
+                    }
+                    else
+                    {
+                        AddInfoMessage("No change to save", "You have sent an empty form.");
+                        return View(model);
+                    }
+                }
+                else
+                {
+                    return View(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                AddErrorMessage("Unknown error", ex.Message);
                 return View("../Home/Index");
             }
         }

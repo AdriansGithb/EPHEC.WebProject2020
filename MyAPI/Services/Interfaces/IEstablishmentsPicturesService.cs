@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MyLibrary.DTOs;
+using MyLibrary.ViewModels;
 
 namespace MyAPI.Services.Interfaces
 {
@@ -10,6 +11,7 @@ namespace MyAPI.Services.Interfaces
     {
         PicturesDTO GetLogo(int estabId);
         PicturesDTO GetPicture(string picId);
-
+        EstablishmentPicturesEditionVwMdl GetCurrentPictures(int estabId);
+        void EditPictures(EstablishmentPicturesEditionVwMdl estabPics);
     }
 }
