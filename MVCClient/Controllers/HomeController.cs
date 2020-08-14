@@ -65,8 +65,6 @@ namespace MVCClient.Controllers
         }
 
         [AllowAnonymous]
-        //[Route("~/GetAddresses")]
-        //[Route("~/Home/GetAddresses")]
         public async Task<JsonResult> GetAddresses()
         {
             try
