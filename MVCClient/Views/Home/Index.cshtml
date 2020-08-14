@@ -9,16 +9,26 @@
 }
 <style>
     .mapboxgl-popup {
-        max-width: 400px;
+        width: 400px;
         font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+   }
+
+    .mapboxgl-marker {
+        cursor: pointer
     }
 </style>
-<h2>Ma page d'accueil</h2>
 
+
+<h2>Ma page d'accueil</h2>
 <dl>
     Bonjour @User.Identity.Name :)
-
 </dl>
+
+
+
+
+
+
 
 @* Map *@
 <div id='map' style='width: 100%; height: 400px;'></div>
@@ -29,101 +39,76 @@
     <script src="https://unpkg.com/@@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
     <script>
 
-    mapboxgl.accessToken = '@MyMVCConstants.MyMVC_MapBox_Token';
+        mapboxgl.accessToken = '@MyMVCConstants.MyMVC_MapBox_Token';
 
-    // map creation
-    var map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [4.35, 50.84], // starting position
-        zoom: 9 // starting zoom
-    });
+        // map creation
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [4.35, 50.84], // starting position
+            zoom: 12 // starting zoom
+        });
 
-    // Add zoom and rotation controls to the map.
-    map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
+        // Add zoom and rotation controls to the map.
+        map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
 
-    // Add geolocate control to the map.
-    map.addControl(
-        new mapboxgl.GeolocateControl({
-            positionOptions: {
-                enableHighAccuracy: true
-            },
-            trackUserLocation: true
-        }),
-        'bottom-right'
-    );
-    // Add full screen button
-    map.addControl(new mapboxgl.FullscreenControl(), 'top-right');
+        // Add geolocate control to the map.
+        map.addControl(
+            new mapboxgl.GeolocateControl({
+                positionOptions: {
+                    enableHighAccuracy: true
+                },
+                trackUserLocation: true
+            }),
+            'bottom-right'
+        );
+        // Add full screen button
+        map.addControl(new mapboxgl.FullscreenControl(), 'top-right');
 
 
-    // add markers
-    $(document).ready(function() {
-        $.getJSON("Home/GetAddresses",
-            function(data, status) {
-                if (status == "success")
-                    $.each($.parseJSON(data),
-                        function(i, obj) {
-                            AddMarkers(obj);
-                        });
-                else {
-                    displayToastrMsg("Admin rights have ended with some issue. Please try again", "Admin rights unsaved", "Error");
-                }
-            });
-    });
+        // add markers
+        $(document).ready(function() {
+            $.getJSON("GetAddresses",
+                function(data, status) {
+                    if (status == "success") {
+                        $.each($.parseJSON(data),
+                            function(i, obj) {
+                                AddMarkers(obj);
+                            });
+                    } else {
+                        displayToastrMsg("Admin rights have ended with some issue. Please try again", "Admin rights unsaved", "Error");
+                    }
+                });
+        });
 
-    function AddMarkers(address) {
-        var queryString = address.houseNumber + "," + address.boxNumber + "," + address.street + "," + address.zipCode + "," + address.city + "," + address.country;
-        var mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
-        mapboxClient.geocoding
-            .forwardGeocode({
-                query: queryString,
-                autocomplete: false,
-                limit: 1
-            })
-            .send()
-            .then(function(response) {
-                if (
-                    response &&
-                        response.body &&
-                        response.body.features &&
-                        response.body.features.length
-                ) {
-                    var feature = response.body.features[0];
-                    // Adds the marker
-                    new mapboxgl.Marker()
-                        .setLngLat(feature.center)
-                        .addTo(map);
-                }
-            });
+        function AddMarkers(address) {
+            var queryString = address.houseNumber + "," + address.boxNumber + "," + address.street + "," + address.zipCode + "," + address.city + "," + address.country;
+            var mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+            mapboxClient.geocoding
+                .forwardGeocode({
+                    query: queryString,
+                    autocomplete: false,
+                    limit: 1
+                })
+                .send()
+                .then(function(response) {
+                    if (
+                        response &&
+                            response.body &&
+                            response.body.features &&
+                            response.body.features.length
+                    ) {
+                        var feature = response.body.features[0];
+
+                        var popBody = "<h5><a class='font-weight-bold text-dark' href='https://localhost:44352/Establishments/Details/" + address.establishmentId + "' target='_blank'>" + address.establishmentName + "</a></h5><hr/>" + "<h6 class='font-italic text-secondary'>" + address.establishmentType + "</h6>";
+                        // Adds the marker
+                        new mapboxgl.Marker()
+                            .setLngLat(feature.center)
+                            .setPopup(new mapboxgl.Popup().setHTML(popBody))
+                            .addTo(map);
+                    }
+                });
         };
-
-    //popup
-    map.on('click', 'places', function(e) {
-        var coordinates = e.features[0].geometry.coordinates.slice();
-        var description = e.features[0].properties.description;
- 
-// Ensure that if the map is zoomed out such that multiple
-// copies of the feature are visible, the popup appears
-// over the copy being pointed to.
-        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-        }
- 
-        new mapboxgl.Popup()
-            .setLngLat(coordinates)
-            .setHTML(address.establishmentName)
-            .addTo(map);
-    });
- 
-// Change the cursor to a pointer when the mouse is over the places layer.
-    map.on('mouseenter', 'places', function() {
-        map.getCanvas().style.cursor = 'pointer';
-    });
- 
-// Change it back to a pointer when it leaves.
-    map.on('mouseleave', 'places', function() {
-        map.getCanvas().style.cursor = '';
-    });
 
     </script>
 }

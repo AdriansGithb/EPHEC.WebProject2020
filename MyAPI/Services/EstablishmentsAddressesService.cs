@@ -25,6 +25,7 @@ namespace MyAPI.Services
                 var allAddressesWithEstab = _context.EstablishmentsAddresses
                     .Where(x => x.EstablishmentId == 5||x.EstablishmentId==4||x.EstablishmentId==6)
                     .Include(x => x.Establishment)
+                    .ThenInclude(y=>y.Type)
                     .ToList();
 
                 List<AddressDTO> fullList = new List<AddressDTO>();
@@ -33,7 +34,8 @@ namespace MyAPI.Services
                     AddressDTO address = new AddressDTO
                     {
                         EstablishmentId = dbAddress.EstablishmentId,
-                        EstablishmentName = dbAddress.Establishment.Name,
+                        EstablishmentName = dbAddress.Establishment.Name,                        
+                        EstablishmentType = dbAddress.Establishment.Type.Name,
                         Country = dbAddress.Country,
                         City = dbAddress.City,
                         ZipCode = dbAddress.ZipCode,

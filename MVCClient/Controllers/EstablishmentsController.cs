@@ -105,6 +105,7 @@ namespace MVCClient.Controllers
 
         [HttpGet]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin_Manager_User)]
+        [Route("~/Establishments/Details/{id}")]
         public async Task<ActionResult> Details(int id)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
