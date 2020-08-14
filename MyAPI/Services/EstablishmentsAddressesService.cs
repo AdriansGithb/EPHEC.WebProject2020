@@ -23,7 +23,6 @@ namespace MyAPI.Services
             try
             {
                 var allAddressesWithEstab = _context.EstablishmentsAddresses
-                    .Where(x => x.EstablishmentId == 5||x.EstablishmentId==4||x.EstablishmentId==6)
                     .Include(x => x.Establishment)
                     .ThenInclude(y=>y.Type)
                     .ToList();
@@ -41,7 +40,9 @@ namespace MyAPI.Services
                         ZipCode = dbAddress.ZipCode,
                         Street = dbAddress.Street,
                         HouseNumber = dbAddress.HouseNumber,
-                        BoxNumber = dbAddress.BoxNumber
+                        BoxNumber = dbAddress.BoxNumber,
+                        OpenHour = "--",
+                        CloseHour = "--"
                     };
                     if (address.BoxNumber == null)
                         address.BoxNumber = "";
@@ -61,7 +62,91 @@ namespace MyAPI.Services
 
         public List<AddressDTO> GetAllOpen()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var allEstabWithScheduleWithAddress = _context.Establishments
+                    .Include(x => x.Address)
+                    .Include(y => y.Type)
+                    .Include(z=>z.OpeningTimes)
+                    .ToList();
+
+
+                List<AddressDTO> openList = new List<AddressDTO>();
+
+                DayOfWeek today = DateTime.Today.DayOfWeek;
+                DayOfWeek yesterday = DateTime.Today.AddDays(-1.0).DayOfWeek;
+                foreach (var estab in allEstabWithScheduleWithAddress)
+                {
+
+                    bool addToList  = false;
+                    DateTime open = new DateTime();
+                    DateTime close = new DateTime();
+                    if (estab.OpeningTimes.First(d => d.DayOfWeek == today).IsOpen)
+                    {
+                        open = (DateTime)estab.OpeningTimes.Find(d => d.DayOfWeek == today).OpeningHour;
+                        close = (DateTime)estab.OpeningTimes.Find(d => d.DayOfWeek == today).ClosingHour;
+
+                        //si heure de fermeture est plus petite, l'établissement ferme le lendemain matin 
+                        if (close.TimeOfDay < open.TimeOfDay)
+                        {
+                            close = DateTime.MaxValue;
+                        }
+
+                        //verif de l'heure d'ouverture
+                        if (open.TimeOfDay < DateTime.Now.TimeOfDay && close.TimeOfDay > DateTime.Now.TimeOfDay)
+                            addToList = true;
+
+                        close = (DateTime)estab.OpeningTimes.Find(d => d.DayOfWeek == today).ClosingHour;
+
+                    }
+                    else if (!addToList 
+                             && estab.OpeningTimes.First(d => d.DayOfWeek == yesterday).IsOpen)
+                    {
+                        open = (DateTime) estab.OpeningTimes.Find(d => d.DayOfWeek == yesterday).OpeningHour;
+                        close = (DateTime)estab.OpeningTimes.Find(d => d.DayOfWeek == yesterday).ClosingHour;
+                        
+                        //si heure de fermeture est plus petite, l'établissement était ouvert d'hier à aujourd'hui 
+                        if (close.TimeOfDay < open.TimeOfDay)
+                        {
+                            open = DateTime.MinValue; 
+                            
+                            //verif de l'heure d'ouverture
+                            if (open.TimeOfDay < DateTime.Now.TimeOfDay && close.TimeOfDay > DateTime.Now.TimeOfDay)
+                                addToList = true;
+                        }
+                        
+                        open = (DateTime)estab.OpeningTimes.Find(d => d.DayOfWeek == yesterday).OpeningHour;
+
+                    }
+
+                    if (addToList)
+                    {
+                        AddressDTO address = new AddressDTO
+                        {
+                            EstablishmentId = estab.Id,
+                            EstablishmentName = estab.Name,
+                            EstablishmentType = estab.Type.Name,
+                            Country = estab.Address.Country,
+                            City = estab.Address.City,
+                            ZipCode = estab.Address.ZipCode,
+                            Street = estab.Address.Street,
+                            HouseNumber = estab.Address.HouseNumber,
+                            BoxNumber = estab.Address.BoxNumber,
+                            OpenHour = open.ToShortTimeString(),
+                            CloseHour = close.ToShortTimeString()
+                        };
+                        if (address.BoxNumber == null)
+                            address.BoxNumber = "";
+                        openList.Add(address);
+                    }
+                }
+                
+                return openList;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

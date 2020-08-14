@@ -40,5 +40,26 @@ namespace MyAPI.Controllers
             }
         }
 
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Route("~/EstablishmentsAddresses/GetAllOpen")]
+        public IActionResult GetAllOpen()
+        {
+            try
+            {
+                List<AddressDTO> openList = _service.GetAllOpen();
+                return Ok(openList);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        
+
     }
 }

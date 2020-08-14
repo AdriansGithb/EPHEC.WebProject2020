@@ -46,7 +46,7 @@
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',
             center: [4.35, 50.84], // starting position
-            zoom: 12 // starting zoom
+            zoom: 8 // starting zoom
         });
 
         // Add zoom and rotation controls to the map.
@@ -68,7 +68,7 @@
 
         // add markers
         $(document).ready(function() {
-            $.getJSON("GetAddresses",
+            $.getJSON("/Home/GetAddresses",
                 function(data, status) {
                     if (status == "success") {
                         $.each($.parseJSON(data),
@@ -100,7 +100,10 @@
                     ) {
                         var feature = response.body.features[0];
 
-                        var popBody = "<h5><a class='font-weight-bold text-dark' href='https://localhost:44352/Establishments/Details/" + address.establishmentId + "' target='_blank'>" + address.establishmentName + "</a></h5><hr/>" + "<h6 class='font-italic text-secondary'>" + address.establishmentType + "</h6>";
+                        var popBody = "<h5><a class='font-weight-bold text-dark' href='https://localhost:44352/Establishments/Details/"
+                            + address.establishmentId + "' target='_blank'>" + address.establishmentName + "</a></h5><hr/>"
+                            + "<h6 class='font-italic text-secondary'>" + address.establishmentType + "</h6>"
+                            + "<p class='text-secondary'> Open from : " + address.openHour + " / to :" + address.closeHour+ "</p>";
                         // Adds the marker
                         new mapboxgl.Marker()
                             .setLngLat(feature.center)

@@ -20,5 +20,8 @@ namespace MyLibrary.DTOs
         public string Street { get; set; }
         public string HouseNumber { get; set; }
         public string BoxNumber { get; set; }
+
+        public string OpenHour { get; set; }
+        public string CloseHour { get; set; }
     }
 }

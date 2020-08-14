@@ -65,16 +65,24 @@ namespace MVCClient.Controllers
         }
 
         [AllowAnonymous]
-        [Route("~/GetAddresses")]
-        [Route("~/Home/GetAddresses")]
+        //[Route("~/GetAddresses")]
+        //[Route("~/Home/GetAddresses")]
         public async Task<JsonResult> GetAddresses()
         {
             try
             {
-                var accessToken = await HttpContext.GetTokenAsync("access_token");
-                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                HttpResponseMessage httpResponse = new HttpResponseMessage();
+                if (User.IsInRole(MyIdentityServerConstants.Role_User))
+                {
+                    var accessToken = await HttpContext.GetTokenAsync("access_token");
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-                var httpResponse = await _client.GetAsync($"{MyAPIConstants.MyAPI_EstabAddressesCtrl_Url}GetAll");
+                    httpResponse = await _client.GetAsync($"{MyAPIConstants.MyAPI_EstabAddressesCtrl_Url}GetAllOpen");
+                }
+                else
+                {
+                    httpResponse = await _client.GetAsync($"{MyAPIConstants.MyAPI_EstabAddressesCtrl_Url}GetAll");
+                }
                 if (!httpResponse.IsSuccessStatusCode)
                 {
                     throw new Exception(httpResponse.ReasonPhrase);
