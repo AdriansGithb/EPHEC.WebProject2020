@@ -109,7 +109,7 @@ namespace MVCClient.Controllers
 
         [HttpGet]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin)]
-        public ActionResult Create(int estabId, string estabName)
+        public IActionResult Create(int estabId, string estabName)
         {
             try
             {
@@ -129,7 +129,7 @@ namespace MVCClient.Controllers
 
         [HttpPost]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin)]
-        public async Task<ActionResult> Create(EstablishmentNewsVwMdl model)
+        public async Task<IActionResult> Create(EstablishmentNewsVwMdl model)
         {
             try
             {
@@ -163,7 +163,7 @@ namespace MVCClient.Controllers
 
         [HttpGet]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin)]
-        public async Task<ActionResult> Edit(string newsId)
+        public async Task<IActionResult> Edit(string newsId)
         {
             try
             {
@@ -193,7 +193,7 @@ namespace MVCClient.Controllers
         [HttpPost]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin)]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(EstablishmentNewsVwMdl model)
+        public async Task<IActionResult> Edit(EstablishmentNewsVwMdl model)
         {
             try
             {

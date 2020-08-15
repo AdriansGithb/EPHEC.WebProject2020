@@ -37,7 +37,7 @@ namespace MVCClient.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult> FromShortUrl(string urlToken)
+        public async Task<IActionResult> FromShortUrl(string urlToken)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace MVCClient.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult> Index(int pageNumber = 1, int pageSize = 3)
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 3)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
@@ -99,7 +99,7 @@ namespace MVCClient.Controllers
 
         [HttpGet]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin_Manager)]
-        public async Task<ActionResult> GetAllByManager(int pageNumber = 1, int pageSize = 2)
+        public async Task<IActionResult> GetAllByManager(int pageNumber = 1, int pageSize = 2)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
@@ -133,7 +133,7 @@ namespace MVCClient.Controllers
 
         [HttpGet]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin)]
-        public async Task<ActionResult> GetAllForAdmin(int pageNumber = 1, int pageSize = 2)
+        public async Task<IActionResult> GetAllForAdmin(int pageNumber = 1, int pageSize = 2)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
@@ -168,7 +168,7 @@ namespace MVCClient.Controllers
         [HttpGet]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin_Manager_User)]
         [Route("~/Establishments/Details/{id}")]
-        public async Task<ActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
@@ -188,7 +188,7 @@ namespace MVCClient.Controllers
 
         [HttpGet]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin_Manager)]
-        public ActionResult Create()
+        public IActionResult Create()
         {
             AddCountryListData();
             return View();
@@ -197,7 +197,7 @@ namespace MVCClient.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin_Manager)]
-        public async Task<ActionResult> Create(EstablishmentCreationVwMdl model)
+        public async Task<IActionResult> Create(EstablishmentCreationVwMdl model)
         {
             try
             {
@@ -254,7 +254,7 @@ namespace MVCClient.Controllers
 
         [HttpGet]
         [Authorize(Roles=MyIdentityServerConstants.Role_Admin_Manager)]
-        public async Task<ActionResult> ShortenUrl(int estabId, string estabName)
+        public async Task<IActionResult> ShortenUrl(int estabId, string estabName)
         {
             try
             {
@@ -284,7 +284,7 @@ namespace MVCClient.Controllers
         [HttpPost]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin_Manager)]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ShortenUrl(ShortenUrlVwMdl model)
+        public async Task<IActionResult> ShortenUrl(ShortenUrlVwMdl model)
         {
             try
             {
@@ -317,7 +317,7 @@ namespace MVCClient.Controllers
 
         [HttpGet]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin)]
-        public async Task<ActionResult> GetAllNotValidated(int pageNumber = 1, int pageSize = 2)
+        public async Task<IActionResult> GetAllNotValidated(int pageNumber = 1, int pageSize = 2)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
@@ -370,7 +370,7 @@ namespace MVCClient.Controllers
 
         [HttpGet]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin_Manager)]
-        public async Task<ActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             try
             {
@@ -399,7 +399,7 @@ namespace MVCClient.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(EstablishmentEditionVwMdl model)
+        public async Task<IActionResult> Edit(EstablishmentEditionVwMdl model)
         {
             try
             {
@@ -441,7 +441,7 @@ namespace MVCClient.Controllers
 
         [HttpGet]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin_Manager)]
-        public async Task<ActionResult> EditPictures(int estabId, string estabName)
+        public async Task<IActionResult> EditPictures(int estabId, string estabName)
         {
             try
             {
@@ -470,7 +470,7 @@ namespace MVCClient.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EditPictures(EstablishmentPicturesEditionVwMdl model)
+        public async Task<IActionResult> EditPictures(EstablishmentPicturesEditionVwMdl model)
         {
             try
             {
@@ -536,7 +536,7 @@ namespace MVCClient.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> DeletePictures(int estId, string estName)
+        public async Task<IActionResult> DeletePictures(int estId, string estName)
         {
             try
             {
@@ -585,7 +585,7 @@ namespace MVCClient.Controllers
 
         [HttpGet]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin_Manager_User)]
-        public async Task<ActionResult> RenderPicture(string picId)
+        public async Task<IActionResult> RenderPicture(string picId)
         {
             try
             {
@@ -618,7 +618,7 @@ namespace MVCClient.Controllers
         }
         
         [HttpGet]
-        public async Task<ActionResult> RenderLogo(int estabId)
+        public async Task<IActionResult> RenderLogo(int estabId)
         {
             try
             {
@@ -742,7 +742,7 @@ namespace MVCClient.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult RenderNews(string newsId)
+        public IActionResult RenderNews(string newsId)
         {
             throw new NotImplementedException();
         }
