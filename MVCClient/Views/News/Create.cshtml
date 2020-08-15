@@ -1,0 +1,60 @@
+﻿@model MyLibrary.ViewModels.EstablishmentNewsVwMdl
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create News</h1>
+
+<h4>@Model.EstablishmentName</h4>
+<hr />
+
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input asp-for="EstablishmentId" type="hidden" value="@Model.EstablishmentId" />
+    <input asp-for="EstablishmentName" type="hidden" value="@Model.EstablishmentName" />
+    <input asp-for="CreatedDate" type="hidden" value="@DateTime.Now" />
+    <input asp-for="UpdatedDate" type="hidden" value="@DateTime.Now" />
+
+    <div class="row pt-1 pb-1">
+        <div class="col-12">
+            <div class="card border-secondary">
+                <div class="card-header font-weight-bold text-white bg-secondary">
+                    <div class="row">
+                        <div class="col-1 text-center">
+                            <label asp-for="Title"></label>
+                        </div>
+                        <div class="col-11">
+                            <input asp-for="Title" class="form-control"/>
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body font-italic">
+                    <label asp-for="Text" class="font-weight-bold"></label>
+                    <textarea asp-for="Text" class="form-control" rows="20"></textarea>
+                    <span asp-validation-for="Text" class="text-danger"></span>
+                </div>
+                <div class="form-group text-center">
+                    <input type="submit" value="Create news" class="btn btn-primary w-25" />
+                </div>
+                @*<div class="card-footer font-italic text-muted bg-light pb-0">
+                    <div class="row">
+                        <div class="col-6">
+                            <p>Created : @Model.CreatedDate</p>
+                        </div>
+                        <div class="col-6 text-right">
+                            <p>Last Update : @Model.UpdatedDate</p>
+                        </div>
+                    </div>
+                </div>*@
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

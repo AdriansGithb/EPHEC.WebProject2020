@@ -1,0 +1,84 @@
+﻿@model cloudscribe.Pagination.Models.PagedResult<MyLibrary.DTOs.NewsDTO>
+
+@{
+    ViewData["Title"] = "Index";
+    ViewData["Controller"] = "News";
+    ViewData["Action"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>News Administration</h1>
+<hr class="mb-0" />
+<form asp-action="Index" method="get" class="p-3 mb-0 bg-light">
+    <div class="form-actions text-center">
+        <p>
+            Find by title: <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-action="Index" class="btn btn-secondary">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a class="text-body" asp-action="Index" asp-route-sortOrder="@ViewData["EstabIdSortPrm"]">
+                    # Establishment
+                </a>
+            </th>
+            <th>
+                <a class="text-body" asp-action="Index" asp-route-sortOrder="@ViewData["EstabNameSortPrm"]">
+                    Establishment
+                </a>
+            </th>
+            <th>
+                <a class="text-body" asp-action="Index" asp-route-sortOrder="@ViewData["TitleSortPrm"]">
+                    Title
+                </a>
+            </th>
+            <th>
+                <a class="text-body" asp-action="Index" asp-route-sortOrder="@ViewData["CreatedSortPrm"]">
+                    Created
+                </a>
+            </th>
+            <th>
+                <a class="text-body" asp-action="Index" asp-route-sortOrder="@ViewData["LastUpdtSortPrm"]">
+                    Last Updated
+                </a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Data)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EstablishmentId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EstablishmentName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdatedDate)
+                </td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        <a class="btn btn-danger" asp-action="" asp-route-id="@item.Id">Delete</a>
+                        <a class="btn btn-warning" asp-action="" asp-route-id="@item.Id">Edit</a>
+                        <a class="btn btn-primary" asp-action="" asp-route-id="@item.Id">FullView</a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<partial name="_PaginationPartial" view-data="ViewData" model="Model" />

@@ -16,7 +16,7 @@ namespace MyAPI
             services.AddScoped<IEstablishmentsService, EstablishmentsService>();
             services.AddScoped<IEstablishmentsPicturesService, EstablishmentsPicturesService>();
             services.AddScoped<IEstablishmentsAddressesService, EstablishmentsAddressesService>();
-
+            services.AddScoped<IEstablishmentsNewsService, EstablishmentsNewsService>();
         }
     }
 }

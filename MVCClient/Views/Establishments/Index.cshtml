@@ -53,7 +53,9 @@
                         {
                             <a href="#" class="btn btn btn-success mt-auto" onclick="vldtClick('@item.Id');">Validate</a>
                         }
-                    }
+                        else{
+                        <a asp-controller="News" asp-action="Create" asp-route-estabId="@item.Id" asp-route-estabName="@item.Name" class="btn btn btn-warning text-white mt-auto" >Add News</a>
+                    }}
                     @if (User.HasClaim("sub", item.ManagerId) || User.IsInRole(MyIdentityServerConstants.Role_Admin))
                     {
                         <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">Edit</button>

@@ -48,7 +48,7 @@ namespace MVCClient.Controllers
                 if (!httpResponse.IsSuccessStatusCode)
                 {
                     AddErrorMessage("Error", httpResponse.ReasonPhrase);
-                    return View("Index");
+                    return RedirectToAction("Index");
                 }
 
                 var content = await httpResponse.Content.ReadAsStringAsync();
@@ -59,7 +59,7 @@ namespace MVCClient.Controllers
             catch (Exception e)
             {
                 AddErrorMessage("Unknown error",e.Message);
-                return View("../Home/Index");
+                return RedirectToAction("Index", "Home");
             }
         }
 
@@ -74,7 +74,7 @@ namespace MVCClient.Controllers
             if (!httpResponse.IsSuccessStatusCode)
             {
                 AddErrorMessage("Data not downloaded", httpResponse.ReasonPhrase);
-                return View("../Home/Index");
+                return RedirectToAction("Index","Home");
             }
 
             var content = await httpResponse.Content.ReadAsStringAsync();
@@ -108,7 +108,7 @@ namespace MVCClient.Controllers
             if (!httpResponse.IsSuccessStatusCode)
             {
                 AddErrorMessage("Data not downloaded", httpResponse.ReasonPhrase);
-                return View("../Home/Index");
+                return RedirectToAction("Index", "Home");
             }
 
             var content = await httpResponse.Content.ReadAsStringAsync();
@@ -143,7 +143,7 @@ namespace MVCClient.Controllers
             if (!httpResponse.IsSuccessStatusCode)
             {
                 AddErrorMessage("Error", httpResponse.ReasonPhrase);
-                return View("Index");
+                return RedirectToAction("Index");
             }
 
             var content = await httpResponse.Content.ReadAsStringAsync();
@@ -202,7 +202,7 @@ namespace MVCClient.Controllers
                     }
 
                     AddSuccessMessage("Establishment created", "Your new establishment has been created successfully");
-                    return View("../Home/Index");
+                    return RedirectToAction("Index", "Home");
 
                 }
                 else
@@ -214,7 +214,7 @@ namespace MVCClient.Controllers
             catch(Exception ex)
             {
                 AddErrorMessage("Unknown error", ex.Message);
-                return View();
+                return RedirectToAction("Index", "Home"); ;
             }
         }
 
@@ -243,7 +243,7 @@ namespace MVCClient.Controllers
             catch (Exception e)
             {
                 AddErrorMessage("Error", "Unknown error : "+e.Message);
-                return View("../Home/Index");
+                return RedirectToAction("Index", "Home");
             }
         }
 
@@ -281,7 +281,6 @@ namespace MVCClient.Controllers
             }
         }
 
-
         [HttpGet]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin)]
         public async Task<ActionResult> GetAllNotValidated(int pageNumber = 1, int pageSize = 2)
@@ -293,7 +292,7 @@ namespace MVCClient.Controllers
             if (!httpResponse.IsSuccessStatusCode)
             {
                 AddErrorMessage("Data not downloaded", httpResponse.ReasonPhrase);
-                return View("../Home/Index");
+                return RedirectToAction("Index", "Home"); ;
             }
 
             var content = await httpResponse.Content.ReadAsStringAsync();
@@ -348,7 +347,7 @@ namespace MVCClient.Controllers
                 if (!httpResponse.IsSuccessStatusCode)
                 {
                     AddErrorMessage("Error", httpResponse.ReasonPhrase);
-                    return View("../Home/Index");
+                    return RedirectToAction("Index", "Home");
                 }
 
                 var content = await httpResponse.Content.ReadAsStringAsync();
@@ -360,7 +359,7 @@ namespace MVCClient.Controllers
             catch (Exception ex)
             {
                 AddErrorMessage("Page not loaded", "An unknown error has blocked the page loading : "+ex.Message);
-                return View("../Home/Index");
+                return RedirectToAction("Index", "Home");
             }
         }
 
@@ -402,7 +401,7 @@ namespace MVCClient.Controllers
             catch (Exception ex)
             {
                 AddErrorMessage("Unknown error",ex.Message);
-                return View("../Home/Index");
+                return RedirectToAction("Index", "Home");
             }
         }
 
@@ -419,7 +418,7 @@ namespace MVCClient.Controllers
                 if (!httpResponse.IsSuccessStatusCode)
                 {
                     AddErrorMessage("Error", httpResponse.ReasonPhrase);
-                    return View("../Home/Index");
+                    return RedirectToAction("Index", "Home");
                 }
 
                 var content = await httpResponse.Content.ReadAsStringAsync();
@@ -431,7 +430,7 @@ namespace MVCClient.Controllers
             catch (Exception ex)
             {
                 AddErrorMessage("Page not loaded", "An unknown error has blocked the page loading : " + ex.Message);
-                return View("../Home/Index");
+                return RedirectToAction("Index", "Home");
             }
         }
 
@@ -498,7 +497,7 @@ namespace MVCClient.Controllers
             catch (Exception ex)
             {
                 AddErrorMessage("Unknown error", ex.Message);
-                return View("../Home/Index");
+                return RedirectToAction("Index", "Home");
             }
         }
 
@@ -527,7 +526,7 @@ namespace MVCClient.Controllers
             catch (Exception ex)
             {
                 AddErrorMessage("Unknown error", ex.Message);
-                return View("../Home/Index");
+                return RedirectToAction("Index", "Home");
             }
         }
 

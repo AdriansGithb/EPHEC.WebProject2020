@@ -134,6 +134,7 @@
     <Compile Include="Constants\MyValidatorsConstants.cs" />
     <Compile Include="Cookies\MyCookies.cs" />
     <Compile Include="DTOs\AddressDTO.cs" />
+    <Compile Include="DTOs\NewsDTO.cs" />
     <Compile Include="DTOs\OpeningTimesDTO.cs" />
     <Compile Include="DTOs\PicturesDTO.cs" />
     <Compile Include="Entities\ApplicationUser.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="ViewModels\EstablishmentCreationVwMdl.cs" />
     <Compile Include="ViewModels\EstablishmentEditionVwMdl.cs" />
     <Compile Include="ViewModels\EstablishmentFullVwMdl.cs" />
+    <Compile Include="ViewModels\EstablishmentNewsVwMdl.cs" />
     <Compile Include="ViewModels\EstablishmentPicturesEditionVwMdl.cs" />
     <Compile Include="ViewModels\EstablishmentShortVwMdl.cs" />
     <Compile Include="ViewModels\RegisterVwMdl.cs" />
