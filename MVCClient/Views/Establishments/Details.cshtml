@@ -289,13 +289,24 @@
                 else
                 {
                     <div class="row">
-                        @foreach (var id in Model.NewsIdList)
+                        @foreach (var newsVwMdl in Model.NewsList)
                         {
                             <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="card-text">
-                                            <p>@Url.Action("RenderNews", new { newsId = id })</p>
+                                <div class="card border-secondary">
+                                    <div class="card-header font-weight-bold text-white bg-secondary">
+                                        <p>@newsVwMdl.Title</p>
+                                    </div>
+                                    <div class="card-body font-italic">
+                                        <p>@newsVwMdl.Text</p>                                    
+                                        </div>
+                                    <div class="card-footer font-italic text-muted bg-light pb-0">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p>@newsVwMdl.CreatedDate</p>                                            
+                                                </div>
+                                            <div class="col-6 text-right">
+                                                <p>@newsVwMdl.UpdatedDate</p>                                            
+                                                </div>
                                         </div>
                                     </div>
                                 </div>

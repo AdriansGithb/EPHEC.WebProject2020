@@ -274,6 +274,7 @@ namespace MyAPI.Services
                     .Include(x => x.Address)
                     .Include(x => x.OpeningTimes)
                     .Include(x => x.Pictures)
+                    .Include(x=>x.News)
                     .FirstOrDefault();
 
                 if (estabWithRelatedEntities == null)
@@ -332,12 +333,22 @@ namespace MyAPI.Services
                         }
                     }
 
-                fullView.NewsIdList = new List<string>();
+                fullView.NewsList = new List<EstablishmentNewsVwMdl>();
                 if (estabWithRelatedEntities.News!=null)
                 {
                     foreach (var news in estabWithRelatedEntities.News)
                     {
-                        fullView.NewsIdList.Add(news.Id);
+                        EstablishmentNewsVwMdl addNews = new EstablishmentNewsVwMdl
+                        {
+                            Id = news.Id,
+                            EstablishmentId = news.EstablishmentId,
+                            EstablishmentName = news.Establishment.Name,
+                            CreatedDate = news.CreatedDate,
+                            UpdatedDate = news.UpdatedDate,
+                            Title = news.Title,
+                            Text = news.Text
+                        };
+                        fullView.NewsList.Add(addNews);
                     }
                 }
 

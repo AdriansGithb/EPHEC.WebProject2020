@@ -170,20 +170,30 @@ namespace MVCClient.Controllers
         [Route("~/Establishments/Details/{id}")]
         public async Task<IActionResult> Details(int id)
         {
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-
-            var httpResponse = await _client.GetAsync($"{MyAPIConstants.MyAPI_EstablishmentsCtrl_Url}GetDetails/{id}");
-            if (!httpResponse.IsSuccessStatusCode)
+            try
             {
-                AddErrorMessage("Error", httpResponse.ReasonPhrase);
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                var httpResponse =
+                    await _client.GetAsync($"{MyAPIConstants.MyAPI_EstablishmentsCtrl_Url}GetDetails/{id}");
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    AddErrorMessage("Error", httpResponse.ReasonPhrase);
+                    return RedirectToAction("Index");
+                }
+
+                var content = await httpResponse.Content.ReadAsStringAsync();
+                EstablishmentFullVwMdl estabDetails = JsonConvert.DeserializeObject<EstablishmentFullVwMdl>(content);
+
+                return View(estabDetails);
+
+            }
+            catch (Exception ex)
+            {
+                AddErrorMessage("Error",ex.Message);
                 return RedirectToAction("Index");
             }
-
-            var content = await httpResponse.Content.ReadAsStringAsync();
-            EstablishmentFullVwMdl estabDetails = JsonConvert.DeserializeObject<EstablishmentFullVwMdl>(content);
-
-            return View(estabDetails);
         }
 
         [HttpGet]
@@ -658,7 +668,6 @@ namespace MVCClient.Controllers
 
 
 
-
         private byte[] GetDefaultPictureFromFile(string filePath)
         {
             using (var memoryStream = new MemoryStream())
@@ -740,11 +749,5 @@ namespace MVCClient.Controllers
             ViewBag.CountryList = CountryList;
         }
 
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult RenderNews(string newsId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -42,7 +42,7 @@ namespace MyLibrary.ViewModels
         
 
         public List<string> PicturesIdList { get; set; }
-        public List<string> NewsIdList { get; set; }
+        public List<EstablishmentNewsVwMdl> NewsList { get; set; }
 
     }
 }
