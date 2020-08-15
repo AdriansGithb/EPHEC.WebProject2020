@@ -410,7 +410,35 @@ namespace MVCClient.Controllers
             }
         }
 
-        // POST: EstablishmentsController/Delete/5
+        [HttpPost]
+        public async Task<ActionResult> DeletePictures(int estId, string estName)
+        {
+            try
+            {
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                var httpResponse =
+                    await _client.DeleteAsync($"{MyAPIConstants.MyAPI_EstabPicturesCtrl_Url}DeletePictures/{estId}");
+
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    AddErrorMessage("Not deleted",
+                        "Your pictures have not been deleted due to some issues. Please try again or contact an admin");
+                    return RedirectToAction("EditPictures", new{estabId= estId, estabName= estName });
+                }
+
+                AddSuccessMessage("Pictures deleted",
+                    "Your establishment pictures have been deleted successfully.");
+                return RedirectToAction("EditPictures", new { estabId = estId, estabName = estName });
+            }
+            catch (Exception ex)
+            {
+                AddErrorMessage("Unknown error", ex.Message);
+                return View("../Home/Index");
+            }
+        }
+
         [HttpPost]
         public async Task<bool> Delete(int estabId)
         {

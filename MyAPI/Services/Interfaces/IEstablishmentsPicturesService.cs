@@ -13,5 +13,6 @@ namespace MyAPI.Services.Interfaces
         PicturesDTO GetPicture(string picId);
         EstablishmentPicturesEditionVwMdl GetCurrentPictures(int estabId);
         void EditPictures(EstablishmentPicturesEditionVwMdl estabPics);
+        void DeletePictures(int estabId);
     }
 }

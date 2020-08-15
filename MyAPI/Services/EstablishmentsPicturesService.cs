@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MyAPI.Data;
@@ -82,7 +83,8 @@ namespace MyAPI.Services
                     return new EstablishmentPicturesEditionVwMdl
                     {
                         NewPictures = new List<PicturesEditionVwMdl>(),
-                        CurrentPicturesId = new List<string>()
+                        CurrentPicturesId = new List<string>(),
+                        EstabId = estabId
                     };
                 }
 
@@ -154,5 +156,19 @@ namespace MyAPI.Services
             }
         }
 
+        public void DeletePictures(int estabId)
+        {
+            try
+            {
+                var picsToDelete = _context.EstablishmentsPictures.Where(x => x.EstablishmentId == estabId).ToList();
+
+                _context.RemoveRange(picsToDelete);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

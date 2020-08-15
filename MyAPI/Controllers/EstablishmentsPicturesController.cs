@@ -98,6 +98,25 @@ namespace MyAPI.Controllers
             }
         }
 
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Route("~/EstablishmentsPictures/DeletePictures/{id}")]
+        public IActionResult DeletePictures(int id)
+        {
+            try
+            {
+                _service.DeletePictures(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
     }
 }
 

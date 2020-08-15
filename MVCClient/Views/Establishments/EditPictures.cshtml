@@ -101,9 +101,16 @@
                     <a class="text-white" data-toggle="collapse" href="#Delete">Delete pictures</a>
                 </div>
                 <div class="card-body collapse" id="Delete">
-                    <h6 class="text-danger">Are you sure you want to delete all pictures for this establishment?</h6>
-                    <button class="btn btn-danger btn-lg float-right">Delete all pictures</button>
-                </div>
+                    @if (Model.CurrentLogoId == null && Model.CurrentPicturesId.Count == 0)
+                    {
+                        <h6 class="text-muted">You have no picture do delete</h6>
+                    }
+                    else
+                    {
+                        <h6 class="text-danger">Are you sure you want to delete all pictures for this establishment?</h6>
+                        <button asp-controller="Establishments" asp-action="DeletePictures" asp-route-estId="@Model.EstabId" asp-route-estName="@Model.EstabName" class="btn btn-danger btn-lg float-right">Delete all pictures</button>
+                    }
+                    </div>
             </div>
         </div>
     </div>
