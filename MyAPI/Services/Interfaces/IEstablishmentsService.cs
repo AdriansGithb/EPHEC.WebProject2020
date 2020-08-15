@@ -22,5 +22,6 @@ namespace MyAPI.Services.Interfaces
         void Edit(EstablishmentEditionVwMdl editedEstab);
         ShortenUrlVwMdl GenerateShortUrl(int estabId);
         ShortenUrlVwMdl GetShortUrl(int estabId);
+        int GetIdFromShortUrl(string urlToken);
     }
 }

@@ -37,6 +37,34 @@ namespace MVCClient.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        public async Task<ActionResult> FromShortUrl(string urlToken)
+        {
+            try
+            {
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                var httpResponse = await _client.GetAsync($"{MyAPIConstants.MyAPI_EstablishmentsCtrl_Url}GetIdFromShortUrl/{urlToken}");
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    AddErrorMessage("Error", httpResponse.ReasonPhrase);
+                    return View("Index");
+                }
+
+                var content = await httpResponse.Content.ReadAsStringAsync();
+                int estabId = JsonConvert.DeserializeObject<int>(content);
+
+                return RedirectToAction("Details", new {id = estabId});
+            }
+            catch (Exception e)
+            {
+                AddErrorMessage("Unknown error",e.Message);
+                return View("../Home/Index");
+            }
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult> Index(int pageNumber = 1, int pageSize = 3)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
@@ -115,7 +143,7 @@ namespace MVCClient.Controllers
             if (!httpResponse.IsSuccessStatusCode)
             {
                 AddErrorMessage("Error", httpResponse.ReasonPhrase);
-                return View("../Home/Index");
+                return View("Index");
             }
 
             var content = await httpResponse.Content.ReadAsStringAsync();

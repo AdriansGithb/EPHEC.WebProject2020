@@ -515,5 +515,23 @@ namespace MyAPI.Services
                 throw ex;
             }
         }
+
+        public int GetIdFromShortUrl(string urlToken)
+        {
+            try
+            {
+                string shortUrl = MyMVCConstants.MyMVC_Url + urlToken;
+                var estabDetails = _context.EstablishmentsDetails
+                    .FirstOrDefault(x => x.ShortUrl == shortUrl);
+
+                if(estabDetails == null)
+                    throw new Exception("Id not found");
+                return estabDetails.EstablishmentId;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

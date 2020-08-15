@@ -217,7 +217,6 @@ namespace MyAPI.Controllers
             }
         }
 
-
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -238,5 +237,24 @@ namespace MyAPI.Controllers
                 return BadRequest(ex);
             }
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Route("~/Establishments/GetIdFromShortUrl/{urlToken}")]
+        public IActionResult GetIdFromShortUrl(string urlToken)
+        {
+            try
+            {
+                int estabId = _service.GetIdFromShortUrl(urlToken);
+                return Ok(estabId);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
     }
 }
