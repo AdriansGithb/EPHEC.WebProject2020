@@ -60,6 +60,7 @@
                         <div class="dropdown-menu">
                             <a asp-action="Edit" asp-route-id="@item.Id" class="dropdown-item">Establishment</a>
                             <a asp-action="EditPictures" asp-route-estabid="@item.Id" asp-route-estabname="@item.Name" class="dropdown-item">Pictures</a>
+                            <a asp-action="ShortenUrl" asp-route-estabId="@item.Id" asp-route-estabName="@item.Name" class="dropdown-item">Shorten Url</a>
                         </div>
                     }
                     @if (User.IsInRole(MyIdentityServerConstants.Role_User))

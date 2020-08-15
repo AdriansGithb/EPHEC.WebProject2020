@@ -191,6 +191,70 @@ namespace MVCClient.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles=MyIdentityServerConstants.Role_Admin_Manager)]
+        public async Task<ActionResult> ShortenUrl(int estabId, string estabName)
+        {
+            try
+            {
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                var httpResponse = await _client.GetAsync($"{MyAPIConstants.MyAPI_EstablishmentsCtrl_Url}GetShortUrl/{estabId}");
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    AddErrorMessage("Error", httpResponse.ReasonPhrase);
+                    return RedirectToAction("Details", new { id = estabId });
+                }
+                else
+                {
+                    var content = await httpResponse.Content.ReadAsStringAsync();
+                    ShortenUrlVwMdl model = JsonConvert.DeserializeObject<ShortenUrlVwMdl>(content);
+                    return View(model);
+                }
+            }
+            catch (Exception e)
+            {
+                AddErrorMessage("Error", "Unknown error : "+e.Message);
+                return View("../Home/Index");
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = MyIdentityServerConstants.Role_Admin_Manager)]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ShortenUrl(ShortenUrlVwMdl model)
+        {
+            try
+            {
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                var httpResponse = await _client.PutAsync(
+                    $"{MyAPIConstants.MyAPI_EstablishmentsCtrl_Url}GenerateShortUrl/{model.EstablishmentId}", null);
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    AddErrorMessage("Error", httpResponse.ReasonPhrase);
+                    return RedirectToAction("ShortenUrl",
+                        new {estabId = model.EstablishmentId, estabName = model.EstabName});
+                }
+                else
+                {
+                    var content = await httpResponse.Content.ReadAsStringAsync();
+                    ShortenUrlVwMdl editedMdl = JsonConvert.DeserializeObject<ShortenUrlVwMdl>(content);
+
+                    AddSuccessMessage("Congratulations", "Your new short Url has been created and is operational.");
+                    return View(editedMdl);
+                }
+            }
+            catch (Exception ex)
+            {
+                AddErrorMessage("Unknown error", ex.Message);
+                return View(model);
+            }
+        }
+
+
+        [HttpGet]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin)]
         public async Task<ActionResult> GetAllNotValidated(int pageNumber = 1, int pageSize = 2)
         {
@@ -530,6 +594,9 @@ namespace MVCClient.Controllers
                 return File(notfoundLogo, "image/jpg");
             }
         }
+
+
+
 
         private byte[] GetDefaultPictureFromFile(string filePath)
         {

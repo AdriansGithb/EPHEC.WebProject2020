@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MyAPI.Data;
 using MyAPI.Services.Interfaces;
+using MyLibrary.Constants;
 using MyLibrary.DTOs;
 using MyLibrary.Entities;
 using MyLibrary.ViewModels;
@@ -448,5 +449,71 @@ namespace MyAPI.Services
             }
         }
 
+        public ShortenUrlVwMdl GenerateShortUrl(int estabId)
+        {
+            try
+            {
+                var allShortUrls = _context.EstablishmentsDetails
+                    .Select(x=>x.ShortUrl)
+                    .ToList();
+
+                string newShortUrl = string.Empty;
+
+                bool isValidNewUrl = false;
+
+                /* base source : https://www.arctek.dev/blog/make-a-quick-url-shortener */
+                while (!isValidNewUrl)
+                {
+                    newShortUrl = MyMVCConstants.MyMVC_Url;
+                    string urlSafe = string.Empty;
+                    Enumerable.Range(48, 75)
+                        .Where(i => i < 58 || i > 64 && i < 91 || i > 96)
+                        .OrderBy(o => new Random().Next())
+                        .ToList()
+                        .ForEach(i => urlSafe += Convert.ToChar(i)); // Store each char into urlsafe
+                    string token = urlSafe.Substring(new Random().Next(0, urlSafe.Length), new Random().Next(2, 6));
+                    newShortUrl += token;
+                    if (!allShortUrls.Exists(x => x == newShortUrl))
+                        isValidNewUrl = true;
+                }
+
+                var estabDetails = _context.EstablishmentsDetails
+                    .FirstOrDefault(x => x.EstablishmentId == estabId);
+
+                estabDetails.ShortUrl = newShortUrl;
+
+                _context.EstablishmentsDetails.Update(estabDetails);
+                _context.SaveChanges();
+
+                return GetShortUrl(estabId);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public ShortenUrlVwMdl GetShortUrl(int estabId)
+        {
+            try
+            {
+                var estab = _context.Establishments
+                    .Where(x=>x.Id==estabId)
+                    .Include(y => y.Details)
+                    .FirstOrDefault();
+
+                return new ShortenUrlVwMdl
+                {
+                    EstablishmentId = estab.Id,
+                    EstabName = estab.Name,
+                    ShortUrl = estab.Details.ShortUrl
+                };
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

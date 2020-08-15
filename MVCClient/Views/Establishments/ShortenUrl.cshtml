@@ -1,0 +1,55 @@
+﻿@model MyLibrary.ViewModels.ShortenUrlVwMdl
+@Html.AntiForgeryToken()
+@{
+    ViewData["Title"] = "ShortenUrl";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1 class="text-dark">@Model.EstabName</h1>
+
+<h3 class="font-italic text-secondary">Generate a short url to share quickly your establishment details view</h3>
+<hr />
+<form asp-action="ShortenUrl">
+
+    <input asp-for="EstablishmentId" type="hidden" value="@Model.EstablishmentId" />
+    <input asp-for="EstabName" type="hidden" value="@Model.EstabName" />
+
+
+    <div class="row pt-1 pb-1">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header font-weight-bold text-white bg-dark">
+                    <p class="text-white">Short Url manager</p>
+                </div>
+                <div class="card-body font-italic">
+                    <div class="form-group">
+                        @if (string.IsNullOrEmpty(Model.ShortUrl))
+                        {
+                            <label class="font-italic">No short Url generated yet for this establishment</label>
+                        }
+                        else
+                        {
+                            <label>Current short Url : @Model.ShortUrl</label>
+                        }
+                    </div>
+                    <div class="form-group">
+                        @if (string.IsNullOrEmpty(Model.ShortUrl))
+                        {
+                            <input type="submit" value="Generate a short Url" class="btn btn-primary" />
+                        }
+                        else
+                        {
+                            <input type="submit" value="Generate a new short Url" class="btn btn-primary" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

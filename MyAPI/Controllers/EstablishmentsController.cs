@@ -196,5 +196,47 @@ namespace MyAPI.Controllers
             }
         }
 
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Route("~/Establishments/GetShortUrl/{id}")]
+        public IActionResult GetShortUrl(int id)
+        {
+            try
+            {
+                ShortenUrlVwMdl shortUrl = _service.GetShortUrl(id);
+                if (shortUrl.EstablishmentId == id)
+                    return Ok(shortUrl);
+                else return BadRequest("Response establishment id is not equal to request establishment id");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Route("~/Establishments/GenerateShortUrl/{id}")]
+        public IActionResult GenerateShortUrl(int id)
+        {
+            try
+            {
+                ShortenUrlVwMdl shortUrl = _service.GenerateShortUrl(id);
+                if (shortUrl.EstablishmentId == id)
+                    return Ok(shortUrl);
+                else return BadRequest("Response establishment id is not equal to request establishment id");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
     }
 }

@@ -162,6 +162,7 @@
     <Compile Include="ViewModels\EstablishmentPicturesEditionVwMdl.cs" />
     <Compile Include="ViewModels\EstablishmentShortVwMdl.cs" />
     <Compile Include="ViewModels\RegisterVwMdl.cs" />
+    <Compile Include="ViewModels\ShortenUrlVwMdl.cs" />
     <Compile Include="ViewModels\UserAccountAdministrationVwMdl.cs" />
     <Compile Include="ViewModels\UserAccountEditionVwMdl.cs" />
     <Compile Include="ViewModels\UserAccountVwMdl.cs" />
