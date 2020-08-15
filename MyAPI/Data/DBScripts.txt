@@ -25,12 +25,8 @@ dotnet ef migrations add EstabTypeEnumDataDbMigrationAppDbCtx -c AppDbContext -o
 **/ Update Database \**
 dotnet ef database update -c AppDbContext
 
-
-...
-
-
-**/ migration creation \**
-
+**/News Add Title column migration creation \**
+dotnet ef migrations add NewsAddTitleDbMigrationAppDbCtx -c AppDbContext -o Data/Migrations
 **/ Update Database \**
 dotnet ef database update -c AppDbContext
 
