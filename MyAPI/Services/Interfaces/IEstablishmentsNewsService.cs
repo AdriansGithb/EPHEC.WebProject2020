@@ -11,5 +11,8 @@ namespace MyAPI.Services.Interfaces
     {
         List<NewsDTO> GetAll();
         void Create(EstablishmentNewsVwMdl news);
+        EstablishmentNewsVwMdl Get(string id);
+        void Edit(EstablishmentNewsVwMdl news);
+        void Delete(string id);
     }
 }

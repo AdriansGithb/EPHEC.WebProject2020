@@ -77,6 +77,71 @@ namespace MyAPI.Services
             }
         }
 
+        public EstablishmentNewsVwMdl Get(string id)
+        {
+            try
+            {
+                var newswithEstab = _context.EstablishmentsNews
+                    .Where(x=>x.Id==id)
+                    .Include(x => x.Establishment)
+                    .FirstOrDefault();
 
+                EstablishmentNewsVwMdl news = new EstablishmentNewsVwMdl()
+                    {
+                        Id = newswithEstab.Id,
+                        EstablishmentId = newswithEstab.EstablishmentId,
+                        EstablishmentName = newswithEstab.Establishment.Name,
+                        CreatedDate = newswithEstab.CreatedDate,
+                        UpdatedDate = newswithEstab.UpdatedDate,
+                        Title = newswithEstab.Title,
+                        Text = newswithEstab.Text
+                    };
+
+                return news;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public void Edit(EstablishmentNewsVwMdl news)
+        {
+            try
+            {
+                var dbNews = _context.EstablishmentsNews
+                    .FirstOrDefault(x => x.Id == news.Id);
+
+                dbNews.Title = news.Title;
+                dbNews.Text = news.Text;
+                dbNews.UpdatedDate = news.UpdatedDate;
+
+                _context.EstablishmentsNews.Update(dbNews);
+                _context.SaveChanges();
+
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public void Delete(string id)
+        {
+            try
+            {
+                var news = _context.EstablishmentsNews
+                    .FirstOrDefault(x => x.Id == id);
+
+                _context.Remove(news);
+                _context.SaveChanges();
+
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+        }
     }
 }

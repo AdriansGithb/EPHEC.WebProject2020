@@ -1,5 +1,5 @@
 ﻿@model cloudscribe.Pagination.Models.PagedResult<MyLibrary.DTOs.NewsDTO>
-
+@Html.AntiForgeryToken()
 @{
     ViewData["Title"] = "Index";
     ViewData["Controller"] = "News";
@@ -71,8 +71,8 @@
                 </td>
                 <td>
                     <div class="btn-group btn-group-sm">
-                        <a class="btn btn-info" asp-action="" asp-route-id="@item.Id">Edit</a>
-                        <a class="btn btn-danger" asp-action="" asp-route-id="@item.Id">Delete</a>
+                        <a class="btn btn-info" asp-action="Edit" asp-route-newsId="@item.Id">Edit</a>
+                        <a href="#"class="btn btn-danger" onclick="dltClick('@item.Title', '@item.Id');">Delete</a> @*asp-controller="News" asp-action="Delete" asp-route-newsId="@item.Id"*@
                     </div>
                 </td>
             </tr>
@@ -81,3 +81,49 @@
 </table>
 
 <partial name="_PaginationPartial" view-data="ViewData" model="Model" />
+
+<partial name="_Delete" />
+
+@section Scripts
+{
+    <script>
+
+        function dltClick(title, newsId) {
+            $('#newsTitleToDlt').text(title);
+            $('#newsIdToDlt').val(newsId);
+            $("#myModalDelete").modal("show");
+        };
+
+        $(document).ready(function() {
+            $('#confirmBtnDltModal').click(function() {
+                var newsId = $('#myModalDelete #newsIdToDlt').val().trim();
+                $.get("/News/Delete",
+                    { newsId: newsId },
+                    function(success) {
+                        if (success) {
+                            sessionStorage.reloadAfterPageLoad = true;
+                            sessionStorage.setItem("success", "News has been successfully deleted");
+                            location.reload();
+                        } else {
+                            displayToastrMsg("Deletion has ended with some issue. Please try again", "Error", "Error");
+                        }
+                    });
+            });
+
+            $(function() {
+                    if (sessionStorage.reloadAfterPageLoad) {
+                        if (sessionStorage.getItem("success") != null)
+                        {
+                            var msg = sessionStorage.getItem("success");
+                            displayToastrMsg(msg, "Succeed", "Success");
+                            sessionStorage.clear();
+                            sessionStorage.reloadAfterPageLoad = false;
+                        }
+                    }
+                }
+            );
+        });
+
+    </script>
+
+}

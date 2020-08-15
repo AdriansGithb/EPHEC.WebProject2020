@@ -161,5 +161,89 @@ namespace MVCClient.Controllers
             }
         }
 
+        [HttpGet]
+        [Authorize(Roles = MyIdentityServerConstants.Role_Admin)]
+        public async Task<ActionResult> Edit(string newsId)
+        {
+            try
+            {
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                var httpResponse = await _client.GetAsync($"{MyAPIConstants.MyAPI_EstabNewsCtrl_Url}Get/{newsId}");
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    AddErrorMessage("Error", httpResponse.ReasonPhrase);
+                    return RedirectToAction("Index");
+                }
+
+                var content = await httpResponse.Content.ReadAsStringAsync();
+                EstablishmentNewsVwMdl news = JsonConvert.DeserializeObject<EstablishmentNewsVwMdl>(content);
+
+                return View(news);
+
+            }
+            catch (Exception ex)
+            {
+                AddErrorMessage("Error", ex.Message);
+                return RedirectToAction("Index", "Establishments");
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = MyIdentityServerConstants.Role_Admin)]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(EstablishmentNewsVwMdl model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var accessToken = await HttpContext.GetTokenAsync("access_token");
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                    var postContent = JsonConvert.SerializeObject(model);
+                    var httpContent = new StringContent(postContent, Encoding.Default, "application/json");
+                    var httpResponse = await _client.PutAsync($"{MyAPIConstants.MyAPI_EstabNewsCtrl_Url}Edit", httpContent);
+
+                    if (!httpResponse.IsSuccessStatusCode)
+                    {
+                        AddErrorMessage("Not edited", "Your news has not been saved due to some issues. Error : " + httpResponse.ReasonPhrase);
+                        return View(model);
+                    }
+
+                    AddSuccessMessage("News edited", "Your news has been edited successfully");
+                    return RedirectToAction("Index");
+
+                }
+                else return View(model);
+            }
+            catch (Exception ex)
+            {
+                AddErrorMessage("Error", ex.Message);
+                return RedirectToAction("Index", "Establishments");
+            }
+        }
+
+        [HttpGet]
+        public async Task<bool> Delete(string newsId)
+        {
+            try
+            {
+                    var accessToken = await HttpContext.GetTokenAsync("access_token");
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                    var httpResponse = await _client.DeleteAsync($"{MyAPIConstants.MyAPI_EstabNewsCtrl_Url}Delete/{newsId}");
+
+                    if (!httpResponse.IsSuccessStatusCode)
+                        return false;
+                    else return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
     }
 }
