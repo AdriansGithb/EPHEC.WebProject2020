@@ -13,27 +13,23 @@
     .mapboxgl-popup {
         width: 400px;
         font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-   }
+    }
 
     .mapboxgl-marker {
         cursor: pointer
     }
 </style>
-
-
-<h2>Ma page d'accueil</h2>
-<dl>
-    Bonjour @User.Identity.Name :)
-</dl>
-
+    <h2>Ma page d'accueil</h2>
+    <dl>
+        Bonjour @User.Identity.Name :)
+    </dl>
 
 
 
 
 
-
-@* Map *@
-<div id='map' style='width: 100%; height: 400px;'></div>
+    @* Map *@
+    <div id='map' style='width: 100%; height: 400px;'></div>
 
 @section Scripts
 {
