@@ -132,6 +132,40 @@ namespace MVCClient.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = MyIdentityServerConstants.Role_Admin)]
+        public async Task<ActionResult> GetAllForAdmin(int pageNumber = 1, int pageSize = 2)
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var httpResponse = await _client.GetAsync($"{MyAPIConstants.MyAPI_EstablishmentsCtrl_Url}GetAllForAdmin");
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                AddErrorMessage("Data not downloaded", httpResponse.ReasonPhrase);
+                return RedirectToAction("Index", "Home");
+            }
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            List<EstablishmentShortVwMdl> displayList = JsonConvert.DeserializeObject<List<EstablishmentShortVwMdl>>(content);
+
+            int excludeRecords = (pageSize * pageNumber) - pageSize;
+            var paginatedList = displayList.Skip(excludeRecords).Take(pageSize);
+            var pageResult = new PagedResult<EstablishmentShortVwMdl>
+            {
+                Data = paginatedList.ToList(),
+                TotalItems = displayList.Count(),
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+
+            ViewData["Title"] = "Establishments for administration";
+            ViewData["Action"] = "GetAllForAdmin";
+            ViewData["HeadText"] = "All establishments";
+
+            return View("Index", pageResult);
+        }
+
+        [HttpGet]
         [Authorize(Roles = MyIdentityServerConstants.Role_Admin_Manager_User)]
         [Route("~/Establishments/Details/{id}")]
         public async Task<ActionResult> Details(int id)

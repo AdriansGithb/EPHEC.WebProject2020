@@ -533,5 +533,43 @@ namespace MyAPI.Services
                 throw ex;
             }
         }
+
+        public List<EstablishmentShortVwMdl> GetAllForAdmin()
+        {
+            try
+            {
+                var estabWithTypeAndPictures = _context.Establishments
+                    .Include(x => x.Type)
+                    .Include(x => x.Manager)
+                    .ToList();
+
+                List<EstablishmentShortVwMdl> rtrnList = new List<EstablishmentShortVwMdl>();
+                if (estabWithTypeAndPictures.Count > 0)
+                {
+                    foreach (var estab in estabWithTypeAndPictures)
+                    {
+                        EstablishmentShortVwMdl shortVw = new EstablishmentShortVwMdl
+                        {
+                            Id = estab.Id,
+                            Name = estab.Name,
+                            EstabType = estab.Type.Name,
+                            ManagerId = estab.ManagerId,
+                            ManagerUserName = estab.Manager.UserName,
+                            IsValidated = estab.IsValidated
+                        };
+
+                        rtrnList.Add(shortVw);
+
+                    }
+                }
+
+                return rtrnList;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
     }
 }

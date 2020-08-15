@@ -123,6 +123,26 @@ namespace MyAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Route("~/Establishments/GetAllForAdmin")]
+        public IActionResult GetAllForAdmin()
+        {
+            try
+            {
+                List<EstablishmentShortVwMdl> rtrnList = _service.GetAllForAdmin();
+                return Ok(rtrnList);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Route("~/Establishments/GetDetails/{id}")]
         public IActionResult GetDetails(int id)
         {

@@ -23,5 +23,6 @@ namespace MyAPI.Services.Interfaces
         ShortenUrlVwMdl GenerateShortUrl(int estabId);
         ShortenUrlVwMdl GetShortUrl(int estabId);
         int GetIdFromShortUrl(string urlToken);
+        List<EstablishmentShortVwMdl> GetAllForAdmin();
     }
 }
