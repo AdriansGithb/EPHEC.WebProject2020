@@ -19,6 +19,8 @@ namespace MyLibrary.Entities
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
 
+        public string Title { get; set; }
+
         [Required]
         public string Text { get; set; }
 
