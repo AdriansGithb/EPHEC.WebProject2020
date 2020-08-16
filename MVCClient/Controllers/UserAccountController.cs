@@ -42,62 +42,72 @@ namespace MVCClient.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(string sortOrder, string searchString, int pageNumber = 1, int pageSize=5)
         {
-            ViewData["UsernameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "username_desc" : "";
-            ViewData["EmailSortParm"] = sortOrder == "email" ? "email_desc" : "email";
-            ViewData["IsProSortParm"] = sortOrder == "IsPro" ? "IsPro_desc" : "IsPro";
-            ViewData["IsAdminSortParm"] = sortOrder == "IsAdmin" ? "IsAdmin_desc" : "IsAdmin";
-            ViewData["CurrentFilter"] = searchString;
-
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
-
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            var content = await _client.GetStringAsync(MyAPIConstants.MyAPI_UserAccountCtrl_Url + "GetAll");
-
-            var unsortedModelsList = JsonConvert.DeserializeObject<List<UserAccountAdministrationVwMdl>>(content);
-            if (!String.IsNullOrEmpty(searchString))
+            try
             {
-                unsortedModelsList = unsortedModelsList.FindAll(x =>
-                    x.Username.Contains(searchString));
+                ViewData["UsernameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "username_desc" : "";
+                ViewData["EmailSortParm"] = sortOrder == "email" ? "email_desc" : "email";
+                ViewData["IsProSortParm"] = sortOrder == "IsPro" ? "IsPro_desc" : "IsPro";
+                ViewData["IsAdminSortParm"] = sortOrder == "IsAdmin" ? "IsAdmin_desc" : "IsAdmin";
+                ViewData["CurrentFilter"] = searchString;
+
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                var content = await _client.GetStringAsync(MyAPIConstants.MyAPI_UserAccountCtrl_Url + "GetAll");
+
+                var unsortedModelsList = JsonConvert.DeserializeObject<List<UserAccountAdministrationVwMdl>>(content);
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    unsortedModelsList = unsortedModelsList.FindAll(x =>
+                        x.Username.Contains(searchString));
+                }
+
+                IOrderedEnumerable<UserAccountAdministrationVwMdl> sortedModelsList;
+                switch (sortOrder)
+                {
+                    case "username_desc":
+                        sortedModelsList = unsortedModelsList.OrderByDescending(s => s.Username);
+                        break;
+                    case "email":
+                        sortedModelsList = unsortedModelsList.OrderBy(s => s.Email);
+                        break;
+                    case "email_desc":
+                        sortedModelsList = unsortedModelsList.OrderByDescending(s => s.Email);
+                        break;
+                    case "IsPro":
+                        sortedModelsList = unsortedModelsList.OrderBy(s => s.IsProfessional);
+                        break;
+                    case "IsPro_desc":
+                        sortedModelsList = unsortedModelsList.OrderByDescending(s => s.IsProfessional);
+                        break;
+                    case "IsAdmin":
+                        sortedModelsList = unsortedModelsList.OrderBy(s => s.IsAdmin);
+                        break;
+                    case "IsAdmin_desc":
+                        sortedModelsList = unsortedModelsList.OrderByDescending(s => s.IsAdmin);
+                        break;
+                    default:
+                        sortedModelsList = unsortedModelsList.OrderBy(s => s.Username);
+                        break;
+                }
+
+                int excludeRecords = (pageSize * pageNumber) - pageSize;
+                var paginatedList = sortedModelsList.Skip(excludeRecords).Take(pageSize);
+                var pageResult = new PagedResult<UserAccountAdministrationVwMdl>
+                {
+                    Data = paginatedList.ToList(),
+                    TotalItems = sortedModelsList.Count(),
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+                return View(pageResult);
             }
-            IOrderedEnumerable<UserAccountAdministrationVwMdl> sortedModelsList;
-            switch (sortOrder)
+            catch (Exception ex)
             {
-                case "username_desc":
-                    sortedModelsList = unsortedModelsList.OrderByDescending(s => s.Username);
-                    break;
-                case "email":
-                    sortedModelsList = unsortedModelsList.OrderBy(s => s.Email);
-                    break;
-                case "email_desc":
-                    sortedModelsList = unsortedModelsList.OrderByDescending(s => s.Email);
-                    break;
-                case "IsPro":
-                    sortedModelsList = unsortedModelsList.OrderBy(s => s.IsProfessional);
-                    break;
-                case "IsPro_desc":
-                    sortedModelsList = unsortedModelsList.OrderByDescending(s => s.IsProfessional);
-                    break;
-                case "IsAdmin":
-                    sortedModelsList = unsortedModelsList.OrderBy(s => s.IsAdmin);
-                    break;
-                case "IsAdmin_desc":
-                    sortedModelsList = unsortedModelsList.OrderByDescending(s => s.IsAdmin);
-                    break;
-                default:
-                    sortedModelsList = unsortedModelsList.OrderBy(s => s.Username);
-                    break;
+                AddErrorMessage("Unknown error", ex.Message);
+                return RedirectToAction("Index","Home");
             }
 
-            int excludeRecords = (pageSize * pageNumber) - pageSize;
-            var paginatedList = sortedModelsList.Skip(excludeRecords).Take(pageSize);
-            var pageResult = new PagedResult<UserAccountAdministrationVwMdl>
-            {
-                Data = paginatedList.ToList(),
-                TotalItems = sortedModelsList.Count(),
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            };
-            return View(pageResult);
         }
 
         [HttpGet]
@@ -113,11 +123,11 @@ namespace MVCClient.Controllers
                 return View("UserAccountDetails",userAccount);
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return BadRequest(ex);
+                AddErrorMessage("Unknown error", ex.Message);
+                return RedirectToAction("Index", "Home");
             }
-
 
         }
 
@@ -130,10 +140,19 @@ namespace MVCClient.Controllers
         [HttpPost]
         public async Task<bool> SetAdminStatusChange(string userId, bool isAdmin)
         {
-            var content = await _client.PostAsync($"{MyIdentityServerConstants.IS_Url}Account/EditAdminRights?userid={userId}&isadmin={isAdmin}", null);
-            if (content.IsSuccessStatusCode)
-                return true;
-            else return false ;
+            try
+            {
+                var content = await _client.PostAsync(
+                    $"{MyIdentityServerConstants.IS_Url}Account/EditAdminRights?userid={userId}&isadmin={isAdmin}",
+                    null);
+                if (content.IsSuccessStatusCode)
+                    return true;
+                else return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         [HttpGet]
@@ -151,7 +170,8 @@ namespace MVCClient.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                AddErrorMessage("Unknown error", ex.Message);
+                return RedirectToAction("Index", "Home");
             }
         }
 

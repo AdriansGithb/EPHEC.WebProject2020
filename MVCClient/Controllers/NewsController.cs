@@ -226,6 +226,7 @@ namespace MVCClient.Controllers
         }
 
         [HttpGet]
+        [ValidateAntiForgeryToken]
         public async Task<bool> Delete(string newsId)
         {
             try

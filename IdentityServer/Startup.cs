@@ -45,7 +45,6 @@ namespace IdentityServer
             services.AddControllersWithViews().AddFluentValidation();
 
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-            //const string ConnectionString = @"Data Source=MSI\SQLEXPRESS;database=WebProject2020;trusted_connection=yes;";
 
             services.AddDbContext<ApplicationDbContext>(ctxBuilder =>
                 ctxBuilder.UseSqlServer(MyDbConstants.ConnectionString, sqlOptions => sqlOptions.MigrationsAssembly(migrationsAssembly)));
@@ -157,66 +156,66 @@ namespace IdentityServer
         //            context.SaveChanges();
         //        }
 
-        //        var userMgr = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-        //        if (!userMgr.Users.Any())
-        //        {
-        //            var alice = new ApplicationUser
-        //            {
-        //                UserName = "alice",
-        //                Email = "AliceSmith@email.com",
-        //                EmailConfirmed = true,
-        //                GenderType_Id = GenderTypesId.Female
-        //            };
-        //            var result = userMgr.CreateAsync(alice, "Pass123$").Result;
-        //            if (!result.Succeeded)
-        //            {
-        //                throw new Exception(result.Errors.First().Description);
-        //            }
+        ////        var userMgr = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+        ////        if (!userMgr.Users.Any())
+        ////        {
+        ////            var alice = new ApplicationUser
+        ////            {
+        ////                UserName = "alice",
+        ////                Email = "AliceSmith@email.com",
+        ////                EmailConfirmed = true,
+        ////                GenderType_Id = GenderTypesId.Female
+        ////            };
+        ////            var result = userMgr.CreateAsync(alice, "Pass123$").Result;
+        ////            if (!result.Succeeded)
+        ////            {
+        ////                throw new Exception(result.Errors.First().Description);
+        ////            }
 
-        //            result = userMgr.AddClaimsAsync(alice, new Claim[]
-        //            {
-        //                new Claim(JwtClaimTypes.Name, "Alice Smith"),
-        //                new Claim(JwtClaimTypes.GivenName, "Alice"),
-        //                new Claim(JwtClaimTypes.FamilyName, "Smith"),
-        //                new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
-        //                new Claim("role", MyIdentityServerConstants.Role_Manager),
-        //            }).Result;
-        //            if (!result.Succeeded)
-        //            {
-        //                throw new Exception(result.Errors.First().Description);
-        //            }
+        ////            result = userMgr.AddClaimsAsync(alice, new Claim[]
+        ////            {
+        ////                new Claim(JwtClaimTypes.Name, "Alice Smith"),
+        ////                new Claim(JwtClaimTypes.GivenName, "Alice"),
+        ////                new Claim(JwtClaimTypes.FamilyName, "Smith"),
+        ////                new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
+        ////                new Claim("role", MyIdentityServerConstants.Role_Manager),
+        ////            }).Result;
+        ////            if (!result.Succeeded)
+        ////            {
+        ////                throw new Exception(result.Errors.First().Description);
+        ////            }
 
-        //            Log.Debug("alice created");
+        ////            Log.Debug("alice created");
 
-        //            var bob = new ApplicationUser
-        //            {
-        //                UserName = "bob",
-        //                Email = "BobSmith@email.com",
-        //                EmailConfirmed = true,
-        //                GenderType_Id = GenderTypesId.Male
-        //            };
-        //            result = userMgr.CreateAsync(bob, "Pass123$").Result;
-        //            if (!result.Succeeded)
-        //            {
-        //                throw new Exception(result.Errors.First().Description);
-        //            }
+        ////            var bob = new ApplicationUser
+        ////            {
+        ////                UserName = "bob",
+        ////                Email = "BobSmith@email.com",
+        ////                EmailConfirmed = true,
+        ////                GenderType_Id = GenderTypesId.Male
+        ////            };
+        ////            result = userMgr.CreateAsync(bob, "Pass123$").Result;
+        ////            if (!result.Succeeded)
+        ////            {
+        ////                throw new Exception(result.Errors.First().Description);
+        ////            }
 
-        //            result = userMgr.AddClaimsAsync(bob, new Claim[]
-        //            {
-        //                new Claim(JwtClaimTypes.Name, "Bob Smith"),
-        //                new Claim(JwtClaimTypes.GivenName, "Bob"),
-        //                new Claim(JwtClaimTypes.FamilyName, "Smith"),
-        //                new Claim(JwtClaimTypes.WebSite, "http://bob.com"),
-        //                new Claim("location", "somewhere"),
-        //                new Claim("role",MyIdentityServerConstants.Role_User),
-        //            }).Result;
-        //            if (!result.Succeeded)
-        //            {
-        //                throw new Exception(result.Errors.First().Description);
-        //            }
+        ////            result = userMgr.AddClaimsAsync(bob, new Claim[]
+        ////            {
+        ////                new Claim(JwtClaimTypes.Name, "Bob Smith"),
+        ////                new Claim(JwtClaimTypes.GivenName, "Bob"),
+        ////                new Claim(JwtClaimTypes.FamilyName, "Smith"),
+        ////                new Claim(JwtClaimTypes.WebSite, "http://bob.com"),
+        ////                new Claim("location", "somewhere"),
+        ////                new Claim("role",MyIdentityServerConstants.Role_User),
+        ////            }).Result;
+        ////            if (!result.Succeeded)
+        ////            {
+        ////                throw new Exception(result.Errors.First().Description);
+        ////            }
 
-        //            Log.Debug("bob created");
-        //        }
+        ////            Log.Debug("bob created");
+        ////        }
 
         //        var roleMgr = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
         //        if (!roleMgr.Roles.Any())

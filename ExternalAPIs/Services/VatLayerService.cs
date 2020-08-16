@@ -22,17 +22,24 @@ namespace ExternalAPIs.Services
 
         public async Task<VatLayerResponseModel> GetVatLayerResponseAsync(string vatNumber)
         {
-            var httpResponse = await _client.GetAsync($"{BaseUrl}&vat_number={vatNumber}");
-
-            if (!httpResponse.IsSuccessStatusCode)
+            try
             {
-                throw new Exception("Cannot retrieve tasks");
+                var httpResponse = await _client.GetAsync($"{BaseUrl}&vat_number={vatNumber}");
+
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    throw new Exception("Cannot retrieve tasks");
+                }
+
+                var content = await httpResponse.Content.ReadAsStringAsync();
+                var response = JsonConvert.DeserializeObject<VatLayerResponseModel>(content);
+
+                return response;
             }
-
-            var content = await httpResponse.Content.ReadAsStringAsync();
-            var response = JsonConvert.DeserializeObject<VatLayerResponseModel>(content);
-
-            return response;
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

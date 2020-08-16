@@ -116,60 +116,72 @@ namespace IdentityServerHost.Quickstart.UI
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterVwMdl regFormData)
         {
-            if (ModelState.IsValid)
+            try
             {
-                ApplicationUser newUser = new ApplicationUser
+                if (ModelState.IsValid)
                 {
-                    UserName = regFormData.UserDetails.Email,
-                    Email = regFormData.UserDetails.Email,
-                    EmailConfirmed = true,
-                    LastName = regFormData.UserDetails.LastName,
-                    FirstName = regFormData.UserDetails.FirstName,
-                    BirthDate = regFormData.UserDetails.BirthDate,
-                    GenderType_Id = regFormData.UserDetails.GenderType_Id,
-                    IsAdmin = false,
-                    IsProfessional = regFormData.UserDetails.IsProfessional,
-                };
+                    ApplicationUser newUser = new ApplicationUser
+                    {
+                        UserName = regFormData.UserDetails.Email,
+                        Email = regFormData.UserDetails.Email,
+                        EmailConfirmed = true,
+                        LastName = regFormData.UserDetails.LastName,
+                        FirstName = regFormData.UserDetails.FirstName,
+                        BirthDate = regFormData.UserDetails.BirthDate,
+                        GenderType_Id = regFormData.UserDetails.GenderType_Id,
+                        IsAdmin = false,
+                        IsProfessional = regFormData.UserDetails.IsProfessional,
+                    };
 
-                if (regFormData.UserDetails.PhoneNumber != null)
-                {
-                    newUser.PhoneNumber = regFormData.UserDetails.PhoneNumber;
-                    newUser.PhoneNumberConfirmed = true;
-                }
-
-                var resultReg = await _userManager.CreateAsync(newUser, regFormData.Password);
-                if (!resultReg.Succeeded)
-                {
-                    foreach (IdentityError error in resultReg.Errors)
-                    { 
-                        ModelState.TryAddModelError(error.Code,error.Description);
+                    if (regFormData.UserDetails.PhoneNumber != null)
+                    {
+                        newUser.PhoneNumber = regFormData.UserDetails.PhoneNumber;
+                        newUser.PhoneNumberConfirmed = true;
                     }
-                    return View(regFormData);
-                }
 
-                await _userManager.AddToRoleAsync(newUser, MyIdentityServerConstants.Role_User);
+                    var resultReg = await _userManager.CreateAsync(newUser, regFormData.Password);
+                    if (!resultReg.Succeeded)
+                    {
+                        foreach (IdentityError error in resultReg.Errors)
+                        {
+                            ModelState.TryAddModelError(error.Code, error.Description);
+                        }
 
-                if (newUser.IsProfessional)
-                {
-                    await _userManager.AddToRoleAsync(newUser, MyIdentityServerConstants.Role_Manager);
-                }
+                        return View(regFormData);
+                    }
 
-                var resultLog = await _signInManager.PasswordSignInAsync(newUser.UserName, regFormData.Password, false ,lockoutOnFailure: true);
-                if (resultLog.Succeeded)
-                {
-                    var user = await _userManager.FindByNameAsync(newUser.UserName);
-                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName));
-                    AddSuccessMessage("Registration succeed",$"Congratulations {user.FirstName}, you have been successfully logged and registered. Welcome in our members !");
+                    await _userManager.AddToRoleAsync(newUser, MyIdentityServerConstants.Role_User);
+
+                    if (newUser.IsProfessional)
+                    {
+                        await _userManager.AddToRoleAsync(newUser, MyIdentityServerConstants.Role_Manager);
+                    }
+
+                    var resultLog = await _signInManager.PasswordSignInAsync(newUser.UserName, regFormData.Password,
+                        false, lockoutOnFailure: true);
+                    if (resultLog.Succeeded)
+                    {
+                        var user = await _userManager.FindByNameAsync(newUser.UserName);
+                        await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName));
+                        AddSuccessMessage("Registration succeed",
+                            $"Congratulations {user.FirstName}, you have been successfully logged and registered. Welcome in our members !");
+                        return Redirect(MyMVCConstants.MyMVC_Login_Url);
+                    }
+
+                    await _events.RaiseAsync(new UserLoginFailureEvent(newUser.UserName, "invalid credentials"));
+                    AddErrorMessage("Login failure",
+                        "Registration completed successfully but your login credentials failed. Please try again to log in.");
                     return Redirect(MyMVCConstants.MyMVC_Login_Url);
                 }
-
-                await _events.RaiseAsync(new UserLoginFailureEvent(newUser.UserName, "invalid credentials"));
-                AddErrorMessage("Login failure", "Registration completed successfully but your login credentials failed. Please try again to log in.");
-                return Redirect(MyMVCConstants.MyMVC_Login_Url);
+                else
+                {
+                    return View(regFormData);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return View(regFormData);
+                AddErrorMessage("Unknown error",ex.Message);
+                return Redirect(MyMVCConstants.MyMVC_HomeIndex_Url);
             }
 
         }
@@ -180,12 +192,21 @@ namespace IdentityServerHost.Quickstart.UI
         [HttpGet]
         public async Task<IActionResult> EditUserDetails()
         {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            UserAccountEditionVwMdl userData = new UserAccountEditionVwMdl()
+            try
             {
-                UserDetails = user
-            };
-            return View(userData);
+
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                UserAccountEditionVwMdl userData = new UserAccountEditionVwMdl()
+                {
+                    UserDetails = user
+                };
+                return View(userData);
+            }
+            catch (Exception ex)
+            {
+                AddErrorMessage("Unknown error", ex.Message);
+                return Redirect(MyMVCConstants.MyMVC_HomeIndex_Url);
+            }
         }
 
         /// <summary>
@@ -197,94 +218,104 @@ namespace IdentityServerHost.Quickstart.UI
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditUserDetails(UserAccountEditionVwMdl editedUserData)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var modifiedUser = await _userManager.FindByIdAsync(editedUserData.UserDetails.Id);
-                var resultPass =
-                    await _userManager.CheckPasswordAsync(modifiedUser, editedUserData.CurrentPassword);
-                if (resultPass)
+                if (ModelState.IsValid)
                 {
-                    modifiedUser.UserName = editedUserData.UserDetails.Email;
-                    modifiedUser.Email = editedUserData.UserDetails.Email;
-                    modifiedUser.EmailConfirmed = true;
-                    modifiedUser.LastName = editedUserData.UserDetails.LastName;
-                    modifiedUser.FirstName = editedUserData.UserDetails.FirstName;
-                    modifiedUser.BirthDate = editedUserData.UserDetails.BirthDate;
-                    modifiedUser.GenderType_Id = editedUserData.UserDetails.GenderType_Id;
+                    var modifiedUser = await _userManager.FindByIdAsync(editedUserData.UserDetails.Id);
+                    var resultPass =
+                        await _userManager.CheckPasswordAsync(modifiedUser, editedUserData.CurrentPassword);
+                    if (resultPass)
+                    {
+                        modifiedUser.UserName = editedUserData.UserDetails.Email;
+                        modifiedUser.Email = editedUserData.UserDetails.Email;
+                        modifiedUser.EmailConfirmed = true;
+                        modifiedUser.LastName = editedUserData.UserDetails.LastName;
+                        modifiedUser.FirstName = editedUserData.UserDetails.FirstName;
+                        modifiedUser.BirthDate = editedUserData.UserDetails.BirthDate;
+                        modifiedUser.GenderType_Id = editedUserData.UserDetails.GenderType_Id;
 
-                    if (editedUserData.UserDetails.PhoneNumber != null)
-                    {
-                        modifiedUser.PhoneNumber = editedUserData.UserDetails.PhoneNumber;
-                        modifiedUser.PhoneNumberConfirmed = true;
-                    }
-                    else
-                    {
-                        modifiedUser.PhoneNumber = null;
-                        modifiedUser.PhoneNumberConfirmed = false;
-                    }
-
-                    bool profActivated = false;
-                    if (editedUserData.UserDetails.IsProfessional != modifiedUser.IsProfessional)
-                    {
-                        if (editedUserData.UserDetails.IsProfessional)
+                        if (editedUserData.UserDetails.PhoneNumber != null)
                         {
-                            modifiedUser.IsProfessional = true;
-                            profActivated = true;
+                            modifiedUser.PhoneNumber = editedUserData.UserDetails.PhoneNumber;
+                            modifiedUser.PhoneNumberConfirmed = true;
                         }
                         else
                         {
-                            ModelState.AddModelError("", "Disable a professional account is prohibited. " +
-                                                         "If you want to not manage any establishment anymore, please delete your account and create a new non professional one.");
-                            ModelState.SetModelValue("UserDetails.IsProfessional", new ValueProviderResult("true"));
-                            return View(editedUserData);
-                        }
-                    }
-                            
-                    var resultEdit = await _userManager.UpdateAsync(modifiedUser);
-                    if (!resultEdit.Succeeded)
-                    {
-                        foreach (IdentityError error in resultEdit.Errors)
-                        {
-                            ModelState.TryAddModelError(error.Code, error.Description);
+                            modifiedUser.PhoneNumber = null;
+                            modifiedUser.PhoneNumberConfirmed = false;
                         }
 
+                        bool profActivated = false;
+                        if (editedUserData.UserDetails.IsProfessional != modifiedUser.IsProfessional)
+                        {
+                            if (editedUserData.UserDetails.IsProfessional)
+                            {
+                                modifiedUser.IsProfessional = true;
+                                profActivated = true;
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", "Disable a professional account is prohibited. " +
+                                                             "If you want to not manage any establishment anymore, please delete your account and create a new non professional one.");
+                                ModelState.SetModelValue("UserDetails.IsProfessional", new ValueProviderResult("true"));
+                                return View(editedUserData);
+                            }
+                        }
+
+                        var resultEdit = await _userManager.UpdateAsync(modifiedUser);
+                        if (!resultEdit.Succeeded)
+                        {
+                            foreach (IdentityError error in resultEdit.Errors)
+                            {
+                                ModelState.TryAddModelError(error.Code, error.Description);
+                            }
+
+                            return View(editedUserData);
+                        }
+
+                        if (profActivated)
+                        {
+                            await _userManager.AddToRoleAsync(modifiedUser,
+                                MyIdentityServerConstants.Role_Manager);
+                        }
+
+                        if (!editedUserData.NewPassword.IsNullOrEmpty())
+                        {
+                            var resultPassEdit = await _userManager.ChangePasswordAsync(modifiedUser,
+                                editedUserData.CurrentPassword, editedUserData.NewPassword);
+                            if (!resultPassEdit.Succeeded)
+                            {
+                                ModelState.AddModelError("",
+                                    "There was a problem with your password modification, please fill in the current/new/confirmation password fields and try again.");
+                                return View(editedUserData);
+                            }
+                        }
+
+                        await _signInManager.RefreshSignInAsync(modifiedUser);
+
+                        AddSuccessMessage("Account modifications saved",
+                            "Your user account details have been successfully saved.");
+                        return Redirect(MyMVCConstants.MyMVC_Login_Url);
+
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Invalid current password, please try again");
                         return View(editedUserData);
                     }
-
-                    if (profActivated)
-                    {
-                        await _userManager.AddToRoleAsync(modifiedUser,
-                            MyIdentityServerConstants.Role_Manager);
-                    }
-
-                    if (!editedUserData.NewPassword.IsNullOrEmpty())
-                    {
-                        var resultPassEdit = await _userManager.ChangePasswordAsync(modifiedUser,
-                            editedUserData.CurrentPassword, editedUserData.NewPassword);
-                        if (!resultPassEdit.Succeeded)
-                        {
-                            ModelState.AddModelError("",
-                                "There was a problem with your password modification, please fill in the current/new/confirmation password fields and try again.");
-                            return View(editedUserData);
-                        }
-                    }
-
-                    await _signInManager.RefreshSignInAsync(modifiedUser);
-
-                    AddSuccessMessage("Account modifications saved", "Your user account details have been successfully saved.");
-                    return Redirect(MyMVCConstants.MyMVC_Login_Url);
-
                 }
                 else
                 {
-                    ModelState.AddModelError("","Invalid current password, please try again");
                     return View(editedUserData);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                return View(editedUserData);
+                AddErrorMessage("Unknown error", ex.Message);
+                return Redirect(MyMVCConstants.MyMVC_HomeIndex_Url);
             }
+
         }
 
         /// <summary>
@@ -299,10 +330,11 @@ namespace IdentityServerHost.Quickstart.UI
             if (vm.IsExternalLoginOnly)
             {
                 // we only have one option for logging in and it's an external provider
-                return RedirectToAction("Challenge", "External", new { scheme = vm.ExternalLoginScheme, returnUrl });
+                return RedirectToAction("Challenge", "External", new {scheme = vm.ExternalLoginScheme, returnUrl});
             }
 
             return View(vm);
+
         }
 
         /// <summary>
