@@ -143,5 +143,40 @@ namespace MyAPI.Services
             }
 
         }
+
+        public List<EstablishmentNewsVwMdl> GetLastNews()
+        {
+            try
+            {
+                var allNewswithEstab = _context.EstablishmentsNews
+                    .Include(x => x.Establishment)
+                    .OrderByDescending(x=>x.UpdatedDate)
+                    .ToList();
+
+                List<EstablishmentNewsVwMdl> lastNews = new List<EstablishmentNewsVwMdl>();
+                for(int i = 0 ; i < 10 && i < allNewswithEstab.Count() ; i++ )
+                {
+                    EstablishmentNewsVwMdl news = new EstablishmentNewsVwMdl()
+                    {
+                        Id = allNewswithEstab[i].Id,
+                        EstablishmentId = allNewswithEstab[i].EstablishmentId,
+                        EstablishmentName = allNewswithEstab[i].Establishment.Name,
+                        CreatedDate = allNewswithEstab[i].CreatedDate,
+                        UpdatedDate = allNewswithEstab[i].UpdatedDate,
+                        Title = allNewswithEstab[i].Title,
+                        Text = allNewswithEstab[i].Text
+                    };
+
+                    lastNews.Add(news);
+                }
+
+                return lastNews;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

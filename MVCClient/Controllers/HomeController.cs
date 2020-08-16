@@ -21,6 +21,7 @@ using MVCClient.Models;
 using MyLibrary.Constants;
 using MyLibrary.DTOs;
 using MyLibrary.Entities;
+using MyLibrary.ViewModels;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -38,19 +39,41 @@ namespace MVCClient.Controllers
         }
 
         [AllowAnonymous]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            if((!User.Identity.IsAuthenticated) &&(Request.Cookies.ContainsKey(".AspNetCore.Identity.Application")))
+            try
             {
-                return Challenge(new AuthenticationProperties
-                    {
-                        RedirectUri = "/Home/Index"
-                    },
-                    "oidc");
+                if ((!User.Identity.IsAuthenticated) &&
+                    (Request.Cookies.ContainsKey(".AspNetCore.Identity.Application")))
+                {
+                    return Challenge(new AuthenticationProperties
+                        {
+                            RedirectUri = "/Home/Index"
+                        },
+                        "oidc");
+                }
+
+                var httpResponse = await _client.GetAsync($"{MyAPIConstants.MyAPI_EstabNewsCtrl_Url}GetLastNews");
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    throw new Exception(httpResponse.ReasonPhrase);
+                }
+
+                var content = await httpResponse.Content.ReadAsStringAsync();
+                List<EstablishmentNewsVwMdl> lastNews =
+                    JsonConvert.DeserializeObject<List<EstablishmentNewsVwMdl>>(content);
+
+                
+                CheckIfToastrCookieAndShowIt();
+                return View(lastNews);
             }
-            CheckIfToastrCookieAndShowIt();
-            return View();
+            catch (Exception ex)
+            {
+                AddErrorMessage("Error", ex.Message);
+                return View();
+            }
         }
+
         
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

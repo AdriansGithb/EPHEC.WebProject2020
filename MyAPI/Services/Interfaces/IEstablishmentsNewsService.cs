@@ -14,5 +14,6 @@ namespace MyAPI.Services.Interfaces
         EstablishmentNewsVwMdl Get(string id);
         void Edit(EstablishmentNewsVwMdl news);
         void Delete(string id);
+        List<EstablishmentNewsVwMdl> GetLastNews();
     }
 }

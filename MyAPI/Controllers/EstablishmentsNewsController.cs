@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyAPI.Services.Interfaces;
@@ -117,5 +118,24 @@ namespace MyAPI.Controllers
             }
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Route("~/EstablishmentsNews/GetLastNews")]
+        public IActionResult GetLastNews()
+        {
+            try
+            {
+                List<EstablishmentNewsVwMdl> lastNews = _service.GetLastNews();
+                return Ok(lastNews);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        
     }
 }

@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Authentication
 @using Microsoft.CodeAnalysis
 @using MyLibrary.Constants
+@model IEnumerable<MyLibrary.ViewModels.EstablishmentNewsVwMdl>
 
 @section AddMapToHead{
     @*mapbox : base adding*@
@@ -19,17 +20,66 @@
         cursor: pointer
     }
 </style>
-    <h2>Ma page d'accueil</h2>
-    <dl>
-        Bonjour @User.Identity.Name :)
-    </dl>
+<h1 class="text-center">Welcome @User.Identity.Name !</h1>
+<hr />
+@if (User.Identity.IsAuthenticated)
+{
+    <h3 class="text-center text-dark">You can see here all our open establishments</h3>
+}
+else
+{
+    <h3 class="text-center text-dark">You can see here all our establishments</h3>
+}
+@* Map *@
+<div id='map' style='width: 100%; height: 400px;'></div>
+
+<div id="myCarousel" class="carousel slide" data-ride="carousel" style='width: 100%; height: 300px;'>
+
+    <!-- Indicators -->
+    <ul class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+        @if (Model.Count() > 3)
+        {
+            for (int i = 3; i < Model.Count(); i++)
+            {
+                <li data-target="#myCarousel" data-slide-to="@i"></li>
+            }
+        }
+    </ul>
+        <!-- The slideshow -->
+    <div class="carousel-inner">
+        @foreach (var news in Model)
+        {
+            <div class="carousel-item @(news == Model.First() ? "active" : "")">
+                    <div class="col-12">
+                        <div class="card border-0">
+                            <div class="card-body font-italic">
+                                <h5 class="text-center">@news.Title</h5>
+                                <blockquote class="blockquote">
+                                    <p>@news.Text</p>
+                                    <footer class="blockquote-footer">From @news.EstablishmentName | Last Update : @news.UpdatedDate</footer>
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        }
+    </div>
+    
+    <!-- Left and right controls -->
+    <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </a>
+    <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </a>
+</div>
 
 
 
 
-
-    @* Map *@
-    <div id='map' style='width: 100%; height: 400px;'></div>
 
 @section Scripts
 {
