@@ -21,7 +21,11 @@ namespace MyAPI.Controllers
         {
             _service = service;
         }
-        
+
+        /// <summary>
+        /// Get all establishment addresses
+        /// </summary>
+        /// <returns>List<AddressDTO></returns>
         [HttpGet]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -40,6 +44,10 @@ namespace MyAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get only open now establishment addresses
+        /// </summary>
+        /// <returns>List<AddressDTO></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

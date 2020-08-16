@@ -22,6 +22,11 @@ namespace MyAPI.Controllers
             _service = service;
         }
 
+        /// <summary>
+        /// Get a news, by id
+        /// </summary>
+        /// <param name="id">string</param>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -41,7 +46,10 @@ namespace MyAPI.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Get all news
+        /// </summary>
+        /// <returns>List<NewsDTO></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -61,6 +69,11 @@ namespace MyAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Create a news
+        /// </summary>
+        /// <param name="news">EstablishmentNewsVwMdl</param>
+        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -80,6 +93,11 @@ namespace MyAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Edit a news
+        /// </summary>
+        /// <param name="news">EstablishmentNewsVwMdl</param>
+        /// <returns></returns>
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -99,6 +117,11 @@ namespace MyAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete a news, by id
+        /// </summary>
+        /// <param name="id">string</param>
+        /// <returns></returns>
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -118,6 +141,10 @@ namespace MyAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get the lastest news (max 10)
+        /// </summary>
+        /// <returns>List<EstablishmentNewsVwMdl></returns>
         [HttpGet]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]

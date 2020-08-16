@@ -25,6 +25,11 @@ namespace MyAPI.Controllers
             _service = service;
         }
 
+        /// <summary>
+        /// Create a new establishment
+        /// </summary>
+        /// <param name="newEstab">Establishments</param>
+        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -39,6 +44,11 @@ namespace MyAPI.Controllers
             else return BadRequest(creation);
         }
 
+        /// <summary>
+        /// Get an establishment, by id
+        /// </summary>
+        /// <param name="id">int</param>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -60,6 +70,10 @@ namespace MyAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get all establishments not yet validated by admin
+        /// </summary>
+        /// <returns>List<EstablishmentShortVwMdl></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -79,6 +93,10 @@ namespace MyAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get all validated establishments
+        /// </summary>
+        /// <returns>List<EstablishmentShortVwMdl></returns>
         [HttpGet]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -99,6 +117,11 @@ namespace MyAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get all establishments (validated or not) owned by a manager, by id
+        /// </summary>
+        /// <param name="id">string</param>
+        /// <returns>List<EstablishmentShortVwMdl></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -118,6 +141,10 @@ namespace MyAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get all establishments (validated or not), for administrators
+        /// </summary>
+        /// <returns>List<EstablishmentShortVwMdl></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -137,7 +164,11 @@ namespace MyAPI.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Get an establishment with full related data, by establishment id
+        /// </summary>
+        /// <param name="id">int</param>
+        /// <returns>EstablishmentFullVwMdl</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -159,6 +190,11 @@ namespace MyAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete an establishment, by id
+        /// </summary>
+        /// <param name="id">int</param>
+        /// <returns></returns>
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -178,6 +214,12 @@ namespace MyAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Validate an establishment in waiting validation, by establishment id
+        /// (Set IsValid to true)
+        /// </summary>
+        /// <param name="id">int</param>
+        /// <returns></returns>
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -197,6 +239,11 @@ namespace MyAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Edit an establishment (with all related data, but no pictures)
+        /// </summary>
+        /// <param name="editedEstab">EstablishmentEditionVwMdl</param>
+        /// <returns></returns>
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -216,6 +263,11 @@ namespace MyAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get the registered shorten url of an establishment, by establishment id
+        /// </summary>
+        /// <param name="id">int</param>
+        /// <returns>ShortenUrlVwMdl (ShortenUrlVwMdl.ShortUrl = null if never registered)</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -237,6 +289,11 @@ namespace MyAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Generate a valid and available short url, and save it in the db, by establishment id
+        /// </summary>
+        /// <param name="id">int</param>
+        /// <returns>ShortenUrlVwMdl containing the generated short url</returns>
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -258,6 +315,11 @@ namespace MyAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get establishment id, from the token given in the short url
+        /// </summary>
+        /// <param name="urlToken">string</param>
+        /// <returns>int</returns>
         [HttpGet]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]

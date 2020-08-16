@@ -23,22 +23,29 @@ namespace MyAPI.Services
 
         public List<UserAccountAdministrationVwMdl> GetAll()
         {
-            List<ApplicationUser> lstAppUser = _context.AspNetUsers.ToList();
-            List<UserAccountAdministrationVwMdl> rtrnList = new List<UserAccountAdministrationVwMdl>();
-            foreach (ApplicationUser user in lstAppUser)
+            try
             {
-                UserAccountAdministrationVwMdl userAccount = new UserAccountAdministrationVwMdl
+                List<ApplicationUser> lstAppUser = _context.AspNetUsers.ToList();
+                List<UserAccountAdministrationVwMdl> rtrnList = new List<UserAccountAdministrationVwMdl>();
+                foreach (ApplicationUser user in lstAppUser)
                 {
-                    Email = user.Email,
-                    Id = user.Id,
-                    IsAdmin = user.IsAdmin,
-                    IsProfessional = user.IsProfessional,
-                    Username = user.UserName
-                };
-                rtrnList.Add(userAccount);
-            }
+                    UserAccountAdministrationVwMdl userAccount = new UserAccountAdministrationVwMdl
+                    {
+                        Email = user.Email,
+                        Id = user.Id,
+                        IsAdmin = user.IsAdmin,
+                        IsProfessional = user.IsProfessional,
+                        Username = user.UserName
+                    };
+                    rtrnList.Add(userAccount);
+                }
 
-            return rtrnList;
+                return rtrnList;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
 
         }
 
@@ -67,7 +74,6 @@ namespace MyAPI.Services
                 throw ex;
             }
         }
-
 
         public string DeleteUserAccount(string id)
         {

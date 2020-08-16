@@ -23,6 +23,11 @@ namespace MyAPI.Controllers
             _service = service;
         }
 
+        /// <summary>
+        /// Get an establishment logo from the establishment id
+        /// </summary>
+        /// <param name="id">establishment id</param>
+        /// <returns>PicturesDTO</returns>
         [HttpGet]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -41,6 +46,11 @@ namespace MyAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get a picture from the picture id
+        /// </summary>
+        /// <param name="id">picture id</param>
+        /// <returns>PicturesDTO</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -60,6 +70,11 @@ namespace MyAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get current pictures in db, of an establishment, from establishment id
+        /// </summary>
+        /// <param name="id">establishment id (int)</param>
+        /// <returns>EstablishmentPicturesEditionVwMdl</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -79,6 +94,11 @@ namespace MyAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Add new pictures for an establishment. If a logo is sent, it errases and replace current logo if existent.
+        /// </summary>
+        /// <param name="estabPics">EstablishmentPicturesEditionVwMdl</param>
+        /// <returns></returns>
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -98,6 +118,11 @@ namespace MyAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete all pictures of en establishment, from the establishment id
+        /// </summary>
+        /// <param name="id">int / establishment id</param>
+        /// <returns></returns>
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

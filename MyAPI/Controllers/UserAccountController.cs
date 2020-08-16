@@ -26,6 +26,10 @@ namespace MyAPI.Controllers
             _service = service;
         }
 
+        /// <summary>
+        /// Get all user accounts
+        /// </summary>
+        /// <returns>List<UserAccountAdministrationVwMdl></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -45,6 +49,11 @@ namespace MyAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get one user account by Id
+        /// </summary>
+        /// <param name="id">User id</param>
+        /// <returns>UserAccountVwMdl</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -64,6 +73,11 @@ namespace MyAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete a user account by user id
+        /// </summary>
+        /// <param name="id">user id</param>
+        /// <returns></returns>
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
