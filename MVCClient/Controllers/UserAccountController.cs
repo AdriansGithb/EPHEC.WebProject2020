@@ -149,7 +149,7 @@ namespace MVCClient.Controllers
                     return true;
                 else return false;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
