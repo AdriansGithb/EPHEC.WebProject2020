@@ -23,6 +23,7 @@ namespace MyAPI.Services
             try
             {
                 var allAddressesWithEstab = _context.EstablishmentsAddresses
+                    .Where(x => x.Establishment.IsValidated == true)
                     .Include(x => x.Establishment)
                     .ThenInclude(y=>y.Type)
                     .ToList();
@@ -65,6 +66,7 @@ namespace MyAPI.Services
             try
             {
                 var allEstabWithScheduleWithAddress = _context.Establishments
+                    .Where(x=>x.IsValidated==true)
                     .Include(x => x.Address)
                     .Include(y => y.Type)
                     .Include(z=>z.OpeningTimes)
